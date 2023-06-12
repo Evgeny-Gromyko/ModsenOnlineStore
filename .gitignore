@@ -477,4 +477,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # Migrations
-/Migrations/
+*/Migrations/
