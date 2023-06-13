@@ -1,7 +1,7 @@
 ﻿using ModsenOnlineStore.Store.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ModsenOnlineStore.Store.Domain.DTOs
+namespace ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs
 {
     public class GetProductDto
     {

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Application.Interfaces;
-using ModsenOnlineStore.Store.Domain.DTOs;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
-namespace ModsenOnlineStore.Store.Infrastructure.Services
+namespace ModsenOnlineStore.Store.Infrastructure.Services.ProductService
 {
     public class ProductService : IProductService
     {

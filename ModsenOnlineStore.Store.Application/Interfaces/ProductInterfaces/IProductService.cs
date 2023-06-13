@@ -1,7 +1,7 @@
 ﻿using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Domain.DTOs;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 
-namespace ModsenOnlineStore.Store.Application.Interfaces
+namespace ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces
 {
     public interface IProductService
     {

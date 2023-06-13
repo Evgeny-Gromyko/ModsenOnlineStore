@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ModsenOnlineStore.Store.Application.Interfaces;
-using ModsenOnlineStore.Store.Domain.DTOs;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Infrastructure.Data;
-using ModsenOnlineStore.Store.Infrastructure.Services;
+using ModsenOnlineStore.Store.Infrastructure.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using ModsenOnlineStore.Store.Domain.Entities;
 
-namespace ModsenOnlineStore.Store.Application.Interfaces
+namespace ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces
 {
     public interface IProductRepository
     {
