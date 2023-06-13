@@ -18,9 +18,9 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             return await context.Products.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product?> GetProductById(int id)
         {
-            return await context.Products.AsNoTracking().FirstAsync(p => p.Id == id);
+            return await context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<List<Product>> AddProduct(Product product)
@@ -39,9 +39,14 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
 
         public async Task<List<Product>> RemoveProductById(int id)
         {
-            var product = await context.Products.FirstAsync(p => p.Id == id);
-            context.Products.Remove(product);
-            await context.SaveChangesAsync();
+            var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product is not null)
+            {
+                context.Products.Remove(product);
+                await context.SaveChangesAsync();
+            }
+
             return await GetAllProducts();
         }
     }
