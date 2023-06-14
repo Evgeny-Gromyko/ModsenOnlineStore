@@ -7,14 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ModsenOnlineStore.Store.Application\ModsenOnlineStore.Store.Application.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Store.Domain\ModsenOnlineStore.Store.Domain.csproj" />
   </ItemGroup>
 

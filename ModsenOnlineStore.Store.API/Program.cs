@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Infrastructure.Data;
+using ModsenOnlineStore.Store.Infrastructure.Services.CommentServices;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
@@ -27,6 +32,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
+    await DbInitializer.SeedData(context);
+}
 
 app.MapControllers();
 

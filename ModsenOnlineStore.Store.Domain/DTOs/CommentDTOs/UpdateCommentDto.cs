@@ -1,10 +1,9 @@
-﻿namespace ModsenOnlineStore.Store.Domain.Entities
+﻿namespace ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs
 {
-    public class Comment
+    public class UpdateCommentDto
     {
         public int Id { get; set; }
         public string Text { get; set; } = string.Empty;
-        public Product Product { get; set; }
         public int ProductId { get; set; }
         public int UserId { get; set; }
     }
