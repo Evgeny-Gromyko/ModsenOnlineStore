@@ -8,11 +8,11 @@
       <jdbc-url>Server=localhost,1433</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@localhost[2]" uuid="5e6703d2-3bcb-4ecf-9e59-6ed2eb2e053d">
+    <data-source source="LOCAL" name="store" uuid="ee6342cb-6a77-4f36-9048-275696e4cbe0">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>Server=localhost,2433</jdbc-url>
+      <jdbc-url>Server=localhost,11433</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Infrastructure.Data;
+using ModsenOnlineStore.Store.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<IOrderProductService, OrderProductService>();
+builder.Services.AddTransient<IOrderProductRepository, OrderProductRepository>();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
@@ -15,6 +20,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
