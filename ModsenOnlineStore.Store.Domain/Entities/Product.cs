@@ -10,7 +10,7 @@ namespace ModsenOnlineStore.Store.Domain.Entities
     public class Product
     {
         public int Id { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        
         public decimal Price { get; set; } = 0;
 
     }

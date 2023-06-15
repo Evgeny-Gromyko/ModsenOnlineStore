@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
@@ -22,13 +24,13 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducTypes()
         {
             return Ok(await productTypeService.GetAllProductTypes());
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSingleProduct(int id)
+        public async Task<IActionResult> GetSingleProductType(int id)
         {
             var product = await productTypeService.GetSingleProductType(id);
             
@@ -41,13 +43,13 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(AddUpdateProductTypeDTO product)
+        public async Task<IActionResult> AddProductType(AddUpdateProductTypeDTO product)
         {
             return Ok(await productTypeService.AddProductType(product));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, AddUpdateProductTypeDTO newProduct)
+        public async Task<IActionResult> UpdateProductType(int id, AddUpdateProductTypeDTO newProduct)
         {
             var product = await productTypeService.UpdateProductType(id, newProduct);
            

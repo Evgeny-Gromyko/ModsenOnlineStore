@@ -6,17 +6,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs;
+using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderProductController : ControllerBase
+    public class OrderProductsController : ControllerBase
     {
         private IOrderProductService orderProductService;
 
-        public OrderProductController(IOrderProductService orderProductService)
+        public OrderProductsController(IOrderProductService orderProductService)
         {
             this.orderProductService = orderProductService;
         }

@@ -1,8 +1,6 @@
-using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Domain.DTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
-namespace ModsenOnlineStore.Store.Application.Interfaces;
+namespace ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 
 public interface IOrderProductRepository
 {
