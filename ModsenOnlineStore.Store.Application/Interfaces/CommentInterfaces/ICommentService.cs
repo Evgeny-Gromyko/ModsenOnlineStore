@@ -9,10 +9,10 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces
 
         Task<ResponseInfo<GetCommentDto>> GetCommentById(int id);
 
-        Task<ResponseInfo<string>> AddComment(AddCommentDto addProductDto);
+        Task<NoDataResponseInfo> AddComment(AddCommentDto addProductDto);
 
-        Task<ResponseInfo<string>> UpdateComment(UpdateCommentDto updateProductDto);
+        Task<NoDataResponseInfo> UpdateComment(UpdateCommentDto updateProductDto);
 
-        Task<ResponseInfo<string>> RemoveCommentById(int id);
+        Task<NoDataResponseInfo> RemoveCommentById(int id);
     }
 }

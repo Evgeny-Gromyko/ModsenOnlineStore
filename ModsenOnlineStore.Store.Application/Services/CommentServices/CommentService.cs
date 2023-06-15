@@ -39,27 +39,41 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             return new ResponseInfo<GetCommentDto>(data: commentDto, success: true, message: "comment");
         }
 
-        public async Task<ResponseInfo<string>> AddComment(AddCommentDto addCommentDto)
+        public async Task<NoDataResponseInfo> AddComment(AddCommentDto addCommentDto)
         {
             var comment = mapper.Map<Comment>(addCommentDto);
             await commentRepository.AddComment(comment);
 
-            return new ResponseInfo<string>(data: "added successfully", success: true, message: "comment");
+            return new NoDataResponseInfo(success: true, message: "added successfully");
         }
 
-        public async Task<ResponseInfo<string>> UpdateComment(UpdateCommentDto updateCommentDto)
+        public async Task<NoDataResponseInfo> UpdateComment(UpdateCommentDto updateCommentDto)
         {
+            var oldComment = await commentRepository.GetCommentById(updateCommentDto.Id);
+
+            if (oldComment is null)
+            {
+                return new NoDataResponseInfo(success: false, message: "no such comment");
+            }
+
             var comment = mapper.Map<Comment>(updateCommentDto);
             await commentRepository.UpdateComment(comment);
 
-            return new ResponseInfo<string>(data: "updated successfully", success: true, message: "comment");
+            return new NoDataResponseInfo(success: true, message: "updated successfully");
         }
 
-        public async Task<ResponseInfo<string>> RemoveCommentById(int id)
+        public async Task<NoDataResponseInfo> RemoveCommentById(int id)
         {
+            var oldComment = await commentRepository.GetCommentById(id);
+
+            if (oldComment is null)
+            {
+                return new NoDataResponseInfo(success: false, message: "no such comment");
+            }
+
             await commentRepository.RemoveCommentById(id);
 
-            return new ResponseInfo<string>(data: "removed successfully", success: true, message: "comment");
+            return new NoDataResponseInfo(success: true, message: "removed successfully");
         }
     }
 }
