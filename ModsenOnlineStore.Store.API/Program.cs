@@ -1,7 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using ModsenOnlineStore.Store.Infrastructure.Data;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
+using ModsenOnlineStore.Store.Infrastructure.Services.OrderService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IOrderService, OrderService>();
+
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();

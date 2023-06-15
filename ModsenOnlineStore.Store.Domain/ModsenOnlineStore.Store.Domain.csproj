@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
+    <Compile Remove="DTOs\OrderDTOs\DeleteOrderDTO.cs" />
   </ItemGroup>
 
 </Project>

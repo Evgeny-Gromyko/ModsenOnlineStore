@@ -17,11 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModsenOnlineStore.Login.Infrastructure\ModsenOnlineStore.Login.Infrastructure.csproj" />
+    <ProjectReference Include="..\ModsenOnlineStore.Store.Application\ModsenOnlineStore.Store.Application.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Store.Infrastructure\ModsenOnlineStore.Store.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
