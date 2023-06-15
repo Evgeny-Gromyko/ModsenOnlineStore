@@ -1,4 +1,5 @@
-﻿using ModsenOnlineStore.EmailAuthentication.Application.Interfaces;
+﻿using Microsoft.Extensions.Configuration;
+using ModsenOnlineStore.EmailAuthentication.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,23 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
 {
     public class EmailSendingService : IEmailSendingService
     {
-        private MailAddress from = new MailAddress("akkdliabreda@gmail.com", "Store Mail Authentication");
-        private NetworkCredential networkCredential = new NetworkCredential("akkdliabreda@gmail.com", "vqshkhtemsppmhha");
 
-        public void SendAuthEmail(string mailAddress = "egrom2002@gmail.com", string title = "", string text = "")
+        private MailAddress senderAddress;
+        private NetworkCredential networkCredential;
+
+        public EmailSendingService(IConfiguration configuration) {
+            senderAddress = new MailAddress(configuration["Credentials:Email"], "Store Mail Authentication");
+            networkCredential = new NetworkCredential(configuration["Credentials:Email"], configuration["Credentials:Password"]);
+        }
+        
+        public void SendEmail(string mailAddress = "egrom2002@gmail.com", string title = "", string text = "")
         {
-            MailAddress to = new MailAddress(mailAddress);
-            MailMessage m = new MailMessage(from, to);
+            var receiverAddress = new MailAddress(mailAddress);
+            var message = new MailMessage(senderAddress, receiverAddress);
 
-            m.Subject = title;
-            m.Body = text;
-            m.IsBodyHtml = true;
+            message.Subject = title;
+            message.Body = text;
+            message.IsBodyHtml = true;
 
             SmtpClient smtp = new SmtpClient() // gmail smtp settings
             {
@@ -32,7 +39,7 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
                 UseDefaultCredentials = false,
                 Credentials = networkCredential 
             };
-            smtp.Send(m);
+            smtp.Send(message);
         }
 
     }

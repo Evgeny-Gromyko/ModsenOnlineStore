@@ -29,11 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.API
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailAuthentication", "EmailAuthentication", "{96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.EmailAuthentication.API", "ModsenOnlineStore.EmailAuthentication.API\ModsenOnlineStore.EmailAuthentication.API.csproj", "{03B9445F-6571-4F12-9989-EE4D5F1FEFB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.API", "ModsenOnlineStore.EmailAuthentication.API\ModsenOnlineStore.EmailAuthentication.API.csproj", "{03B9445F-6571-4F12-9989-EE4D5F1FEFB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.EmailAuthentication.Application", "ModsenOnlineStore.EmailAuthentication.Application\ModsenOnlineStore.EmailAuthentication.Application.csproj", "{9A7E06AB-61E5-47C6-BBA0-C5D1A3805E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Application", "ModsenOnlineStore.EmailAuthentication.Application\ModsenOnlineStore.EmailAuthentication.Application.csproj", "{9A7E06AB-61E5-47C6-BBA0-C5D1A3805E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.EmailAuthentication.Infrastructure", "ModsenOnlineStore.EmailAuthentication.Infrastructure\ModsenOnlineStore.EmailAuthentication.Infrastructure.csproj", "{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Infrastructure", "ModsenOnlineStore.EmailAuthentication.Infrastructure\ModsenOnlineStore.EmailAuthentication.Infrastructure.csproj", "{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.EmailAuthentication.Domain", "ModsenOnlineStore.EmailAuthentication.Domain\ModsenOnlineStore.EmailAuthentication.Domain.csproj", "{3F469206-6240-42CC-859A-6E3BB94F59AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{03B9445F-6571-4F12-9989-EE4D5F1FEFB5} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
 		{9A7E06AB-61E5-47C6-BBA0-C5D1A3805E34} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
 		{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
+		{3F469206-6240-42CC-859A-6E3BB94F59AB} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2ED6A0A6-2BFC-4BC1-9E6F-DA2383D0A34D}

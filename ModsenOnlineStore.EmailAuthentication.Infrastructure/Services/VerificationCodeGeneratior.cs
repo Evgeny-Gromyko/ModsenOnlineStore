@@ -9,19 +9,19 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
 {
     public class VerificationCodeGeneratior : IVerificationCodeGeneratior
     {
-        public string generateCode()
+        public string GenerateCode()
         {
-            Random random = new Random();
-            string code = "";
-            string ch;
+            var random = new Random();
+            var code = new StringBuilder();
+            string codeSymbol;
 
             for (int i = 0; i < 6; i++)
             {
-                ch = random.Next(10).ToString();
-                code += ch;
+                codeSymbol = random.Next(10).ToString();
+                code.Append(codeSymbol);
             }
 
-            return code;
+            return code.ToString();
         }
     }
 }

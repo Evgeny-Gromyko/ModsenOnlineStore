@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.EmailAuthentication.Application.Interfaces;
+using ModsenOnlineStore.EmailAuthentication.Domain;
 using System.Net.Mail;
 
 namespace ModsenOnlineStore.EmailAuthentication.API.Controllers
@@ -9,8 +10,8 @@ namespace ModsenOnlineStore.EmailAuthentication.API.Controllers
     [ApiController]
     public class EmailAuthenticationController : ControllerBase
     {
-        private IEmailSendingService emailSendingService;
-        private IVerificationCodeGeneratior codeGeneratior;
+        private readonly IEmailSendingService emailSendingService;
+        private readonly IVerificationCodeGeneratior codeGeneratior;
         public EmailAuthenticationController(
             IEmailSendingService emailSendingService,
             IVerificationCodeGeneratior codeGeneratior) 
@@ -22,14 +23,11 @@ namespace ModsenOnlineStore.EmailAuthentication.API.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(string email)
         {
-            string code = codeGeneratior.generateCode();
+            string code = codeGeneratior.GenerateCode();
 
-            string title = "Online store verification code";
+            string text = Constants.TextTitle + $"<h2>{code}</h2>" + Constants.TextBody;
 
-            string text = $"<h2>Here is your verification code : {code}</h2>" +
-                           "<p>copy it and paste it into the field for entering the verification code</p>";
-
-            emailSendingService.SendAuthEmail(email, title, text);
+            emailSendingService.SendEmail(email, Constants.Theme, text);
 
             return Ok(code);
         }

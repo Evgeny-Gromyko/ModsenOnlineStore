@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModsenOnlineStore.EmailAuthentication.Application\ModsenOnlineStore.EmailAuthentication.Application.csproj" />
+    <ProjectReference Include="..\ModsenOnlineStore.EmailAuthentication.Domain\ModsenOnlineStore.EmailAuthentication.Domain.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.EmailAuthentication.Infrastructure\ModsenOnlineStore.EmailAuthentication.Infrastructure.csproj" />
   </ItemGroup>
 
