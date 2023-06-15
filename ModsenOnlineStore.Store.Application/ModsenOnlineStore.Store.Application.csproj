@@ -10,4 +10,8 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ModsenOnlineStore.Store.Domain\ModsenOnlineStore.Store.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
