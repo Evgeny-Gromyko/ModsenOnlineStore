@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService service;
 
-        public ProductController(IProductService service)
+        public ProductsController(IProductService service)
         {
             this.service = service;
         }
