@@ -4,9 +4,9 @@ using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.API
 {
-    public class AutoMapperProfile : Profile
+    public class CommentProfile : Profile
     {
-        public AutoMapperProfile()
+        public CommentProfile()
         {
             CreateMap<AddCommentDto, Comment>();
             CreateMap<UpdateCommentDto, Comment>();

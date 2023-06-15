@@ -4,13 +4,13 @@ using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentService service;
 
-        public CommentController(ICommentService service)
+        public CommentsController(ICommentService service)
         {
             this.service = service;
         }

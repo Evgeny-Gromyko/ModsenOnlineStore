@@ -23,21 +23,19 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             return await context.Comments.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<Comment>> AddComment(Comment comment)
+        public async Task AddComment(Comment comment)
         {
             context.Comments.Add(comment);
             await context.SaveChangesAsync();
-            return await GetAllComments();
         }
 
-        public async Task<List<Comment>> UpdateComment(Comment comment)
+        public async Task UpdateComment(Comment comment)
         {
             context.Comments.Update(comment);
             await context.SaveChangesAsync();
-            return await GetAllComments();
         }
 
-        public async Task<List<Comment>> RemoveCommentById(int id)
+        public async Task RemoveCommentById(int id)
         {
             var comment = await context.Comments.FirstOrDefaultAsync(c => c.Id == id);
 
@@ -46,8 +44,6 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
                 context.Comments.Remove(comment);
                 await context.SaveChangesAsync();
             }
-
-            return await GetAllComments();
         }
     }
 }

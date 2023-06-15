@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Infrastructure.Data;
-using ModsenOnlineStore.Store.Infrastructure.Services.CommentServices;
+using ModsenOnlineStore.Store.Application.Services.CommentServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
