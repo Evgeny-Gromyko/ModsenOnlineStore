@@ -16,18 +16,21 @@ public class CouponRepository : ICouponRepository
     public async Task<Coupon> GetCoupon(int couponId) =>
         await context.Coupons
             .AsNoTracking()
+            .Include(c => c.User)
             .FirstOrDefaultAsync(e => e.Id == couponId);
 
 
     public async Task<List<Coupon>> GetAllCoupons() =>
         await context.Coupons
             .AsNoTracking()
+            .Include(c => c.User)
             .ToListAsync();
 
 
     public async Task<List<Coupon>> GetCouponsByUserId(int userId) =>
         await context.Coupons.AsNoTracking()
             .Where(e => e.UserId == userId)
+            .Include(c => c.User)
             .ToListAsync();
 
 

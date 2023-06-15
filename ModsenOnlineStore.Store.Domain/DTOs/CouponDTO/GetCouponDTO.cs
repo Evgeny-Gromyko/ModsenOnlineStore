@@ -1,6 +1,6 @@
 using ModsenOnlineStore.Store.Domain.Entities;
 
-namespace ModsenOnlineStore.Store.Domain.DTOs;
+namespace ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 
 public class GetCouponDTO
 {

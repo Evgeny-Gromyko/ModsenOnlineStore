@@ -9,5 +9,8 @@ namespace ModsenOnlineStore.Store.Domain.Entities
     public class Order
     {
         public int Id { get; set; }
+        
+        public User User { get; set; }
+
     }
 }
