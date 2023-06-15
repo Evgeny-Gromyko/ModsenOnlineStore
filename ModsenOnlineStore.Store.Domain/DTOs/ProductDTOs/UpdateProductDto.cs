@@ -1,6 +1,6 @@
-﻿namespace ModsenOnlineStore.Store.Domain.Entities
+﻿namespace ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs
 {
-    public class Product
+    public class UpdateProductDto
     {
         public int Id { get; set; }
 
@@ -14,10 +14,6 @@
 
         public int Quantity { get; set; }
 
-        //public ProductType ProductType { get; set; }
-
         public int ProductTypeId { get; set; }
-
-        //public List<OrderProduct> OrderProducts { get; set; } = new();
     }
 }
