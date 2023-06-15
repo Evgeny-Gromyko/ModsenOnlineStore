@@ -10,7 +10,7 @@ using ModsenOnlineStore.Store.Domain.DTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class OrderProductController : ControllerBase
     {
@@ -24,7 +24,6 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
-            // Console.WriteLine(HttpContext.Request.Cookies);
             return Ok(await orderProductService.GetAllOrderProducts());
         }
 
