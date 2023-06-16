@@ -29,22 +29,22 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         }
 
 
-        public async Task<List<Order>> AddOrder(Order order)///////
+        public async Task AddOrder(Order order)///////
         {
             context.Orders.Add(order);
             await context.SaveChangesAsync();
-            return await GetAllOrders();
+            //return await GetAllOrders();
         }
 
-        public async Task<List<Order>> UpdateOrder(int id, Order order)///////
+        public async Task UpdateOrder(Order order)///////
         {
             //var order = await context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id);
             context.Orders.Update(order);
             await context.SaveChangesAsync();
-            return await GetAllOrders();
+            //return await GetAllOrders();
         }
 
-        public async Task<List<Order>> DeleteOrder(int id)
+        public async Task DeleteOrder(int id)
         {
             var order = await context.Orders.FirstOrDefaultAsync(o => o.Id == id);
 
@@ -54,10 +54,11 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
 
-            return await GetAllOrders();
+            //return await GetAllOrders();
         }
 
-        public async Task<List<Order>> PayOrder(int id, int userId)
+        public async Task PayOrder(int id, int userId)
+
         {
             var order = await context.Orders.FirstOrDefaultAsync(o => o.Id == id);
 
@@ -82,7 +83,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             //order.Paid = true;
             await repository.SaveChangesAsync();*/
 
-            return await GetAllOrders();
+            //return await GetAllOrders();
         }
 
     }    

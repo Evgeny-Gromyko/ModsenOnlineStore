@@ -44,36 +44,41 @@ namespace ModsenOnlineStore.Store.Infrastructure.Services.OrderService
                 return new ResponseInfo<GetOrderDTO>(mapper.Map<GetOrderDTO>(order), true, $"order with id {id}");
             }
 
-            public async Task<ResponseInfo<List<GetOrderDTO>>> AddOrder(AddOrderDTO order)
+            public async Task<ResponseInfo<string>> AddOrder(AddOrderDTO addOrder)
             {
-            var newOrder = mapper.Map<Order>(order);
-            await repository.AddOrder(newOrder);
-            return await GetAllOrders();
-        }
-
-            public async Task<ResponseInfo<List<GetOrderDTO>>> UpdateOrder(int id, UpdateOrderDTO order)
-            {
-            var newOrder = mapper.Map<Order>(order);
-            await repository.UpdateOrder(id, newOrder);
-            return await GetAllOrders();
-        }
-
-
-            public async Task<ResponseInfo<List<GetOrderDTO>>> PayOrder(int id, int userId)
-            {
-                var order = await repository.PayOrder(id, userId);
-                if (order is null)
-                {
-                    return new ResponseInfo<List<GetOrderDTO>>(null, false, "order not found");
-                }
-                return await GetAllOrders();
+                var newOrder = mapper.Map<Order>(addOrder);
+                await repository.AddOrder(newOrder);
+                //return await GetAllOrders();
+                return new ResponseInfo<string>(data: "added successfully", success: true, message: "order");
             }
 
-            public async Task<ResponseInfo<List<GetOrderDTO>>> DeleteOrder(int id)
+            public async Task<ResponseInfo<string>> UpdateOrder(UpdateOrderDTO updateOrder)
             {
-            await repository.DeleteOrder(id);
-            return await GetAllOrders();
-        }
+                var newOrder = mapper.Map<Order>(updateOrder);
+                await repository.UpdateOrder(newOrder);
+                //return await GetAllOrders();
+                return new ResponseInfo<string>(data: "updated successfully", success: true, message: "order");
+            }
+
+
+            public async Task<ResponseInfo<GetOrderDTO>> PayOrder(int id, int userId)
+            {
+
+                var order = await repository.GetSingleOrder(id);
+                if (order is null)
+                {
+                      return new ResponseInfo<GetOrderDTO>(mapper.Map<GetOrderDTO>(order), false, "order not found");
+                }
+                // return await GetAllOrders();
+                return new ResponseInfo<GetOrderDTO>(mapper.Map<GetOrderDTO>(order), true, "order");
+            }
+
+            public async Task<ResponseInfo<string>> DeleteOrder(int id)
+            {
+                await repository.DeleteOrder(id);
+                //return await GetAllOrders();
+                return new ResponseInfo<string>(data: "deleted successfully", success: true, message: "order");
+            }
         }
 
 }

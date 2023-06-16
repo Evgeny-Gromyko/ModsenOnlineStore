@@ -11,6 +11,7 @@ namespace ModsenOnlineStore.Store.API
         {
 
             CreateMap<AddOrderDTO, Order>();
+            CreateMap<UpdateOrderDTO, Order>();/////
             CreateMap<UpdateOrderDTO, AddOrderDTO>();
             CreateMap<Order, GetOrderDTO>();
         }

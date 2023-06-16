@@ -12,9 +12,9 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
     {
         Task<List<Order>> GetAllOrders();
         Task<Order?> GetSingleOrder(int id);
-        Task<List<Order>> AddOrder(Order order);///////
-        Task<List<Order>> UpdateOrder(int id, Order order);///////
-        Task<List<Order>> DeleteOrder(int id);
-        Task<List<Order>> PayOrder(int id, int userId);
+        Task AddOrder(Order order);///////
+        Task UpdateOrder(Order order);///////
+        Task DeleteOrder(int id);
+        Task PayOrder(int id, int userId);
     }
 }

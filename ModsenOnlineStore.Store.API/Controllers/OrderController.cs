@@ -39,11 +39,11 @@ namespace ModsenOnlineStore.Store.API.Controllers
             }
 
             //[Authorize]
-            [HttpPut("{id}")]
-            public async Task<IActionResult> UpdateOrder(int id, UpdateOrderDTO order)
+            [HttpPut/*("{id}")*/]
+            public async Task<IActionResult> UpdateOrder(UpdateOrderDTO order)
             {
-                var newOrder = await orderService.UpdateOrder(id, order);
-                return Ok(newOrder);
+                //var newOrder = await orderService.UpdateOrder(order);
+                return Ok(await orderService.UpdateOrder(order));
             }
 
             //[Authorize]
