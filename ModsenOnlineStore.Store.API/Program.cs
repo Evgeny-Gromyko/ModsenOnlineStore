@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Infrastructure.Data;
+using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Application.Services.CommentServices;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
+using ModsenOnlineStore.Store.Application.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 
