@@ -10,4 +10,6 @@ public interface ICouponRepository
     Task<Coupon> AddCoupon(Coupon newCoupon);
     Task<Coupon> DeleteCoupon(int id);
     Task<List<Coupon>> DeleteCouponsByUserId(int id);
+
+    Task<Order?> ApplyCoupon(int couponId, int orderId);
 }

@@ -38,6 +38,7 @@ public class CouponRepository : ICouponRepository
     {
         context.Coupons.Add(newCoupon);
         await context.SaveChangesAsync();
+        
         return newCoupon;
     }
 
@@ -48,6 +49,7 @@ public class CouponRepository : ICouponRepository
 
         context.Coupons.Remove(_coupon);
         await context.SaveChangesAsync();
+        
         return _coupon;
     }
 
@@ -59,6 +61,23 @@ public class CouponRepository : ICouponRepository
 
         context.Coupons.RemoveRange(_couponsToDelete);
         await context.SaveChangesAsync();
+        
         return _couponsToDelete;
+    }
+
+    public async Task<Order?> ApplyCoupon(int couponId, int orderId)
+    {
+        var coupon = await GetCoupon(couponId);
+        
+        var order = await context.Orders.
+            Include(o => o.User).
+            FirstOrDefaultAsync(p => p.Id == orderId);
+        
+        if (order is null)
+            return null;
+
+        order.TotalPrice -= coupon.Discount * order.TotalPrice;
+
+        return order;
     }
 }

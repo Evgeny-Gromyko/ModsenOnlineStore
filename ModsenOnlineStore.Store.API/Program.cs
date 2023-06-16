@@ -1,10 +1,13 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Common;
+using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Services;
 using ModsenOnlineStore.Store.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<ICouponService, CouponService>();
+builder.Services.AddTransient<ICouponRepository, CouponRepository>();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
@@ -18,21 +21,6 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddControllers();
 
 var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = authOptions.Issuer,
-            ValidateAudience = true,
-            ValidAudience = authOptions.Audience,
-            ValidateLifetime = true,
-            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true
-        };
-    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
