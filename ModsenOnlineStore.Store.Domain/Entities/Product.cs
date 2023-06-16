@@ -19,5 +19,7 @@
         public int ProductTypeId { get; set; }
 
         //public List<OrderProduct> OrderProducts { get; set; } = new();
+      
+        public List<Comment> Comments { get; set; } = new();
     }
 }

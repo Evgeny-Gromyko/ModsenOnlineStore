@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Store.Application\ModsenOnlineStore.Store.Application.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Store.Domain\ModsenOnlineStore.Store.Domain.csproj" />
   </ItemGroup>
