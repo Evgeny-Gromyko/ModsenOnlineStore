@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
-using ModsenOnlineStore.Store.Domain.DTOs;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
@@ -24,7 +17,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAllProducTypes()
+        public async Task<IActionResult> GetAllProductTypes()
         {
             return Ok(await productTypeService.GetAllProductTypes());
         }
@@ -32,14 +25,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingleProductType(int id)
         {
-            var product = await productTypeService.GetSingleProductType(id);
+            var productTypeInfo = await productTypeService.GetSingleProductType(id);
             
-            if (product is null)
+            if (productTypeInfo.Data is null)
             {
-                return NotFound("no such product found");
+                return NotFound();
             }
             
-            return Ok(product);
+            return Ok(productTypeInfo);
         }
 
         [HttpPost]
@@ -51,14 +44,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductType(int id, AddUpdateProductTypeDTO newProduct)
         {
-            var product = await productTypeService.UpdateProductType(id, newProduct);
+            var productRes = await productTypeService.UpdateProductType(id, newProduct);
            
-            if (product is null)
+            if (productRes.IsSuccess is false)
             {
-                return NotFound("no such product found");
+                return NotFound();
             }
             
-            return Ok(product);
+            return Ok(productRes);
         }
 
         [HttpDelete("{id}")]
@@ -66,9 +59,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var result = await productTypeService.DeleteProductType(id);
            
-            if (result is null)
+            if (result.IsSuccess is false)
             {
-                return NotFound("no such product found");
+                return NotFound();
             }
             
             return Ok(result);

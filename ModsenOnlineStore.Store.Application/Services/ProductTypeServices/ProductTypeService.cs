@@ -4,7 +4,7 @@ using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
-namespace ModsenOnlineStore.Store.Infrastructure.Services.ProductTypeServices;
+namespace ModsenOnlineStore.Store.Application.Services.ProductTypeServices;
 
 public class ProductTypeService: IProductTypeService
     {
@@ -42,37 +42,37 @@ public class ProductTypeService: IProductTypeService
             return new ResponseInfo<GetProductTypeDTO>(mapper.Map<GetProductTypeDTO>(type), true, $"product type with id {id}");
         }
 
-        public async Task<ResponseInfo<string>> AddProductType(AddUpdateProductTypeDTO type)
+        public async Task<OperationResult> AddProductType(AddUpdateProductTypeDTO type)
         {
             var newProductType = mapper.Map<ProductType>(type);
             await repository.AddProductType(newProductType);
             
-            return new ResponseInfo<string>("added successfully", true, "type");
+            return new OperationResult( true, "product type added successfully");
         }
 
-        public async Task<ResponseInfo<string>> UpdateProductType(int id, AddUpdateProductTypeDTO typeDTO)
+        public async Task<OperationResult> UpdateProductType(int id, AddUpdateProductTypeDTO typeDTO)
         {
             var type = await repository.UpdateProductType(id, mapper.Map<ProductType>(typeDTO));
             
             if (type is null)
             {
-                return new ResponseInfo<string>(null, false, "type not found");
+                return new OperationResult(false, "type not found");
             }
 
-            return new ResponseInfo<string>("updated successfully", true, $"type with id {id}");
+            return new OperationResult(true, $"type with id {id} updated successfully");
         }
         
-        public async Task<ResponseInfo<string>> DeleteProductType(int id)
+        public async Task<OperationResult> DeleteProductType(int id)
         {
             var type = await repository.DeleteProductType(id);
             
             if (type is null)
             {
-                return new ResponseInfo<string>(null, false, "type not found");
+                return new OperationResult(false, "type not found");
             }
             
             var typeDTO = mapper.Map<GetProductTypeDTO>(type);
             
-            return new ResponseInfo<string>("deleted successfully", true, "type");
+            return new OperationResult(true, "type deleted successfully");
         }
     }

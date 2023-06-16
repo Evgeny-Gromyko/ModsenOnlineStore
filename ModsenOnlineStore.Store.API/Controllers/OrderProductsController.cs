@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
-using ModsenOnlineStore.Store.Domain.DTOs;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
@@ -30,9 +23,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProductToOrder(AddOrderProductDTO data)
+        public async Task<IActionResult> AddProductToOrder(AddProductToOrderDTO data)
         {
-            return Ok(await orderProductService.AddProductToOrder(data.ProductId, data.OrderId, data.Quantity));
+            return Ok(await orderProductService.AddProductToOrder(data));
         }
     }
 }

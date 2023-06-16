@@ -9,9 +9,9 @@ public interface IProductTypeService
     
     Task<ResponseInfo<GetProductTypeDTO>> GetSingleProductType(int id);
     
-    Task<ResponseInfo<string>> AddProductType(AddUpdateProductTypeDTO productTypeDto);
+    Task<OperationResult> AddProductType(AddUpdateProductTypeDTO productTypeDto);
     
-    Task<ResponseInfo<string>> UpdateProductType(int id, AddUpdateProductTypeDTO productTypeDto);
+    Task<OperationResult> UpdateProductType(int id, AddUpdateProductTypeDTO productTypeDto);
     
-    Task<ResponseInfo<string>> DeleteProductType(int id);
+    Task<OperationResult> DeleteProductType(int id);
 }

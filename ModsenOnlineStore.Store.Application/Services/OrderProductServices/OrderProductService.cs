@@ -3,7 +3,7 @@ using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
 
-namespace ModsenOnlineStore.Store.Infrastructure.Services.OrderProductServices;
+namespace ModsenOnlineStore.Store.Application.Services.OrderProductServices;
 
 public class OrderProductService : IOrderProductService
 {
@@ -25,15 +25,21 @@ public class OrderProductService : IOrderProductService
         return new ResponseInfo<List<GetOrderProductDTO>>(orderProductDtos, true, "all orders");
     }
 
-    public async Task<ResponseInfo<string>> AddProductToOrder(int productId, int orderId, int quantity = 1)
+    public async Task<OperationResult> AddProductToOrder(AddProductToOrderDTO addProductToOrderDto)
     {
+        int productId = addProductToOrderDto.productId;
+        int orderId = addProductToOrderDto.orderId;
+        int quantity = addProductToOrderDto.quantity;
+        
         var order = await repository.AddProductToOrder(productId, orderId, quantity);
 
         if (order is null)
-            return new ResponseInfo<string>(null, false, "not found");
+        {
+            return new OperationResult(false, "not found");
+        }
         else
         {
-            return new ResponseInfo<string>("added successfully", true, $"order with id {orderId}");
+            return new OperationResult(true, $"order with id {orderId} added");
         }
     }
 }

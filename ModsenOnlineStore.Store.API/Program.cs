@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
+using ModsenOnlineStore.Store.Application.Services.OrderProductServices;
+using ModsenOnlineStore.Store.Application.Services.ProductTypeServices;
 using ModsenOnlineStore.Store.Infrastructure.Data;
-using ModsenOnlineStore.Store.Infrastructure.Services;
-using ModsenOnlineStore.Store.Infrastructure.Services.OrderProductServices;
-using ModsenOnlineStore.Store.Infrastructure.Services.ProductTypeServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddDbContext<DataContext>(
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
