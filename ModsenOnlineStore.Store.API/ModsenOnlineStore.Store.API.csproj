@@ -30,12 +30,4 @@
     <ProjectReference Include="..\ModsenOnlineStore.Store.Infrastructure\ModsenOnlineStore.Store.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Controllers\OrederProductContoller.cs" />
-  </ItemGroup>
-
 </Project>

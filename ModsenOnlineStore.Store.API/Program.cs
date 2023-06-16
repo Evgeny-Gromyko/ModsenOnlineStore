@@ -4,6 +4,10 @@ using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Application.Services.OrderProductServices;
 using ModsenOnlineStore.Store.Application.Services.ProductTypeServices;
 using ModsenOnlineStore.Store.Infrastructure.Data;
+using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
+using ModsenOnlineStore.Store.Application.Services.CommentServices;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
+using ModsenOnlineStore.Store.Application.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,11 @@ builder.Services.AddTransient<IOrderProductService, OrderProductService>();
 builder.Services.AddTransient<IOrderProductRepository, OrderProductRepository>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
 builder.Services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
+
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
@@ -44,7 +53,8 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
-    // await DbInitializer.SeedData(context);
+
+    await DbInitializer.SeedData(context);
 }
 
 app.MapControllers();

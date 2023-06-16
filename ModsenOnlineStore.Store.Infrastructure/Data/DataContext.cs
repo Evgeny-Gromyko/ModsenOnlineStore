@@ -6,8 +6,6 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-
-        public DbSet<User> Users { get; set; }
         
         public DbSet<Comment> Comments { get; set; }
         
@@ -26,8 +24,9 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().Property(p => p.Price).HasPrecision(18, 4);
+            modelBuilder.Entity<Product>().Property(p => p.Discount).HasPrecision(18, 4);
             modelBuilder.Entity<Order>().Property(p => p.TotalPrice).HasPrecision(18, 4);
-
+            
             base.OnModelCreating(modelBuilder);
         }
     }
