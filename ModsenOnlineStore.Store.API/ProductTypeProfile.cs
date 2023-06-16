@@ -1,5 +1,4 @@
 using AutoMapper;
-using ModsenOnlineStore.Store.Domain.DTOs;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
@@ -11,7 +10,5 @@ public class ProductTypeProfile : Profile
     {
         CreateMap<AddUpdateProductTypeDTO, ProductType>();
         CreateMap<ProductType, GetProductTypeDTO>();
-
-
     }
 }

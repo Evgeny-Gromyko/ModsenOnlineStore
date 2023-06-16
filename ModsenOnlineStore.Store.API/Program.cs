@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Application.Services.OrderProductServices;
@@ -47,7 +44,7 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
-    await DbInitializer.SeedData(context);
+    // await DbInitializer.SeedData(context);
 }
 
 app.MapControllers();

@@ -33,12 +33,19 @@ public class OrderProductRepository:IOrderProductRepository
         
         if (orderProduct is null)
         {
-            var newOrderProduct = new OrderProduct() { Product = product, Order = order, ProductQuantity = quantity };
+            var newOrderProduct = new OrderProduct()
+            {
+                Product = product, 
+                Order = order, 
+                ProductQuantity = quantity
+            };
             context.OrderProducts.Add(newOrderProduct);
 
         }
-        else 
+        else
+        {
             orderProduct.ProductQuantity += quantity;
+        }
 
         order.TotalPrice += product.Price * quantity;
         await context.SaveChangesAsync();

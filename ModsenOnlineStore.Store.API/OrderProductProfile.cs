@@ -1,6 +1,5 @@
 using AutoMapper;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
-using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.API;

@@ -12,7 +12,8 @@ namespace ModsenOnlineStore.Store.Domain.Entities
         
         public string TypeName { get; set; }
         
-        public ProductType(string type) {
+        public ProductType(string type) 
+        {
             TypeName = type;
         }
         

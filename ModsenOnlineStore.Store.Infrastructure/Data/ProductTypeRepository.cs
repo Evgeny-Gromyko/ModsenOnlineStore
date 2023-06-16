@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Domain.Entities;
 
@@ -31,6 +30,7 @@ public class ProductTypeRepository : IProductTypeRepository
     public async Task<ProductType> UpdateProductType(int id, ProductType newProductType)
     {
         var prevProductType = await context.ProductTypes.FirstOrDefaultAsync(e => e.Id == id);
+        
         if (prevProductType is null) return null;
 
         prevProductType.TypeName = newProductType.TypeName;
@@ -42,13 +42,13 @@ public class ProductTypeRepository : IProductTypeRepository
 
     public async Task<ProductType> DeleteProductType(int id)
     {
-        var _productType = await GetSingleProductType(id);
+        var productType = await GetSingleProductType(id);
         
-        if (_productType is null) return null;
+        if (productType is null) return null;
 
-        context.ProductTypes.Remove(_productType);
+        context.ProductTypes.Remove(productType);
         await context.SaveChangesAsync();
         
-        return _productType;
+        return productType;
     }
 }
