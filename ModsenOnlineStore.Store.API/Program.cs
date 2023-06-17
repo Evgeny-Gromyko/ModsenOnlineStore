@@ -37,7 +37,6 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
-    await DbInitializer.SeedData(context);
 }
 
 app.UseHttpsRedirection();
