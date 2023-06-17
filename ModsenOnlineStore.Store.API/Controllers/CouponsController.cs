@@ -49,13 +49,13 @@ namespace ModsenOnlineStore.Store.API.Controllers
             return Ok(couponInfo);
         }
 
-        [HttpPost]
+        [HttpPost("apply")]
         public async Task<IActionResult> ApplyCoupon(ApplyCouponDTO data)
         {
             return Ok(await couponService.ApplyCoupon(data));
         }
         
-        [HttpGet("{userId}")]
+        [HttpGet("byUser{userId}")]
         public async Task<IActionResult> GetCouponsByUserId(int userId)
         {
             var couponInfo = await couponService.GetCouponsByUserId(userId);
@@ -68,7 +68,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
             return Ok(couponInfo);
         }
         
-        [HttpDelete("{userId}")]
+        [HttpDelete("byUser{userId}")]
         public async Task<IActionResult> DeleteCouponsByUserId(int userId)
         {
             var couponInfo = await couponService.DeleteCouponsByUserId(userId);

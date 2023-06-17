@@ -16,7 +16,7 @@ public class CouponRepository : ICouponRepository
     public async Task<Coupon> GetCoupon(int couponId) =>
         await context.Coupons
             .AsNoTracking()
-            .Include(c => c.User)
+            .Include(c => c.User)            
             .FirstOrDefaultAsync(e => e.Id == couponId);
 
 
@@ -28,7 +28,8 @@ public class CouponRepository : ICouponRepository
 
 
     public async Task<List<Coupon>> GetCouponsByUserId(int userId) =>
-        await context.Coupons.AsNoTracking()
+        await context.Coupons
+            .AsNoTracking()
             .Where(e => e.UserId == userId)
             .Include(c => c.User)
             .ToListAsync();
@@ -44,13 +45,14 @@ public class CouponRepository : ICouponRepository
 
     public async Task<Coupon> DeleteCoupon(int id)
     {
-        var _coupon = await GetCoupon(id);
-        if (_coupon is null) return null;
+        var coupon = await GetCoupon(id);
+        
+        if (coupon is null) return null;
 
-        context.Coupons.Remove(_coupon);
+        context.Coupons.Remove(coupon);
         await context.SaveChangesAsync();
         
-        return _coupon;
+        return coupon;
     }
 
     public async Task<List<Coupon>> DeleteCouponsByUserId(int userId)
@@ -69,15 +71,20 @@ public class CouponRepository : ICouponRepository
     {
         var coupon = await GetCoupon(couponId);
         
-        var order = await context.Orders.
-            Include(o => o.User).
-            FirstOrDefaultAsync(p => p.Id == orderId);
+        var order = await context.Orders
+            .FirstOrDefaultAsync(p => p.Id == orderId);
         
-        if (order is null)
+        if (order is null || coupon is null)
             return null;
 
-        order.TotalPrice -= coupon.Discount * order.TotalPrice;
+        if (coupon.UserId != order.UserId)
+            return null;
 
+        order.TotalPrice -= coupon.Discount * order.TotalPrice/100;
+
+        await context.SaveChangesAsync();
+        await DeleteCoupon(couponId);
+        
         return order;
     }
 }
