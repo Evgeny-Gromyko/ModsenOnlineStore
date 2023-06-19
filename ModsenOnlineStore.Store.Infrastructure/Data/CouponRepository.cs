@@ -66,25 +66,4 @@ public class CouponRepository : ICouponRepository
         
         return _couponsToDelete;
     }
-
-    // public async Task<Order?> ApplyCoupon(int couponId, int orderId)
-    // {
-    //     var coupon = await GetCoupon(couponId);
-    //     
-    //     var order = await context.Orders
-    //         .FirstOrDefaultAsync(p => p.Id == orderId);
-    //     
-    //     if (order is null || coupon is null)
-    //         return null;
-    //
-    //     if (coupon.UserId != order.UserId)
-    //         return null;
-    //
-    //     order.TotalPrice -= coupon.Discount * order.TotalPrice/100;
-    //
-    //     await context.SaveChangesAsync();
-    //     await DeleteCoupon(couponId);
-    //     
-    //     return order;
-    // }
 }

@@ -21,85 +21,85 @@ public class CouponService : ICouponService
         this.orderRepository = orderRepository;
     }
     
-    public async Task<ResponseInfo<GetCouponDTO>> GetCoupon(int couponId)
+    public async Task<ResponseInfo> GetCoupon(int couponId)
     {
         var coupon = await couponRepository.GetCoupon(couponId);
         
         if (coupon is null)
         {
-            return new ResponseInfo<GetCouponDTO>(null, false, "not found");
+            return new ResponseInfo(false, "not found");
         }
 
         var couponDTO = mapper.Map<GetCouponDTO>(coupon);
         
-        return new ResponseInfo<GetCouponDTO>(couponDTO, true, $"coupon with id {couponId}");
+        return new DataResponseInfo<GetCouponDTO>(couponDTO, true, $"coupon with id {couponId}");
     }
 
-    public async Task<ResponseInfo<List<GetCouponDTO>>> GetAllCoupons()
+    public async Task<ResponseInfo> GetAllCoupons()
     {
         var coupons = await couponRepository.GetAllCoupons();
         
         if (coupons is null)
         {
-            return new ResponseInfo<List<GetCouponDTO>>(null, false, "not found");
+            return new ResponseInfo( false, "not found");
         }
         
         var couponDtos = coupons.Select(mapper.Map<GetCouponDTO>).ToList(); 
         
-        return new ResponseInfo<List<GetCouponDTO>>(couponDtos, true, "all coupons");
+        return new DataResponseInfo<List<GetCouponDTO>>(couponDtos, true, "all coupons");
     }
 
-    public async Task<ResponseInfo<List<GetCouponDTO>>> GetCouponsByUserId(int userId)
+    public async Task<ResponseInfo> GetCouponsByUserId(int userId)
     {
         var coupons = await couponRepository.GetCouponsByUserId(userId);
         
         if (coupons is null)
         {
-            return new ResponseInfo<List<GetCouponDTO>>(null, false, "coupons not found");
+            return new ResponseInfo( false, "coupons not found");
         }
         
         var couponDtos = coupons.Select(mapper.Map<GetCouponDTO>).ToList();
 
-        return new ResponseInfo<List<GetCouponDTO>>(couponDtos, true, $"product type with user id {userId}");
+        return new DataResponseInfo<List<GetCouponDTO>>(couponDtos, true, $"product type with user id {userId}");
     }
 
 
-    public async Task<NoDataResponseInfo> AddCoupon(AddCouponDTO newCouponDto)
+    public async Task<ResponseInfo> AddCoupon(AddCouponDTO newCouponDto)
     {
 
         var newCoupon= mapper.Map<Coupon>(newCouponDto);
 
         var events = await couponRepository.AddCoupon(newCoupon);
 
-        return new NoDataResponseInfo( true, "coupon added");
+        return new ResponseInfo( true, "coupon added");
 
     }
 
-    public async Task<NoDataResponseInfo> DeleteCoupon(int id)
+    public async Task<ResponseInfo> DeleteCoupon(int id)
     {
         var coupon = await couponRepository.DeleteCoupon(id);
             
         if (coupon is null)
         {
-            return new NoDataResponseInfo(false, "coupon not found");
+            return new ResponseInfo(false, "coupon not found");
         }
         
-        return new NoDataResponseInfo(true, "type deleted successfully");
+        return new ResponseInfo(true, "type deleted successfully");
     }
 
-    public async Task<NoDataResponseInfo> DeleteCouponsByUserId(int id)
+    public async Task<ResponseInfo> DeleteCouponsByUserId(int id)
     {
         var couponList = await couponRepository.DeleteCouponsByUserId(id);
             
         if (couponList is null)
         {
-            return new NoDataResponseInfo(false, "coupons not found");
+            return new ResponseInfo(false, "coupons not found");
         }
     
-        return new NoDataResponseInfo(true, "coupons deleted successfully");
+        return new ResponseInfo(true, "coupons deleted successfully");
     }
 
-    public async Task<NoDataResponseInfo> ApplyCoupon(ApplyCouponDTO dto)
+    public async Task<ResponseInfo> ApplyCoupon(ApplyCouponDTO dto)
     {
         var coupon = await couponRepository.GetCoupon(dto.CouponId);
 
@@ -107,12 +107,12 @@ public class CouponService : ICouponService
 
         if (order is null || coupon is null)
         {
-           return new NoDataResponseInfo(false, "not found");
+           return new ResponseInfo(false, "not found");
         }
 
         if (coupon.UserId != order.UserId)
         {
-            return new NoDataResponseInfo(false, "coupon and order are from different users");
+            return new ResponseInfo(false, "coupon and order are from different users");
         }
 
         order.TotalPrice -= coupon.Discount * order.TotalPrice / 100;
@@ -120,6 +120,6 @@ public class CouponService : ICouponService
         await orderRepository.UpdateOrder(order);
         await couponRepository.DeleteCoupon(dto.CouponId);
         
-        return new NoDataResponseInfo(true, $"coupon with id {dto.CouponId} is applied");
+        return new ResponseInfo(true, $"coupon with id {dto.CouponId} is applied");
     }
 }
