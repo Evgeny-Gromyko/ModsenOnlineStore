@@ -24,7 +24,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var couponInfo = await couponService.GetCoupon(id);
 
-            if (couponInfo.Success is false)
+            if (!couponInfo.Success)
             {
                 return NotFound();
             }
@@ -41,7 +41,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var couponInfo = await couponService.DeleteCoupon(id);
 
-            if (couponInfo.IsSuccess is false)
+            if (!couponInfo.Success)
             {
                 return NotFound();
             }
@@ -52,7 +52,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPost("apply")]
         public async Task<IActionResult> ApplyCoupon(ApplyCouponDTO data)
         {
-            return Ok(await couponService.ApplyCoupon(data));
+            var operationResult = await couponService.ApplyCoupon(data);
+
+            if (!operationResult.Success)
+            {
+                return NotFound();
+            }
+
+            return Ok(operationResult);
         }
         
         [HttpGet("byUser{userId}")]
@@ -60,7 +67,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var couponInfo = await couponService.GetCouponsByUserId(userId);
             
-            if (couponInfo.Success is false)
+            if (!couponInfo.Success)
             {
                 return NotFound();
             }
@@ -73,7 +80,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var couponInfo = await couponService.DeleteCouponsByUserId(userId);
             
-            if (couponInfo.IsSuccess is false)
+            if (!couponInfo.Success)
             {
                 return NotFound();
             }

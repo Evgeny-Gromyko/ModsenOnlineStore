@@ -12,11 +12,11 @@ public interface ICouponService
     
     Task<ResponseInfo<List<GetCouponDTO>>> GetCouponsByUserId(int userId);
     
-    Task<OperationResult> AddCoupon(AddCouponDTO newCoupon);
+    Task<NoDataResponseInfo> AddCoupon(AddCouponDTO newCoupon);
     
-    Task<OperationResult> DeleteCoupon(int id);
+    Task<NoDataResponseInfo> DeleteCoupon(int id);
     
-    Task<OperationResult> DeleteCouponsByUserId(int id);
+    Task<NoDataResponseInfo> DeleteCouponsByUserId(int id);
     
-    Task<ResponseInfo<GetOrderDTO>> ApplyCoupon(ApplyCouponDTO dto);
+    Task<NoDataResponseInfo> ApplyCoupon(ApplyCouponDTO dto);
 }

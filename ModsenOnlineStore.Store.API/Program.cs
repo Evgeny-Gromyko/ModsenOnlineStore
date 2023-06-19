@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<ICouponService, CouponService>();
 builder.Services.AddTransient<ICouponRepository, CouponRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
