@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ModsenOnlineStore.Store.Domain\ModsenOnlineStore.Store.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\DbInitializer.cs" />
+  </ItemGroup>
+
 </Project>

@@ -12,6 +12,8 @@ namespace ModsenOnlineStore.Store.Domain.Entities
         public int Id { get; set; }
         
         public User User { get; set; }
+     
+        public int UserId { get; set; }
 
         public decimal TotalPrice { get; set; }
     }

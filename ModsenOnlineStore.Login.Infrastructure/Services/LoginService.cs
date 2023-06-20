@@ -28,7 +28,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
             this.mapper = mapper;
         }
 
-        public async Task<ResponseInfo<string>> GetToken(LoginData data)
+        public async Task<DataResponseInfo<string>> GetToken(LoginData data)
         {
             User user = await repository.AuthenticateUser(data.Email, data.Password);
             if (user is null) return null;
@@ -50,48 +50,48 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
                     authParams.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)
             );
 
-            return new ResponseInfo<string>(new JwtSecurityTokenHandler().WriteToken(jwt), true, "token");
+            return new DataResponseInfo<string>(new JwtSecurityTokenHandler().WriteToken(jwt), true, "token");
         }
 
-        public async Task<ResponseInfo<List<User>>> GetAllUsers() =>
-            new ResponseInfo<List<User>>(await repository.GetAllUsers(), true, "all users");
+        public async Task<DataResponseInfo<List<User>>> GetAllUsers() =>
+            new DataResponseInfo<List<User>>(await repository.GetAllUsers(), true, "all users");
 
-        public async Task<ResponseInfo<User>> GetUserById(int id)
+        public async Task<DataResponseInfo<User>> GetUserById(int id)
         {
             var user = await repository.GetUserById(id);
-            if (user is null) return new ResponseInfo<User>(null, true, "user not found");
+            if (user is null) return new DataResponseInfo<User>(null, true, "user not found");
 
-            return new ResponseInfo<User>(user, true, $"user with id {user.Id}");
+            return new DataResponseInfo<User>(user, true, $"user with id {user.Id}");
         }
 
 
-        public async Task<ResponseInfo<List<User>>> RegisterUser(AddUserDto userDto)
+        public async Task<DataResponseInfo<List<User>>> RegisterUser(AddUserDto userDto)
         {
-            if (userDto is null) return new ResponseInfo<List<User>>(null, false, "wrong request data");
+            if (userDto is null) return new DataResponseInfo<List<User>>(null, false, "wrong request data");
             var newUser = mapper.Map<User>(userDto);
 
             var users = await repository.RegisterUser(newUser);
 
-            return new ResponseInfo<List<User>>(users, true, "all users");
+            return new DataResponseInfo<List<User>>(users, true, "all users");
         }
 
-        public async Task<ResponseInfo<List<User>>> DeleteUser(int id)
+        public async Task<DataResponseInfo<List<User>>> DeleteUser(int id)
         {
             var users = await repository.DeleteUser(id);
-            if (users is null) return new ResponseInfo<List<User>>(null, false, "user not found");
+            if (users is null) return new DataResponseInfo<List<User>>(null, false, "user not found");
 
-            return new ResponseInfo<List<User>>(users, true, "all users");
+            return new DataResponseInfo<List<User>>(users, true, "all users");
         }
 
-        public async Task<ResponseInfo<User>> UpdateUser(UpdateUserDto userDto)
+        public async Task<DataResponseInfo<User>> UpdateUser(UpdateUserDto userDto)
         {
-            if (userDto == null) return new ResponseInfo<User>(null, false, "wrong request data");
+            if (userDto == null) return new DataResponseInfo<User>(null, false, "wrong request data");
             var newUser = mapper.Map<User>(userDto);
 
             var response = await repository.EditUser(newUser);
-            if (response is null) return new ResponseInfo<User>(null, false, "event not found");
+            if (response is null) return new DataResponseInfo<User>(null, false, "event not found");
 
-            return new ResponseInfo<User>(response, true, $"user with id {response.Id}");
+            return new DataResponseInfo<User>(response, true, $"user with id {response.Id}");
         }
     }
 }

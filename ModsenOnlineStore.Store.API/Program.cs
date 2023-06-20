@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ModsenOnlineStore.Common;
+using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Services;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Application.Services.OrderProductServices;
@@ -11,6 +14,9 @@ using ModsenOnlineStore.Store.Application.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<ICouponService, CouponService>();
+builder.Services.AddTransient<ICouponRepository, CouponRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IOrderProductService, OrderProductService>();
 builder.Services.AddTransient<IOrderProductRepository, OrderProductRepository>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
@@ -32,6 +38,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
 
+var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -43,6 +50,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
 }
 
 app.UseHttpsRedirection();
