@@ -35,11 +35,11 @@ public class OrderProductService : IOrderProductService
 
         if (order is null)
         {
-            return new ResponseInfo(false, "not found");
+            return new ResponseInfo(success: false, message: "not found");
         }
         else
         {
-            return new ResponseInfo(true, $"order with id {orderId} added");
+            return new ResponseInfo(success: true, message: $"order with id {orderId} added");
         }
     }
 }

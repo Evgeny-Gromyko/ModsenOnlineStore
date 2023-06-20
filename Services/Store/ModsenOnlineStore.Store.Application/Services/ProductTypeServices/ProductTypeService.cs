@@ -68,11 +68,11 @@ public class ProductTypeService: IProductTypeService
             
             if (type is null)
             {
-                return new ResponseInfo(false, "type not found");
+                return new ResponseInfo(success: false, message: "type not found");
             }
             
             var typeDTO = mapper.Map<GetProductTypeDTO>(type);
             
-            return new ResponseInfo(true, "type deleted");
+            return new ResponseInfo(success: true, message: "type deleted");
         }
     }

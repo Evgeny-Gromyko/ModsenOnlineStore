@@ -10,6 +10,7 @@ using ModsenOnlineStore.Store.Infrastructure.Data;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Application.Services.CommentServices;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
+using ModsenOnlineStore.Store.Application.Services.CouponServices;
 using ModsenOnlineStore.Store.Application.Services.ProductServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,7 +68,7 @@ if (app.Environment.IsDevelopment())
     using var scope = app.Services.CreateScope();
     DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-    await DbInitializer.SeedData(context);
+    // await DbInitializer.SeedData(context)
 }
 
 app.MapControllers();
