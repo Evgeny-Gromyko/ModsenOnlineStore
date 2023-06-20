@@ -67,7 +67,6 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
                 return new ResponseInfo(success: true, message: "order");
             }
 
-
             public async Task<ResponseInfo> DeleteOrder(int id)
             {
                 await orderRepository.DeleteOrder(id);
