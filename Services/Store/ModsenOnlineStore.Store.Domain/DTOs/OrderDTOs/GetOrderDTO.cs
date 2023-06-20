@@ -12,7 +12,5 @@ public class GetOrderDTO
     
     public List<Product> Products { get; set; } = new List<Domain.Entities.Product>();
     
-    public User User { get; set; }
-    
     public bool Paid { get; set; } = false;
 }

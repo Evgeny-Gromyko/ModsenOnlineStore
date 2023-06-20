@@ -10,7 +10,7 @@ using ModsenOnlineStore.Store.Infrastructure.Data;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Application.Services.CommentServices;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
-using ModsenOnlineStore.Store.Application.Services.ProductService;
+using ModsenOnlineStore.Store.Application.Services.ProductServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,11 +21,12 @@ builder.Services.AddTransient<IOrderProductService, OrderProductService>();
 builder.Services.AddTransient<IOrderProductRepository, OrderProductRepository>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
 builder.Services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
-
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ICommentService, CommentService>();
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
@@ -34,7 +35,6 @@ builder.Services.AddDbContext<DataContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())));
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
 

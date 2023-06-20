@@ -18,6 +18,9 @@
 
   <ItemGroup>
     <Compile Remove="Data\DbInitializer.cs" />
+    <Compile Include="..\..\..\..\..\Desktop\DbInitializer.cs">
+      <Link>Data\DbInitializer.cs</Link>
+    </Compile>
   </ItemGroup>
 
 </Project>

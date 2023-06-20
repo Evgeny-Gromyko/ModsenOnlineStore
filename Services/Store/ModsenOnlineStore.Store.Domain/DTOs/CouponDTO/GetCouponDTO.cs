@@ -8,7 +8,5 @@ public class GetCouponDTO
         
     public int Discount { get; set; }
     
-    public User User { get; set; }
-
     public int UserId { get; set; }
 }
