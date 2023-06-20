@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj" />
+    <ProjectReference Include="..\..\ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Login.Application\ModsenOnlineStore.Login.Application.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Login.Domain\ModsenOnlineStore.Login.Domain.csproj" />
   </ItemGroup>

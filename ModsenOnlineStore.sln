@@ -9,33 +9,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Login", "Login", "{C0E1D29E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Store", "Store", "{0615DAF4-7F26-4F62-8152-86F0EB2F9932}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.API", "ModsenOnlineStore.Login.API\ModsenOnlineStore.Login.API.csproj", "{AD82534C-FF24-4F02-A9E1-8617B9B323D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.API", "Services\TokenAuthentication\ModsenOnlineStore.Login.API\ModsenOnlineStore.Login.API.csproj", "{AD82534C-FF24-4F02-A9E1-8617B9B323D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.Application", "ModsenOnlineStore.Login.Application\ModsenOnlineStore.Login.Application.csproj", "{548FA8CE-9D94-49B7-A77A-B0FA32EC920E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.Application", "Services\TokenAuthentication\ModsenOnlineStore.Login.Application\ModsenOnlineStore.Login.Application.csproj", "{548FA8CE-9D94-49B7-A77A-B0FA32EC920E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.Domain", "ModsenOnlineStore.Login.Domain\ModsenOnlineStore.Login.Domain.csproj", "{C950534D-0B67-4E49-AF9D-BE5419C2DAA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.Domain", "Services\TokenAuthentication\ModsenOnlineStore.Login.Domain\ModsenOnlineStore.Login.Domain.csproj", "{C950534D-0B67-4E49-AF9D-BE5419C2DAA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.Infrastructure", "ModsenOnlineStore.Login.Infrastructure\ModsenOnlineStore.Login.Infrastructure.csproj", "{E24A56DB-E7D7-4074-89B4-A0B5A9DDC739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Login.Infrastructure", "Services\TokenAuthentication\ModsenOnlineStore.Login.Infrastructure\ModsenOnlineStore.Login.Infrastructure.csproj", "{E24A56DB-E7D7-4074-89B4-A0B5A9DDC739}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Common", "ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj", "{857F3691-726F-495E-98E5-A866A9418153}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Common", "Services\ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj", "{857F3691-726F-495E-98E5-A866A9418153}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.Domain", "ModsenOnlineStore.Store.Domain\ModsenOnlineStore.Store.Domain.csproj", "{C9D83084-7DDF-48F8-B141-3E23CD14A9E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.Domain", "Services\Store\ModsenOnlineStore.Store.Domain\ModsenOnlineStore.Store.Domain.csproj", "{C9D83084-7DDF-48F8-B141-3E23CD14A9E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.Application", "ModsenOnlineStore.Store.Application\ModsenOnlineStore.Store.Application.csproj", "{0333C9F9-4845-450D-B5CE-A7662A21C08F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.Application", "Services\Store\ModsenOnlineStore.Store.Application\ModsenOnlineStore.Store.Application.csproj", "{0333C9F9-4845-450D-B5CE-A7662A21C08F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.Infrastructure", "ModsenOnlineStore.Store.Infrastructure\ModsenOnlineStore.Store.Infrastructure.csproj", "{D1B92ADA-41C2-4562-A953-DC417A0E0D33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.Infrastructure", "Services\Store\ModsenOnlineStore.Store.Infrastructure\ModsenOnlineStore.Store.Infrastructure.csproj", "{D1B92ADA-41C2-4562-A953-DC417A0E0D33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.API", "ModsenOnlineStore.Store.API\ModsenOnlineStore.Store.API.csproj", "{EC955920-25A4-46C9-9EFD-F607B2E9D4C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.Store.API", "Services\Store\ModsenOnlineStore.Store.API\ModsenOnlineStore.Store.API.csproj", "{EC955920-25A4-46C9-9EFD-F607B2E9D4C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailAuthentication", "EmailAuthentication", "{96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.API", "ModsenOnlineStore.EmailAuthentication.API\ModsenOnlineStore.EmailAuthentication.API.csproj", "{03B9445F-6571-4F12-9989-EE4D5F1FEFB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.API", "Services\EmailAuthentication\ModsenOnlineStore.EmailAuthentication.API\ModsenOnlineStore.EmailAuthentication.API.csproj", "{03B9445F-6571-4F12-9989-EE4D5F1FEFB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Application", "ModsenOnlineStore.EmailAuthentication.Application\ModsenOnlineStore.EmailAuthentication.Application.csproj", "{9A7E06AB-61E5-47C6-BBA0-C5D1A3805E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Application", "Services\EmailAuthentication\ModsenOnlineStore.EmailAuthentication.Application\ModsenOnlineStore.EmailAuthentication.Application.csproj", "{9A7E06AB-61E5-47C6-BBA0-C5D1A3805E34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Infrastructure", "ModsenOnlineStore.EmailAuthentication.Infrastructure\ModsenOnlineStore.EmailAuthentication.Infrastructure.csproj", "{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Infrastructure", "Services\EmailAuthentication\ModsenOnlineStore.EmailAuthentication.Infrastructure\ModsenOnlineStore.EmailAuthentication.Infrastructure.csproj", "{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.EmailAuthentication.Domain", "ModsenOnlineStore.EmailAuthentication.Domain\ModsenOnlineStore.EmailAuthentication.Domain.csproj", "{3F469206-6240-42CC-859A-6E3BB94F59AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.EmailAuthentication.Domain", "Services\EmailAuthentication\ModsenOnlineStore.EmailAuthentication.Domain\ModsenOnlineStore.EmailAuthentication.Domain.csproj", "{3F469206-6240-42CC-859A-6E3BB94F59AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
