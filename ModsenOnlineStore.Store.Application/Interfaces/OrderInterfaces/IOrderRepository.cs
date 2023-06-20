@@ -11,10 +11,13 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
     public interface IOrderRepository
     {
         Task<List<Order>> GetAllOrders();
+
         Task<Order?> GetSingleOrder(int id);
-        Task AddOrder(Order order);///////
-        Task UpdateOrder(Order order);///////
+
+        Task AddOrder(Order order);
+
+        Task UpdateOrder(Order order);
+
         Task DeleteOrder(int id);
-        Task PayOrder(int id, int userId);
     }
 }

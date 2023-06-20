@@ -1,8 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Configuration;
+using FluentAssertions.Common;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
@@ -12,48 +19,38 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public class OrderController : ControllerBase
         {
             private IOrderService orderService;
+            private readonly IConfiguration configuration;
 
-            public OrderController(IOrderService orderService)
+            public OrderController(IOrderService orderService, IConfiguration configuration)
             {
                 this.orderService = orderService;
+                this.configuration = configuration;
             }
-
-            //[Authorize(Roles = "Admin")]
+       
             [HttpGet]
             public async Task<IActionResult> GetAllOrders()
             {
                 return Ok(await orderService.GetAllOrders());
             }
-            //[Authorize]
+
             [HttpGet("{id}")]
             public async Task<IActionResult> GetSingleOrder(int id)
             {
                 return Ok(await orderService.GetSingleOrder(id));
             }
 
-            //[Authorize]
             [HttpPost]
             public async Task<IActionResult> AddOrder(AddOrderDTO order)
             {
                 return Ok(await orderService.AddOrder(order));
             }
-
-            //[Authorize]
-            [HttpPut/*("{id}")*/]
+            
+            [HttpPut]
             public async Task<IActionResult> UpdateOrder(UpdateOrderDTO order)
             {
-                //var newOrder = await orderService.UpdateOrder(order);
                 return Ok(await orderService.UpdateOrder(order));
             }
 
-            //[Authorize]
-            [HttpPut("{orderId}/{userId}")]
-            public async Task<IActionResult> PayOrder(int orderId, int userId)
-            {
-                return Ok(await orderService.PayOrder(orderId, userId));
-            }
-
-            //[Authorize]
             [HttpDelete("{id}")]
             public async Task<IActionResult> DeleteOrder(int id)
             {

@@ -18,6 +18,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         {
             this.context = context;
         }
+
         public async Task<List<Order>> GetAllOrders()
         {
             return await context.Orders.AsNoTracking().ToListAsync();
@@ -28,20 +29,16 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             return await context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id);
         }
 
-
-        public async Task AddOrder(Order order)///////
+        public async Task AddOrder(Order order)
         {
             context.Orders.Add(order);
             await context.SaveChangesAsync();
-            //return await GetAllOrders();
         }
 
-        public async Task UpdateOrder(Order order)///////
+        public async Task UpdateOrder(Order order)
         {
-            //var order = await context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id);
             context.Orders.Update(order);
             await context.SaveChangesAsync();
-            //return await GetAllOrders();
         }
 
         public async Task DeleteOrder(int id)
@@ -53,38 +50,6 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
                 context.Orders.Remove(order);
                 await context.SaveChangesAsync();
             }
-
-            //return await GetAllOrders();
         }
-
-        public async Task PayOrder(int id, int userId)
-
-        {
-            var order = await context.Orders.FirstOrDefaultAsync(o => o.Id == id);
-
-            if (order is not null)
-            {
-                order.Paid = true;
-                await context.SaveChangesAsync();
-            }
-
-            ////////////////
-            /*var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (user is null)
-            {
-                return new ResponseInfo<List<GetOrderDTO>>(null, false, "user not found");
-            }
-
-            if (user.Money < order.TotalPrice)
-            {
-                new ResponseInfo<GetOrderDTO>(null, false, "not enough money");
-            }
-            user.Money -= order.TotalPrice;
-            //order.Paid = true;
-            await repository.SaveChangesAsync();*/
-
-            //return await GetAllOrders();
-        }
-
     }    
 }

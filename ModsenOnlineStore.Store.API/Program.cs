@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ModsenOnlineStore.Store.Infrastructure.Data;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
-using ModsenOnlineStore.Store.Infrastructure.Services.OrderService;
+using ModsenOnlineStore.Store.Application.Services.OrderService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using ModsenOnlineStore.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,23 @@ builder.Services.AddDbContext<DataContext>(
     b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = authOptions.Issuer,
+            ValidateAudience = true,
+            ValidAudience = authOptions.Audience,
+            ValidateLifetime = true,
+            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true
+        };
+    });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

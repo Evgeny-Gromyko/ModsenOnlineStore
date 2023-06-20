@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
-//using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.API
@@ -11,8 +10,11 @@ namespace ModsenOnlineStore.Store.API
         {
 
             CreateMap<AddOrderDTO, Order>();
-            CreateMap<UpdateOrderDTO, Order>();/////
+
+            CreateMap<UpdateOrderDTO, Order>();
+
             CreateMap<UpdateOrderDTO, AddOrderDTO>();
+
             CreateMap<Order, GetOrderDTO>();
         }
     }

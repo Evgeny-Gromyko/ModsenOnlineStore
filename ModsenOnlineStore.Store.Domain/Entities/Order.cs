@@ -13,17 +13,15 @@ namespace ModsenOnlineStore.Store.Domain.Entities
     public class Order
     {
         public int Id { get; set; }
-        
-        //[Column(TypeName = "decimal(18,4)")]
+
         public string DeliveryAddress { get; set; } = string.Empty;
-        /*public List<Product> Products { get; set; } = new List<Product>();
-        [JsonIgnore]
-        public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
-        [JsonIgnore]*/
+
         public User User { get; set; }
+
         public int UserId { get; set; }
-        public decimal TotalPrice { get; set; } = 0;
+
+        public decimal TotalPrice { get; set; }
+
         public bool Paid { get; set; } = false;
-      
     }
 }

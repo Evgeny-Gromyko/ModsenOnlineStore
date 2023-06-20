@@ -1,15 +1,14 @@
-﻿namespace ModsenOnlineStore.Common
+﻿namespace ModsenOnlineStore.Common;
+
+public class ResponseInfo
 {
-    public class ResponseInfo<T>
+    public bool Success { get; set; }
+
+    public string Message { get; set; }
+
+    public ResponseInfo(bool success, string message)
     {
-        public ResponseInfo(T data, bool success, string message)
-        {
-            Data = data;
-            Success = success;
-            Message = message;
-        }
-        public T Data { get; set; }
-        public bool Success { get; set; } = true;
-        public string Message { get; set; } = string.Empty;
+        Success = success;
+        Message = message;
     }
 }
