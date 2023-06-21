@@ -23,7 +23,6 @@ public class OrderProductRepository:IOrderProductRepository
             return null;
         
         var order = await context.Orders.
-            Include(o => o.User).
             FirstOrDefaultAsync(p => p.Id == orderId);
         
         if (order is null)

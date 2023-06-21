@@ -18,61 +18,56 @@ public class ProductTypeService: IProductTypeService
             this.repository = repository;
         }
 
-        public async Task<ResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypes()
+        public async Task<DataResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypes()
         {
             var types = await repository.GetAllProductTypes();
             var typeDTOs = types.Select(p => mapper.Map<GetProductTypeDTO>(p)).ToList();
-            
-            if (typeDTOs.Count == 0)
-            {
-                return new ResponseInfo<List<GetProductTypeDTO>>(typeDTOs, true, "no types yet");
-            }  
-            
-            return new ResponseInfo<List<GetProductTypeDTO>>(typeDTOs, true, "all types");
+
+            return new DataResponseInfo<List<GetProductTypeDTO>>(data: typeDTOs, success: true, message: "all types");
         }
 
-        public async Task<ResponseInfo<GetProductTypeDTO>> GetSingleProductType(int id)
+        public async Task<DataResponseInfo<GetProductTypeDTO>> GetSingleProductType(int id)
         {
             var type = await repository.GetSingleProductType(id);
             
             if (type is null) {
-                return new ResponseInfo<GetProductTypeDTO>(null, false, "type not found");
+                return new DataResponseInfo<GetProductTypeDTO>(data: null, success: false, message: "type not found");
             }
+
+            var typeDto = mapper.Map<GetProductTypeDTO>(type);
             
-            return new ResponseInfo<GetProductTypeDTO>(mapper.Map<GetProductTypeDTO>(type), true, $"product type with id {id}");
+            return new DataResponseInfo<GetProductTypeDTO>(data: typeDto, success: true, message: $"product type with id {id}");
         }
 
-        public async Task<OperationResult> AddProductType(AddUpdateProductTypeDTO type)
+        public async Task<ResponseInfo> AddProductType(AddUpdateProductTypeDTO type)
         {
             var newProductType = mapper.Map<ProductType>(type);
             await repository.AddProductType(newProductType);
             
-            return new OperationResult( true, "product type added successfully");
+            return new ResponseInfo(success: true, message: "product type added");
         }
 
-        public async Task<OperationResult> UpdateProductType(int id, AddUpdateProductTypeDTO typeDTO)
+        public async Task<ResponseInfo> UpdateProductType(int id, AddUpdateProductTypeDTO typeDTO)
         {
             var type = await repository.UpdateProductType(id, mapper.Map<ProductType>(typeDTO));
             
             if (type is null)
             {
-                return new OperationResult(false, "type not found");
+                return new ResponseInfo(success: false, message: "type not found");
             }
 
-            return new OperationResult(true, $"type with id {id} updated successfully");
+            return new ResponseInfo(success: true, message: $"type with id {id} updated");
         }
         
-        public async Task<OperationResult> DeleteProductType(int id)
+        public async Task<ResponseInfo> DeleteProductType(int id)
         {
             var type = await repository.DeleteProductType(id);
             
             if (type is null)
             {
-                return new OperationResult(false, "type not found");
+                return new ResponseInfo(success: false, message: "type not found");
             }
             
-            var typeDTO = mapper.Map<GetProductTypeDTO>(type);
-            
-            return new OperationResult(true, "type deleted successfully");
+            return new ResponseInfo(success: true, message: "type deleted");
         }
     }

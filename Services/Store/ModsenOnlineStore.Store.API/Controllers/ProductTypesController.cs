@@ -26,7 +26,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var productTypeInfo = await productTypeService.GetSingleProductType(id);
             
-            if (productTypeInfo.Data is null)
+            if (!productTypeInfo.Success)
             {
                 return NotFound();
             }
@@ -45,7 +45,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var productRes = await productTypeService.UpdateProductType(id, newProduct);
            
-            if (productRes.IsSuccess is false)
+            if (!productRes.Success)
             {
                 return NotFound();
             }
@@ -58,7 +58,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             var result = await productTypeService.DeleteProductType(id);
            
-            if (result.IsSuccess is false)
+            if (!result.Success)
             {
                 return NotFound();
             }

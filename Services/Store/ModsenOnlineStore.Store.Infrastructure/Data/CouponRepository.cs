@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data;
@@ -16,14 +17,12 @@ public class CouponRepository : ICouponRepository
     public async Task<Coupon> GetCoupon(int couponId) =>
         await context.Coupons
             .AsNoTracking()
-            .Include(c => c.User)            
             .FirstOrDefaultAsync(e => e.Id == couponId);
 
 
     public async Task<List<Coupon>> GetAllCoupons() =>
         await context.Coupons
             .AsNoTracking()
-            .Include(c => c.User)
             .ToListAsync();
 
 
@@ -31,7 +30,6 @@ public class CouponRepository : ICouponRepository
         await context.Coupons
             .AsNoTracking()
             .Where(e => e.UserId == userId)
-            .Include(c => c.User)
             .ToListAsync();
 
 

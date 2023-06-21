@@ -17,15 +17,15 @@ public class OrderProductService : IOrderProductService
         this.repository = repository;
     }
 
-    public async Task<ResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProducts()
+    public async Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProducts()
     {
         var orderProducts = await repository.GetAllOrderProducts();
         var orderProductDtos = orderProducts.Select(mapper.Map<GetOrderProductDTO>).ToList();
 
-        return new ResponseInfo<List<GetOrderProductDTO>>(orderProductDtos, true, "all orders");
+        return new DataResponseInfo<List<GetOrderProductDTO>>(data: orderProductDtos, success: true, message: "all orders");
     }
 
-    public async Task<OperationResult> AddProductToOrder(AddProductToOrderDTO addProductToOrderDto)
+    public async Task<ResponseInfo> AddProductToOrder(AddProductToOrderDTO addProductToOrderDto)
     {
         int productId = addProductToOrderDto.productId;
         int orderId = addProductToOrderDto.orderId;
@@ -35,11 +35,11 @@ public class OrderProductService : IOrderProductService
 
         if (order is null)
         {
-            return new OperationResult(false, "not found");
+            return new ResponseInfo(success: false, message: "not found");
         }
         else
         {
-            return new OperationResult(true, $"order with id {orderId} added");
+            return new ResponseInfo(success: true, message: $"order with id {orderId} added");
         }
     }
 }

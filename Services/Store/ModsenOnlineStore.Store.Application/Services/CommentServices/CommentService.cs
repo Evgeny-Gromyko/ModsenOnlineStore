@@ -17,63 +17,63 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             this.mapper = mapper;
         }
 
-        public async Task<ResponseInfo<List<GetCommentDto>>> GetAllComments()
+        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllComments()
         {
             var comments = await commentRepository.GetAllComments();
             var commentDtos = comments.Select(mapper.Map<GetCommentDto>).ToList();
 
-            return new ResponseInfo<List<GetCommentDto>>(data: commentDtos, success: true, message: "all comments");
+            return new DataResponseInfo<List<GetCommentDto>>(data: commentDtos, success: true, message: "all comments");
         }
 
-        public async Task<ResponseInfo<GetCommentDto>> GetCommentById(int id)
+        public async Task<DataResponseInfo<GetCommentDto>> GetCommentById(int id)
         {
             var comment = await commentRepository.GetCommentById(id);
 
             if (comment is null)
             {
-                return new ResponseInfo<GetCommentDto>(data: null, success: true, message: "comment");
+                return new DataResponseInfo<GetCommentDto>(data: null, success: false, message: "comment");
             }
 
             var commentDto = mapper.Map<GetCommentDto>(comment);
 
-            return new ResponseInfo<GetCommentDto>(data: commentDto, success: true, message: "comment");
+            return new DataResponseInfo<GetCommentDto>(data: commentDto, success: true, message: "comment");
         }
 
-        public async Task<NoDataResponseInfo> AddComment(AddCommentDto addCommentDto)
+        public async Task<ResponseInfo> AddComment(AddCommentDto addCommentDto)
         {
             var comment = mapper.Map<Comment>(addCommentDto);
             await commentRepository.AddComment(comment);
 
-            return new NoDataResponseInfo(success: true, message: "added successfully");
+            return new ResponseInfo(success: true, message: "comment added");
         }
 
-        public async Task<NoDataResponseInfo> UpdateComment(UpdateCommentDto updateCommentDto)
+        public async Task<ResponseInfo> UpdateComment(UpdateCommentDto updateCommentDto)
         {
             var oldComment = await commentRepository.GetCommentById(updateCommentDto.Id);
 
             if (oldComment is null)
             {
-                return new NoDataResponseInfo(success: false, message: "no such comment");
+                return new ResponseInfo(success: false, message: "no such comment");
             }
 
             var comment = mapper.Map<Comment>(updateCommentDto);
             await commentRepository.UpdateComment(comment);
 
-            return new NoDataResponseInfo(success: true, message: "updated successfully");
+            return new ResponseInfo(success: true, message: "updated");
         }
 
-        public async Task<NoDataResponseInfo> RemoveCommentById(int id)
+        public async Task<ResponseInfo> RemoveCommentById(int id)
         {
             var oldComment = await commentRepository.GetCommentById(id);
 
             if (oldComment is null)
             {
-                return new NoDataResponseInfo(success: false, message: "no such comment");
+                return new ResponseInfo(success: false, message: "no such comment");
             }
 
             await commentRepository.RemoveCommentById(id);
 
-            return new NoDataResponseInfo(success: true, message: "removed successfully");
+            return new ResponseInfo(success: true, message: "removed");
         }
     }
 }
