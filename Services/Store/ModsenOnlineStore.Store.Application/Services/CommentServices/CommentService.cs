@@ -17,7 +17,7 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             this.mapper = mapper;
         }
 
-        public async Task<ResponseInfo> GetAllComments()
+        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllComments()
         {
             var comments = await commentRepository.GetAllComments();
             var commentDtos = comments.Select(mapper.Map<GetCommentDto>).ToList();
@@ -25,13 +25,13 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             return new DataResponseInfo<List<GetCommentDto>>(data: commentDtos, success: true, message: "all comments");
         }
 
-        public async Task<ResponseInfo> GetCommentById(int id)
+        public async Task<DataResponseInfo<GetCommentDto>> GetCommentById(int id)
         {
             var comment = await commentRepository.GetCommentById(id);
 
             if (comment is null)
             {
-                return new ResponseInfo(success: true, message: "comment");
+                return new DataResponseInfo<GetCommentDto>(data: null, success: false, message: "comment");
             }
 
             var commentDto = mapper.Map<GetCommentDto>(comment);

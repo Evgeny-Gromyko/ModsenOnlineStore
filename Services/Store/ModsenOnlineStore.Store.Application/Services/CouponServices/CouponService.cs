@@ -1,6 +1,7 @@
 using AutoMapper;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 using ModsenOnlineStore.Store.Domain.Entities;
 
@@ -20,46 +21,40 @@ public class CouponService : ICouponService
         this.orderRepository = orderRepository;
     }
     
-    public async Task<ResponseInfo> GetCoupon(int couponId)
+    public async Task<DataResponseInfo<GetCouponDTO>> GetCoupon(int couponId)
     {
         var coupon = await couponRepository.GetCoupon(couponId);
         
         if (coupon is null)
         {
-            return new ResponseInfo(success: false, message: "not found");
+            return new DataResponseInfo<GetCouponDTO>(data: null, success: false, message: "not found");
         }
 
         var couponDTO = mapper.Map<GetCouponDTO>(coupon);
         
-        return new DataResponseInfo<GetCouponDTO>(couponDTO, true, message: $"coupon with id {couponId}");
+        return new DataResponseInfo<GetCouponDTO>(data: couponDTO, success: true, message: $"coupon with id {couponId}");
     }
 
-    public async Task<ResponseInfo> GetAllCoupons()
+    public async Task<DataResponseInfo<List<GetCouponDTO>>> GetAllCoupons()
     {
         var coupons = await couponRepository.GetAllCoupons();
-        
-        if (coupons is null)
-        {
-            return new ResponseInfo(success: false, message: "not found");
-        }
-        
         var couponDtos = coupons.Select(mapper.Map<GetCouponDTO>).ToList(); 
         
-        return new DataResponseInfo<List<GetCouponDTO>>(couponDtos, true, message: "all coupons");
+        return new DataResponseInfo<List<GetCouponDTO>>(data: couponDtos, success: true, message: "all coupons");
     }
 
-    public async Task<ResponseInfo> GetCouponsByUserId(int userId)
+    public async Task<DataResponseInfo<List<GetCouponDTO>>> GetCouponsByUserId(int userId)
     {
         var coupons = await couponRepository.GetCouponsByUserId(userId);
         
         if (coupons is null)
         {
-            return new ResponseInfo(success: false, message: "coupons not found");
+            return new DataResponseInfo<List<GetCouponDTO>>(data: null, success: false, message: "coupons not found");
         }
         
         var couponDtos = coupons.Select(mapper.Map<GetCouponDTO>).ToList();
 
-        return new DataResponseInfo<List<GetCouponDTO>>(couponDtos, true, message: $"product type with user id {userId}");
+        return new DataResponseInfo<List<GetCouponDTO>>(data: couponDtos, success: true, message: $"product type with user id {userId}");
     }
 
 
@@ -67,8 +62,7 @@ public class CouponService : ICouponService
     {
 
         var newCoupon= mapper.Map<Coupon>(newCouponDto);
-
-        var events = await couponRepository.AddCoupon(newCoupon);
+        await couponRepository.AddCoupon(newCoupon);
 
         return new ResponseInfo(success: true, message: "coupon added");
 

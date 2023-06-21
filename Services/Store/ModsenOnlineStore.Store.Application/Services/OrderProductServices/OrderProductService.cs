@@ -17,12 +17,12 @@ public class OrderProductService : IOrderProductService
         this.repository = repository;
     }
 
-    public async Task<ResponseInfo> GetAllOrderProducts()
+    public async Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProducts()
     {
         var orderProducts = await repository.GetAllOrderProducts();
         var orderProductDtos = orderProducts.Select(mapper.Map<GetOrderProductDTO>).ToList();
 
-        return new DataResponseInfo<List<GetOrderProductDTO>>(orderProductDtos, true, "all orders");
+        return new DataResponseInfo<List<GetOrderProductDTO>>(data: orderProductDtos, success: true, message: "all orders");
     }
 
     public async Task<ResponseInfo> AddProductToOrder(AddProductToOrderDTO addProductToOrderDto)

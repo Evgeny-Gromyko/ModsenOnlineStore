@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
@@ -17,7 +18,7 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
             this.mapper = mapper;
         }
 
-        public async Task<ResponseInfo> GetAllProducts()
+        public async Task<DataResponseInfo<List<GetProductDto>>> GetAllProducts()
         {
             var products = await repository.GetAllProducts();
             var productDtos = products.Select(mapper.Map<GetProductDto>).ToList();
@@ -25,18 +26,18 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
             return new DataResponseInfo<List<GetProductDto>>(data: productDtos, success: true, message: "all products");
         }
 
-        public async Task<ResponseInfo> GetProductById(int id)
+        public async Task<DataResponseInfo<GetProductDto>> GetProductById(int id)
         {
             var product = await repository.GetProductById(id);
 
             if (product is null)
             {
-                return new ResponseInfo(success: true, message: "product");
+                return new DataResponseInfo<GetProductDto>(data: null, success: true, message: "product");
             }
 
             var productDto = mapper.Map<GetProductDto>(product);
 
-            return new DataResponseInfo<GetProductDto>(productDto, true, "product");
+            return new DataResponseInfo<GetProductDto>(data: productDto, success: true, message: "product");
         }
 
         public async Task<ResponseInfo> AddProduct(AddProductDto addProductDto)

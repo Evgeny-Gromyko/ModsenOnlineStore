@@ -18,28 +18,25 @@ public class ProductTypeService: IProductTypeService
             this.repository = repository;
         }
 
-        public async Task<ResponseInfo> GetAllProductTypes()
+        public async Task<DataResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypes()
         {
             var types = await repository.GetAllProductTypes();
             var typeDTOs = types.Select(p => mapper.Map<GetProductTypeDTO>(p)).ToList();
-            
-            if (typeDTOs.Count == 0)
-            {
-                return new DataResponseInfo<List<GetProductTypeDTO>>(typeDTOs, true, "no types yet");
-            }  
-            
-            return new DataResponseInfo<List<GetProductTypeDTO>>(typeDTOs, true, "all types");
+
+            return new DataResponseInfo<List<GetProductTypeDTO>>(data: typeDTOs, success: true, message: "all types");
         }
 
-        public async Task<ResponseInfo> GetSingleProductType(int id)
+        public async Task<DataResponseInfo<GetProductTypeDTO>> GetSingleProductType(int id)
         {
             var type = await repository.GetSingleProductType(id);
             
             if (type is null) {
-                return new ResponseInfo( false, "type not found");
+                return new DataResponseInfo<GetProductTypeDTO>(data: null, success: false, message: "type not found");
             }
+
+            var typeDto = mapper.Map<GetProductTypeDTO>(type);
             
-            return new DataResponseInfo<GetProductTypeDTO>(mapper.Map<GetProductTypeDTO>(type), true, $"product type with id {id}");
+            return new DataResponseInfo<GetProductTypeDTO>(data: typeDto, success: true, message: $"product type with id {id}");
         }
 
         public async Task<ResponseInfo> AddProductType(AddUpdateProductTypeDTO type)
@@ -47,7 +44,7 @@ public class ProductTypeService: IProductTypeService
             var newProductType = mapper.Map<ProductType>(type);
             await repository.AddProductType(newProductType);
             
-            return new ResponseInfo( true, "product type added");
+            return new ResponseInfo(success: true, message: "product type added");
         }
 
         public async Task<ResponseInfo> UpdateProductType(int id, AddUpdateProductTypeDTO typeDTO)
@@ -56,10 +53,10 @@ public class ProductTypeService: IProductTypeService
             
             if (type is null)
             {
-                return new ResponseInfo(false, "type not found");
+                return new ResponseInfo(success: false, message: "type not found");
             }
 
-            return new ResponseInfo(true, $"type with id {id} updated");
+            return new ResponseInfo(success: true, message: $"type with id {id} updated");
         }
         
         public async Task<ResponseInfo> DeleteProductType(int id)
@@ -70,8 +67,6 @@ public class ProductTypeService: IProductTypeService
             {
                 return new ResponseInfo(success: false, message: "type not found");
             }
-            
-            var typeDTO = mapper.Map<GetProductTypeDTO>(type);
             
             return new ResponseInfo(success: true, message: "type deleted");
         }

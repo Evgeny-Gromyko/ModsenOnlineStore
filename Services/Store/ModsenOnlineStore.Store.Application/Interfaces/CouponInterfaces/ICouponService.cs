@@ -1,16 +1,15 @@
 using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Domain.DTOs.OrderDTO;
 using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 
-namespace ModsenOnlineStore.Store.Application.Interfaces;
+namespace ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 
 public interface ICouponService
 {
-    Task<ResponseInfo> GetCoupon(int couponId);
+    Task<DataResponseInfo<GetCouponDTO>> GetCoupon(int couponId);
     
-    Task<ResponseInfo> GetAllCoupons();
+    Task<DataResponseInfo<List<GetCouponDTO>>> GetAllCoupons();
     
-    Task<ResponseInfo> GetCouponsByUserId(int userId);
+    Task<DataResponseInfo<List<GetCouponDTO>>> GetCouponsByUserId(int userId);
     
     Task<ResponseInfo> AddCoupon(AddCouponDTO newCoupon);
     

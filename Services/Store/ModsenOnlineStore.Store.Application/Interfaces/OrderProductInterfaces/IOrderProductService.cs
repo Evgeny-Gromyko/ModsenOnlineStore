@@ -7,5 +7,5 @@ public interface IOrderProductService
 {
     public Task<ResponseInfo> AddProductToOrder(AddProductToOrderDTO dto);
     
-    public Task<ResponseInfo> GetAllOrderProducts();
+    public Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProducts();
 }

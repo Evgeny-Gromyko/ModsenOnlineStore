@@ -8,6 +8,7 @@ using ModsenOnlineStore.Store.Application.Services.OrderProductServices;
 using ModsenOnlineStore.Store.Application.Services.ProductTypeServices;
 using ModsenOnlineStore.Store.Infrastructure.Data;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Application.Services.CommentServices;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Application.Services.CouponServices;

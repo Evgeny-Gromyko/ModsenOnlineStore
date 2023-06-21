@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 
 namespace ModsenOnlineStore.Store.API.Controllers

@@ -5,9 +5,9 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces
 {
     public interface IProductService
     {
-        Task<ResponseInfo> GetAllProducts();
+        Task<DataResponseInfo<List<GetProductDto>>> GetAllProducts();
 
-        Task<ResponseInfo> GetProductById(int id);
+        Task<DataResponseInfo<GetProductDto>> GetProductById(int id);
 
         Task<ResponseInfo> AddProduct(AddProductDto addProductDto);
 

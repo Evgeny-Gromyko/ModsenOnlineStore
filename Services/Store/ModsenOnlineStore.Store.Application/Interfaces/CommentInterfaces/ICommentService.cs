@@ -5,9 +5,9 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces
 {
     public interface ICommentService
     {
-        Task<ResponseInfo> GetAllComments();
+        Task<DataResponseInfo<List<GetCommentDto>>> GetAllComments();
 
-        Task<ResponseInfo> GetCommentById(int id);
+        Task<DataResponseInfo<GetCommentDto>> GetCommentById(int id);
 
         Task<ResponseInfo> AddComment(AddCommentDto addProductDto);
 
