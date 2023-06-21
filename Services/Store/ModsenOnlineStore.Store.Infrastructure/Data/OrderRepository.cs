@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-﻿using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
-using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
+using Microsoft.EntityFrameworkCore;
+using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data
@@ -51,5 +45,5 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
         }
-    }    
+    }
 }

@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj" />
+    <ProjectReference Include="..\..\ModsenOnlineStore.Common\ModsenOnlineStore.Common.csproj" />
     <ProjectReference Include="..\ModsenOnlineStore.Login.Domain\ModsenOnlineStore.Login.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7" />
   </ItemGroup>
 
 </Project>

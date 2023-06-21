@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
 {
     public interface IOrderService
     {
-        Task<ResponseInfo> GetAllOrders();
+        Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrders();
 
-        Task<ResponseInfo> GetSingleOrder(int id);
+        Task<DataResponseInfo<GetOrderDTO>> GetSingleOrder(int id);
 
         Task<ResponseInfo> AddOrder(AddOrderDTO addOrder);
 

@@ -8,7 +8,7 @@
             Success = success;
             Message = message;
         }
-
+        
         public T Data { get; set; }
     }
 }

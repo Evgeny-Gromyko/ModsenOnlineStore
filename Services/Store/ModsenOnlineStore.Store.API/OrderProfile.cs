@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
