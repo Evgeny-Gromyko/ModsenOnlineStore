@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ModsenOnlineStore.Store.Domain.Entities
+namespace ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs
 {
-    public class Order
+    public class UpdateOrderDTO
     {
         public int Id { get; set; }
 
