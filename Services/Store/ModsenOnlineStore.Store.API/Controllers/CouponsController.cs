@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 
@@ -9,7 +8,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
     [ApiController]
     public class CouponsController : ControllerBase
     {
-        private ICouponService couponService;
+        private readonly ICouponService couponService;
 
         public CouponsController(ICouponService couponService)
         {
@@ -23,14 +22,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCoupon(int id)
         {
-            var couponInfo = await couponService.GetCoupon(id);
-
-            if (!couponInfo.Success)
-            {
-                return NotFound();
-            }
-
-            return Ok(couponInfo);
+            return Ok(await couponService.GetCoupon(id));
         }
 
         [HttpPost]
@@ -40,53 +32,25 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCoupon(int id)
         {
-            var couponInfo = await couponService.DeleteCoupon(id);
-
-            if (!couponInfo.Success)
-            {
-                return NotFound();
-            }
-
-            return Ok(couponInfo);
+            return Ok(await couponService.DeleteCoupon(id));
         }
 
         [HttpPost("apply")]
         public async Task<IActionResult> ApplyCoupon(ApplyCouponDTO data)
         {
-            var operationResult = await couponService.ApplyCoupon(data);
-
-            if (!operationResult.Success)
-            {
-                return NotFound();
-            }
-
-            return Ok(operationResult);
+            return Ok(await couponService.ApplyCoupon(data));
         }
         
         [HttpGet("byUser{userId}")]
         public async Task<IActionResult> GetCouponsByUserId(int userId)
-        {
-            var couponInfo = await couponService.GetCouponsByUserId(userId);
-            
-            if (!couponInfo.Success)
-            {
-                return NotFound();
-            }
-            
-            return Ok(couponInfo);
+        {   
+            return Ok(await couponService.GetCouponsByUserId(userId));
         }
         
         [HttpDelete("byUser{userId}")]
         public async Task<IActionResult> DeleteCouponsByUserId(int userId)
-        {
-            var couponInfo = await couponService.DeleteCouponsByUserId(userId);
-            
-            if (!couponInfo.Success)
-            {
-                return NotFound();
-            }
-            
-            return Ok(couponInfo);
+        {   
+            return Ok(await couponService.DeleteCouponsByUserId(userId));
         }
 
     }

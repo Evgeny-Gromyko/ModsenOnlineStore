@@ -4,14 +4,13 @@ using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
-
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
-        private IOrderService orderService;
+        private readonly IOrderService orderService;
 
-        public OrderController(IOrderService orderService)
+        public OrdersController(IOrderService orderService)
         {
             this.orderService = orderService;
         }
@@ -44,6 +43,12 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public async Task<IActionResult> DeleteOrder(int id)
         {
             return Ok(await orderService.DeleteOrder(id));
+        }
+
+        [HttpGet("byUser{id}")]
+        public async Task<IActionResult> GetAllOrdersByUserId(int id)
+        {
+            return Ok(await orderService.GetAllOrdersByUserId(id));
         }
     }
 }

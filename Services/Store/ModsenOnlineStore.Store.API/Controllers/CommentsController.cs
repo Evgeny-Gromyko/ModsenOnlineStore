@@ -44,5 +44,11 @@ namespace ModsenOnlineStore.Store.API.Controllers
         {
             return Ok(await service.RemoveCommentById(id));
         }
+
+        [HttpGet("byProduct{id}")]
+        public async Task<IActionResult> GetAllCommentsByProductId(int id)
+        {
+            return Ok(await service.GetAllCommentsByProductId(id));
+        }
     }
 }

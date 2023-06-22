@@ -14,5 +14,9 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces
         Task<ResponseInfo> UpdateProduct(UpdateProductDto updateProductDto);
 
         Task<ResponseInfo> RemoveProductById(int id);
+
+        Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByProductTypeId(int id);
+
+        Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByOrderId(int id);
     }
 }

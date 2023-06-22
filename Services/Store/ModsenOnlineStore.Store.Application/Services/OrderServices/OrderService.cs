@@ -2,16 +2,14 @@ using AutoMapper;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Application.Services.OrderService
 {
     public class OrderService : IOrderService
     {
-        private IMapper mapper;
-
-        private IOrderRepository orderRepository;
+        private readonly IMapper mapper;
+        private readonly IOrderRepository orderRepository;
 
         public OrderService(IMapper mapper, IOrderRepository repository)
         {
@@ -24,21 +22,16 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             var orders = await orderRepository.GetAllOrders();
             var orderDTOs = orders.Select(p => mapper.Map<GetOrderDTO>(p)).ToList();
 
-            if (orderDTOs.Count == 0)
-            {
-                return new  return new ResponseInfo(true, "no orders yet");
-            }
-
             return new DataResponseInfo<List<GetOrderDTO>>(data: orderDTOs, success: true, message: "all orders");
         }
 
-        public async Task<ResponseInfo> GetSingleOrder(int id)
+        public async Task<DataResponseInfo<GetOrderDTO>> GetSingleOrder(int id)
         {
             var order = await orderRepository.GetSingleOrder(id);
 
             if (order is null)
             {
-                return new ResponseInfo(false, "order not found");
+                return new DataResponseInfo<GetOrderDTO>(data: null, success: false, message: "no such order");
             }
 
             return new DataResponseInfo<GetOrderDTO>(data: mapper.Map<GetOrderDTO>(order), success: true, message: "order");
@@ -54,6 +47,13 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
 
         public async Task<ResponseInfo> UpdateOrder(UpdateOrderDTO updateOrder)
         {
+            var oldOrder = await orderRepository.GetSingleOrder(updateOrder.Id);
+
+            if (oldOrder is null)
+            {
+                return new ResponseInfo(success: false, message: "no such order");
+            }
+
             var newOrder = mapper.Map<Order>(updateOrder);
             await orderRepository.UpdateOrder(newOrder);
 
@@ -62,9 +62,25 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
 
         public async Task<ResponseInfo> DeleteOrder(int id)
         {
+            var order = await orderRepository.GetSingleOrder(id);
+
+            if (order is null)
+            {
+                return new ResponseInfo(success: false, message: "no such order");
+            }
+
             await orderRepository.DeleteOrder(id);
 
             return new ResponseInfo(success: true, message: "order deleted");
+        }
+
+        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserId(int id)
+        {
+            var orders = await orderRepository.GetAllOrders();
+            var userOrders = orders.FindAll(o => o.UserId == id);
+            var orderDTOs = userOrders.Select(mapper.Map<GetOrderDTO>).ToList();
+
+            return new DataResponseInfo<List<GetOrderDTO>>(data: orderDTOs, success: true, message: "all orders");
         }
     }
 }
