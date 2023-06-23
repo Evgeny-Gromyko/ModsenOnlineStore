@@ -95,6 +95,13 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
 
         public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductId(int id)
         {
+            var product = productRepository.GetProductById(id);
+
+            if (product is null)
+            {
+                return new DataResponseInfo<List<GetCommentDto>>(data: null, success: false, message: "no such product");
+            }
+
             var comments = await commentRepository.GetAllComments();
             var productComments = comments.FindAll(c => c.ProductId == id);
             var commentDtos = productComments.Select(mapper.Map<GetCommentDto>).ToList();

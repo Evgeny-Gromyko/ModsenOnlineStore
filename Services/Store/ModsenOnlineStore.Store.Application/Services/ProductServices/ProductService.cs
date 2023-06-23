@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ModsenOnlineStore.Common;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
@@ -13,13 +14,15 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
         private readonly IProductRepository productRepository;
         private readonly IProductTypeRepository productTypeRepository;
         private readonly IOrderProductRepository orderProductRepository;
+        private readonly IOrderRepository orderRepository;
         private readonly IMapper mapper;
 
-        public ProductService(IProductRepository productRepository, IProductTypeRepository productTypeRepository, IOrderProductRepository orderProductRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IProductTypeRepository productTypeRepository, IOrderProductRepository orderProductRepository, IOrderRepository orderRepository, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.productTypeRepository = productTypeRepository;
             this.orderProductRepository = orderProductRepository;
+            this.orderRepository = orderRepository;
             this.mapper = mapper;
         }
 
@@ -98,6 +101,13 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
 
         public async Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByProductTypeId(int id)
         {
+            var productType = productTypeRepository.GetSingleProductType(id);
+
+            if (productType is null)
+            {
+                return new DataResponseInfo<List<GetProductDto>>(data: null, success: false, message: "no such product type");
+            }
+
             var products = await productRepository.GetAllProducts();
             var productTypeProducts = products.FindAll(p => p.ProductTypeId == id);
             var productDtos = productTypeProducts.Select(mapper.Map<GetProductDto>).ToList();
@@ -107,6 +117,13 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
 
         public async Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByOrderId(int id)
         {
+            var order = orderRepository.GetSingleOrder(id);
+
+            if (order is null)
+            {
+                return new DataResponseInfo<List<GetProductDto>>(data: null, success: false, message: "no such order");
+            }
+
             var allOrderProducts = await orderProductRepository.GetAllOrderProducts();
             var orderProducts = allOrderProducts.FindAll(o => o.OrderId == id);
 

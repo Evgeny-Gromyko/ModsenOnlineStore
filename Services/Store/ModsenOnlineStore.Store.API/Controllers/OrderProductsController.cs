@@ -24,7 +24,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProductToOrder(AddProductToOrderDTO data)
         {
-            return Ok(await orderProductService.AddProductToOrder(data));
+            var response = await orderProductService.AddProductToOrder(data);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }

@@ -22,7 +22,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCoupon(int id)
         {
-            return Ok(await couponService.GetCoupon(id));
+            var response = await couponService.GetCoupon(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -32,13 +39,27 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCoupon(int id)
         {
-            return Ok(await couponService.DeleteCoupon(id));
+            var response = await couponService.DeleteCoupon(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost("apply")]
         public async Task<IActionResult> ApplyCoupon(ApplyCouponDTO data)
         {
-            return Ok(await couponService.ApplyCoupon(data));
+            var response = await couponService.ApplyCoupon(data);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
         
         [HttpGet("byUser{userId}")]

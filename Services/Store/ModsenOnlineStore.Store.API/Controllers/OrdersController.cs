@@ -24,7 +24,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingleOrder(int id)
         {
-            return Ok(await orderService.GetSingleOrder(id));
+            var response = await orderService.GetSingleOrder(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -36,13 +43,27 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateOrder(UpdateOrderDTO order)
         {
-            return Ok(await orderService.UpdateOrder(order));
+            var response = await orderService.UpdateOrder(order);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
-            return Ok(await orderService.DeleteOrder(id));
+            var response = await orderService.DeleteOrder(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpGet("byUser{id}")]

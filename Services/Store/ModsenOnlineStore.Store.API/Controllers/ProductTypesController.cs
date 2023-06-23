@@ -23,8 +23,15 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingleProductType(int id)
-        {   
-            return Ok(await productTypeService.GetSingleProductType(id));
+        {
+            var response = await productTypeService.GetSingleProductType(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -36,13 +43,27 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductType(int id, AddUpdateProductTypeDTO newProduct)
         {
-            return Ok(await productTypeService.UpdateProductType(id, newProduct));
+            var response = await productTypeService.UpdateProductType(id, newProduct);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            return Ok(await productTypeService.DeleteProductType(id));
+            var response = await productTypeService.DeleteProductType(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }
