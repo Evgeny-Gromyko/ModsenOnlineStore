@@ -11,10 +11,10 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Extensions
 {
     public static class DBLoggerExtensions
     {
-        public static ILoggingBuilder AddDBLogging(this ILoggingBuilder builder, ILogRepository repository)
-        {
-            builder.AddProvider(new DBLoggerProvider(repository));
-            return builder;
-        }
+        //public static ILoggingBuilder AddDBLogging(this ILoggingBuilder builder, ILogRepository repository)
+        //{
+        //    builder.AddProvider(new DBLoggerProvider(repository));
+        //    return builder;
+        //}
     }
 }

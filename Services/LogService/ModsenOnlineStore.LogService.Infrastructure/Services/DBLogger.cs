@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ModsenOnlineStore.LogService.Application.Interfaces;
 using ModsenOnlineStore.LogService.Domain.Entities;
 using System;
@@ -14,10 +15,16 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
 
         private readonly ILogRepository repository;
 
-        public DBLogger(ILogRepository repository)
+        //public DBLogger(ILogRepository repository)
+        //{
+        //    this.repository = repository;
+        //}
+        public DBLogger(IServiceProvider serviceProvider
+)
         {
-            this.repository = repository;
+            repository = serviceProvider.GetService<ILogRepository>();
         }
+
 
         public void Log<TState>( // is it possible to make it async?
             LogLevel logLevel, EventId eventId,
@@ -27,7 +34,7 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
             repository.AddLog(new Log() //TState - log creating context 
             {
                 logLevel = logLevel.ToString(),
-                eventId = Convert.ToInt32(eventId),
+                eventId = Convert.ToInt32(eventId.Id),
                 dateTime = DateTime.Now,
                 message = formatter(context, exception),
             });

@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ModsenOnlineStore.LogService.Application\ModsenOnlineStore.LogService.Application.csproj" />
-    <ProjectReference Include="..\..\..\ModsenOnlineStore.LogService.Infrastructure\ModsenOnlineStore.LogService.Infrastructure.csproj" />
+    <ProjectReference Include="..\ModsenOnlineStore.LogService.Application\ModsenOnlineStore.LogService.Application.csproj" />
+    <ProjectReference Include="..\ModsenOnlineStore.LogService.Infrastructure\ModsenOnlineStore.LogService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

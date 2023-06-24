@@ -8,19 +8,26 @@ using ModsenOnlineStore.LogService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<ILogRepository, LogRepository>();
 
 // not working, error "Some services are not able to be constructed"
 //builder.Services.AddScoped<ILoggerProvider, DBLoggerProvider>(); 
 
 //how to pass ILoggerProvider inside DBLoggerProvider?
-//builder.AddDBLogging(new DBLoggerProvider(repository));
 
-//builder.AddProvider(new DBLoggerProvider(repository))
-
+//builder.Services.AddSingleton<DataContext>();
+//builder.Services.AddSingleton<DbContextOptions>(); not Working
 builder.Services.AddDbContext<DataContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())));
+
+builder.Logging.Services.AddScoped<ILogger, DBLogger>(); // always Singleton
+builder.Logging.Services.AddScoped<ILoggerFactory, LoggerFactory>();
+builder.Logging.Services.AddScoped<ILoggerProvider, DBLoggerProvider>();
+builder.Services.AddScoped<ILogRepository, LogRepository>();
+
+
+
+
 
 builder.Services.AddControllers();
 
