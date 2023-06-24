@@ -15,15 +15,14 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
 
         private readonly ILogRepository repository;
 
-        //public DBLogger(ILogRepository repository)
-        //{
-        //    this.repository = repository;
-        //}
-        public DBLogger(IServiceProvider serviceProvider
-)
+        public DBLogger(ILogRepository repository)
         {
-            repository = serviceProvider.GetService<ILogRepository>();
+            this.repository = repository;
         }
+//        public DBLogger(IServiceProvider serviceProvider)
+//        {
+//            repository = serviceProvider.GetService<ILogRepository>();
+//        }
 
 
         public void Log<TState>( // is it possible to make it async?
