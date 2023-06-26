@@ -1,12 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ModsenOnlineStore.Store.Domain.Entities
-
 {
     public class Product
     {
@@ -22,11 +14,11 @@ namespace ModsenOnlineStore.Store.Domain.Entities
 
         public int Quantity { get; set; }
 
-        //public ProductType ProductType { get; set; }
+        public ProductType ProductType { get; set; }
 
         public int ProductTypeId { get; set; }
 
-        //public List<OrderProduct> OrderProducts { get; set; } = new();
+        public List<OrderProduct> OrderProducts { get; set; } = new();
       
         public List<Comment> Comments { get; set; } = new();
     }

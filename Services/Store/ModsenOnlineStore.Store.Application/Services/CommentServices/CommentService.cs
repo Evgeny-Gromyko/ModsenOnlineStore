@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
@@ -9,11 +10,13 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
     public class CommentService : ICommentService
     {
         private readonly ICommentRepository commentRepository;
+        private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
 
-        public CommentService(ICommentRepository commentRepository, IMapper mapper)
+        public CommentService(ICommentRepository commentRepository, IProductRepository productRepository, IMapper mapper)
         {
             this.commentRepository = commentRepository;
+            this.productRepository = productRepository;
             this.mapper = mapper;
         }
 
@@ -31,7 +34,7 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
 
             if (comment is null)
             {
-                return new DataResponseInfo<GetCommentDto>(data: null, success: false, message: "comment");
+                return new DataResponseInfo<GetCommentDto>(data: null, success: false, message: "no such comment");
             }
 
             var commentDto = mapper.Map<GetCommentDto>(comment);
@@ -41,6 +44,13 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
 
         public async Task<ResponseInfo> AddComment(AddCommentDto addCommentDto)
         {
+            var product = await productRepository.GetProductById(addCommentDto.ProductId);
+
+            if (product is null)
+            {
+                return new ResponseInfo(success: false, message: "no such product");
+            }
+
             var comment = mapper.Map<Comment>(addCommentDto);
             await commentRepository.AddComment(comment);
 
@@ -54,6 +64,13 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             if (oldComment is null)
             {
                 return new ResponseInfo(success: false, message: "no such comment");
+            }
+
+            var product = await productRepository.GetProductById(updateCommentDto.ProductId);
+
+            if (product is null)
+            {
+                return new ResponseInfo(success: false, message: "no such product");
             }
 
             var comment = mapper.Map<Comment>(updateCommentDto);
@@ -74,6 +91,22 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             await commentRepository.RemoveCommentById(id);
 
             return new ResponseInfo(success: true, message: "removed");
+        }
+
+        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductId(int id)
+        {
+            var product = productRepository.GetProductById(id);
+
+            if (product is null)
+            {
+                return new DataResponseInfo<List<GetCommentDto>>(data: null, success: false, message: "no such product");
+            }
+
+            var comments = await commentRepository.GetAllComments();
+            var productComments = comments.FindAll(c => c.ProductId == id);
+            var commentDtos = productComments.Select(mapper.Map<GetCommentDto>).ToList();
+
+            return new DataResponseInfo<List<GetCommentDto>>(data: commentDtos, success: true, message: "all comments of product");
         }
     }
 }

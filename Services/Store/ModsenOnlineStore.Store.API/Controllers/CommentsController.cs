@@ -24,25 +24,66 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCommentById(int id)
         {
-            return Ok(await service.GetCommentById(id));
+            var response = await service.GetCommentById(id);
+            
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddComment(AddCommentDto addCommentDto)
         {
-            return Ok(await service.AddComment(addCommentDto));
+            var response = await service.AddComment(addCommentDto);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateComment(UpdateCommentDto updateProductDto)
         {
-            return Ok(await service.UpdateComment(updateProductDto));
+            var response = await service.UpdateComment(updateProductDto);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete]
         public async Task<IActionResult> RemoveCommentById(int id)
         {
-            return Ok(await service.RemoveCommentById(id));
+            var response = await service.RemoveCommentById(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("byProduct{id}")]
+        public async Task<IActionResult> GetAllCommentsByProductId(int id)
+        {
+            var response = await service.GetAllCommentsByProductId(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }

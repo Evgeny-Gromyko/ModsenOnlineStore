@@ -14,5 +14,7 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces
         Task<ResponseInfo> UpdateComment(UpdateCommentDto updateProductDto);
 
         Task<ResponseInfo> RemoveCommentById(int id);
+
+        Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductId(int id);
     }
 }

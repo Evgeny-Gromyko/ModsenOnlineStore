@@ -8,7 +8,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
     [ApiController]
     public class ProductTypesController : ControllerBase
     {
-        private IProductTypeService productTypeService;
+        private readonly IProductTypeService productTypeService;
 
         public ProductTypesController(IProductTypeService productTypeService)
         {
@@ -24,14 +24,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingleProductType(int id)
         {
-            var productTypeInfo = await productTypeService.GetSingleProductType(id);
-            
-            if (!productTypeInfo.Success)
+            var response = await productTypeService.GetSingleProductType(id);
+
+            if (!response.Success)
             {
-                return NotFound();
+                return NotFound(response);
             }
-            
-            return Ok(productTypeInfo);
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -43,27 +43,27 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProductType(int id, AddUpdateProductTypeDTO newProduct)
         {
-            var productRes = await productTypeService.UpdateProductType(id, newProduct);
-           
-            if (!productRes.Success)
+            var response = await productTypeService.UpdateProductType(id, newProduct);
+
+            if (!response.Success)
             {
-                return NotFound();
+                return NotFound(response);
             }
-            
-            return Ok(productRes);
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var result = await productTypeService.DeleteProductType(id);
-           
-            if (!result.Success)
+            var response = await productTypeService.DeleteProductType(id);
+
+            if (!response.Success)
             {
-                return NotFound();
+                return NotFound(response);
             }
-            
-            return Ok(result);
+
+            return Ok(response);
         }
     }
 }

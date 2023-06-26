@@ -1,6 +1,6 @@
 using AutoMapper;
 using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 using ModsenOnlineStore.Store.Domain.Entities;
@@ -9,10 +9,9 @@ namespace ModsenOnlineStore.Store.Application.Services.CouponServices;
 
 public class CouponService : ICouponService
 {
-    private IMapper mapper;
-    private ICouponRepository couponRepository;
-    private IOrderRepository orderRepository;
-
+    private readonly IMapper mapper;
+    private readonly ICouponRepository couponRepository;
+    private readonly IOrderRepository orderRepository;
 
     public CouponService(IMapper mapper, ICouponRepository couponRepository, IOrderRepository orderRepository)
     {
@@ -57,15 +56,12 @@ public class CouponService : ICouponService
         return new DataResponseInfo<List<GetCouponDTO>>(data: couponDtos, success: true, message: $"product type with user id {userId}");
     }
 
-
     public async Task<ResponseInfo> AddCoupon(AddCouponDTO newCouponDto)
     {
-
         var newCoupon= mapper.Map<Coupon>(newCouponDto);
         await couponRepository.AddCoupon(newCoupon);
 
         return new ResponseInfo(success: true, message: "coupon added");
-
     }
 
     public async Task<ResponseInfo> DeleteCoupon(int id)
@@ -83,8 +79,8 @@ public class CouponService : ICouponService
     public async Task<ResponseInfo> DeleteCouponsByUserId(int id)
     {
         var couponList = await couponRepository.DeleteCouponsByUserId(id);
-            
-        if (couponList is null)
+
+        if (couponList.Count == 0)
         {
             return new ResponseInfo(success: false, message: "coupons not found");
         }

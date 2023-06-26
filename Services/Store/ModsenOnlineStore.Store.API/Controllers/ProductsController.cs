@@ -24,7 +24,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
-            return Ok(await service.GetProductById(id));
+            var response = await service.GetProductById(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -36,13 +43,53 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto)
         {
-            return Ok(await service.UpdateProduct(updateProductDto));
+            var response = await service.UpdateProduct(updateProductDto);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpDelete]
         public async Task<IActionResult> RemoveProductById(int id)
         {
-            return Ok(await service.RemoveProductById(id));
+            var response = await service.RemoveProductById(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("byProductType{id}")]
+        public async Task<IActionResult> GetAllProductsByProductTypeId(int id)
+        {
+            var response = await service.GetAllProductsByProductTypeId(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("byOrder{id}")]
+        public async Task<IActionResult> GetAllProductsByOrderId(int id)
+        {
+            var response = await service.GetAllProductsByOrderId(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }

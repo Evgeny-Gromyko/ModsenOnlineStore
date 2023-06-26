@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Application.Interfaces;
-using ModsenOnlineStore.Store.Application.Services;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 using ModsenOnlineStore.Store.Application.Services.OrderProductServices;
@@ -13,12 +11,15 @@ using ModsenOnlineStore.Store.Application.Services.CommentServices;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Application.Services.CouponServices;
 using ModsenOnlineStore.Store.Application.Services.ProductServices;
+using ModsenOnlineStore.Store.Application.Services.OrderService;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<ICouponService, CouponService>();
 builder.Services.AddTransient<ICouponRepository, CouponRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IOrderProductService, OrderProductService>();
 builder.Services.AddTransient<IOrderProductRepository, OrderProductRepository>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
