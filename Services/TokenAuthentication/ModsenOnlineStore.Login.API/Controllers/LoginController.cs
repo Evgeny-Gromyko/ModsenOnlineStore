@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
@@ -10,8 +9,8 @@ namespace ModsenOnlineStore.Login.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private ILoginService service;
-        private IEncryptionService encryption;
+        private readonly ILoginService service;
+        private readonly IEncryptionService encryption;
 
         public LoginController(ILoginService service, IEncryptionService encryption)
         {
@@ -34,12 +33,21 @@ namespace ModsenOnlineStore.Login.API.Controllers
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAllUsers() =>
-            Ok(await service.GetAllUsers());
+            Ok((await service.GetAllUsers()).Data);
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetSingleUser(int id) =>
-            Ok(await service.GetUserById(id));
+        public async Task<IActionResult> GetSingleUser(int id)
+        {
+            var response = await service.GetUserById(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response.Data);
+        }
 
         [HttpPost]
         [Route("/Register")]
@@ -49,15 +57,46 @@ namespace ModsenOnlineStore.Login.API.Controllers
             return Ok(await service.RegisterUser(user));
         }
 
-
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateUser(UpdateUserDto newEvent) =>
-            Ok(await service.UpdateUser(newEvent));
+        public async Task<IActionResult> UpdateUser(UpdateUserDto newEvent)
+        {
+            var response = await service.UpdateUser(newEvent);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteEvent(int id) =>
-            Ok(await service.DeleteUser(id));
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var response = await service.DeleteUser(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(int userId, string code)
+        {
+            var response = await service.ConfirmEmail(userId, code);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
     }
 }

@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IEmailSendingService, EmailSendingService>();
 builder.Services.AddTransient<IVerificationCodeGeneratior, VerificationCodeGeneratior>();
+builder.Services.AddHostedService<RabbitMQBackgroundConsumerService>();
 
 
 builder.Services.AddControllers();

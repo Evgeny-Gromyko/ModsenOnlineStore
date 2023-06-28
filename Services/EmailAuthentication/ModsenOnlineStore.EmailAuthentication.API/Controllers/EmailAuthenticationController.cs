@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.EmailAuthentication.Application.Interfaces;
 using ModsenOnlineStore.EmailAuthentication.Domain;
-using System.Net.Mail;
 
 namespace ModsenOnlineStore.EmailAuthentication.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class EmailAuthenticationController : ControllerBase
     {
         private readonly IEmailSendingService emailSendingService;
         private readonly IVerificationCodeGeneratior codeGeneratior;
+
         public EmailAuthenticationController(
             IEmailSendingService emailSendingService,
             IVerificationCodeGeneratior codeGeneratior) 
