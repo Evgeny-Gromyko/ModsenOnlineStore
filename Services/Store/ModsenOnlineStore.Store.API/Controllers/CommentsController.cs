@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 
@@ -16,61 +17,67 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllComments()
         {
-            return Ok(await service.GetAllComments());
+            var response = await service.GetAllComments();
+            return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCommentById(int id)
         {
             var response = await service.GetCommentById(id);
             
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Data);
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddComment(AddCommentDto addCommentDto)
         {
             var response = await service.AddComment(addCommentDto);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpPut]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateComment(UpdateCommentDto updateProductDto)
         {
             var response = await service.UpdateComment(updateProductDto);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpDelete]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> RemoveCommentById(int id)
         {
             var response = await service.RemoveCommentById(id);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpGet("byProduct{id}")]
@@ -80,10 +87,10 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Data);
         }
     }
 }

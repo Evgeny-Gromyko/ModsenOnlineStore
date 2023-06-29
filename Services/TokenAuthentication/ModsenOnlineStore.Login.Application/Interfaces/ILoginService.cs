@@ -12,10 +12,15 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
     public interface ILoginService
     {
         Task<DataResponseInfo<string>> GetToken(LoginData data);
+        
         Task<DataResponseInfo<List<User>>> GetAllUsers();
+        
         Task<DataResponseInfo<User>> GetUserById(int id);
-        Task<DataResponseInfo<List<User>>> RegisterUser(AddUserDto user);
-        Task<DataResponseInfo<List<User>>> DeleteUser(int id);
-        Task<DataResponseInfo<User>> UpdateUser(UpdateUserDto user);
+        
+        Task<ResponseInfo> RegisterUser(AddUserDto user);
+        
+        Task<ResponseInfo> DeleteUser(int id);
+        
+        Task<ResponseInfo> UpdateUser(UpdateUserDto user);
     }
 }

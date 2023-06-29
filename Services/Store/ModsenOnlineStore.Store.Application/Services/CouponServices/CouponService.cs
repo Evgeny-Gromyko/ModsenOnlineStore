@@ -53,7 +53,7 @@ public class CouponService : ICouponService
         
         var couponDtos = coupons.Select(mapper.Map<GetCouponDTO>).ToList();
 
-        return new DataResponseInfo<List<GetCouponDTO>>(data: couponDtos, success: true, message: $"product type with user id {userId}");
+        return new DataResponseInfo<List<GetCouponDTO>>(data: couponDtos, success: true, message: $"coupons of user with id {userId}");
     }
 
     public async Task<ResponseInfo> AddCoupon(AddCouponDTO newCouponDto)

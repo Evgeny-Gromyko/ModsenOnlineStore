@@ -24,40 +24,80 @@ namespace ModsenOnlineStore.Login.API.Controllers
         public async Task<IActionResult> Login(LoginData data)
         {
             data.Password = encryption.HashPassword(data.Password);
-            var token = await service.GetToken(data);
+            var response = await service.GetToken(data);
 
-            if (token is null) return Unauthorized();
+            if (response.Data is null) return Unauthorized();
 
-            return Ok(new { access_token = token });
+            return Ok(new { access_token = response.Data });
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetAllUsers() =>
-            Ok(await service.GetAllUsers());
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var response = await service.GetAllUsers();
+            
+            return Ok(response.Data);
+        }
 
         [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetSingleUser(int id) =>
-            Ok(await service.GetUserById(id));
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetSingleUser(int id)
+        {
+            var response = await service.GetUserById(id);
+            
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
+        }
 
         [HttpPost]
         [Route("/Register")]
         public async Task<IActionResult> RegisterUser(AddUserDto user)
         {
             user.Password = encryption.HashPassword(user.Password);
-            return Ok(await service.RegisterUser(user));
+
+            var response = await service.RegisterUser(user);
+
+            if (!response.Success)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(response.Message);
         }
 
-
         [HttpPut]
-        [Authorize]
-        public async Task<IActionResult> UpdateUser(UpdateUserDto newEvent) =>
-            Ok(await service.UpdateUser(newEvent));
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateUser(UpdateUserDto user)
+        {
+            user.Password = encryption.HashPassword(user.Password);
+
+            var response = await service.UpdateUser(user);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Message);
+            }
+
+            return Ok(response.Message);
+        }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteEvent(int id) =>
-            Ok(await service.DeleteUser(id));
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var response = await service.DeleteUser(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
+        }
     }
 }

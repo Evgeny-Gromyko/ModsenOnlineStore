@@ -95,7 +95,7 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
 
         public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductId(int id)
         {
-            var product = productRepository.GetProductById(id);
+            var product = await productRepository.GetProductById(id);
 
             if (product is null)
             {

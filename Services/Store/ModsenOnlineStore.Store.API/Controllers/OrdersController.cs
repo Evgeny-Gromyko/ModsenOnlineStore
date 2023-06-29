@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
@@ -16,60 +17,77 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
-            return Ok(await orderService.GetAllOrders());
+            var response = await orderService.GetAllOrders();
+            
+            return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetSingleOrder(int id)
         {
             var response = await orderService.GetSingleOrder(id);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Data);
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddOrder(AddOrderDTO order)
         {
-            return Ok(await orderService.AddOrder(order));
+            var response = await orderService.AddOrder(order);
+                
+            return Ok(response.Message);
         }
 
         [HttpPut]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateOrder(UpdateOrderDTO order)
         {
             var response = await orderService.UpdateOrder(order);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var response = await orderService.DeleteOrder(id);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpGet("byUser{id}")]
+        [Authorize]
         public async Task<IActionResult> GetAllOrdersByUserId(int id)
         {
-            return Ok(await orderService.GetAllOrdersByUserId(id));
+            var response = await orderService.GetAllOrdersByUserId(id);
+                
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+            
+            return Ok(response.Data);
         }
     }
 }

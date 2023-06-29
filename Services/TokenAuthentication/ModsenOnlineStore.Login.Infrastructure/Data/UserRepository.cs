@@ -28,33 +28,33 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
         public async Task<User> GetUserById(int id) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<List<User>> RegisterUser(User user)
+        public async Task<User> RegisterUser(User user)
         {
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            return await GetAllUsers();
+            return user;
         }
 
-        public async Task<List<User>> DeleteUser(int id)
+        public async Task<User> DeleteUser(int id)
         {
             var user = await GetUserById(id);
+            
             if (user is null) return null;
 
             context.Users.Remove(user);
             await context.SaveChangesAsync();
-            return await GetAllUsers();
+            
+            return user;
         }
 
         public async Task<User> EditUser(User newUser)
         {
             var prevUser = await GetUserById(newUser.Id);
+            
             if (prevUser is null) return null;
 
-            prevUser.Name = newUser.Name;
-            prevUser.Email = newUser.Email;
-            prevUser.Password = newUser.Password;
-
+            context.Users.Update(newUser);
             await context.SaveChangesAsync();
 
             return newUser;
