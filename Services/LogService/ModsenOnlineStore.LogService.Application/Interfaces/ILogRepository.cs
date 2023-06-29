@@ -9,7 +9,7 @@ namespace ModsenOnlineStore.LogService.Application.Interfaces
 {
     public interface ILogRepository
     {
-        public void AddLog(Log log);
+        public Task AddLog(Log log);
         public Task<Log> GetLogById(int id);
         public Task<List<Log>> GetAllLogs();
 

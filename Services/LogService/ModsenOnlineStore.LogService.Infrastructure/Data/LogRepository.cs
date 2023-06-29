@@ -11,11 +11,12 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Data
 {
     public class LogRepository : ILogRepository
     {
-        private DataContext context;
+        private readonly DataContext context;
         public LogRepository(DataContext context) { 
             this.context = context;
         }
-        public async void AddLog(Log log)
+
+        public async Task AddLog(Log log)
         {
             context.Logs.Add(log);
             await context.SaveChangesAsync();

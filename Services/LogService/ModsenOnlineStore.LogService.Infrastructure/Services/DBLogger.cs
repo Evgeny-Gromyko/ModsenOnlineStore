@@ -19,13 +19,8 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
         {
             this.repository = repository;
         }
-//        public DBLogger(IServiceProvider serviceProvider)
-//        {
-//            repository = serviceProvider.GetService<ILogRepository>();
-//        }
 
-
-        public void Log<TState>( // is it possible to make it async?
+        public void Log<TState>( // is it possible to make it async?  
             LogLevel logLevel, EventId eventId,
             TState context, Exception? exception,
             Func<TState, Exception?, string> formatter)
