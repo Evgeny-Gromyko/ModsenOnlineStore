@@ -17,18 +17,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProductsAsync()
         {
-            var response = await service.GetAllProducts();
+            var response = await service.GetAllProductsAsync();
                 
             return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductByIdAsync(int id)
         {
-            var response = await service.GetProductById(id);
+            var response = await service.GetProductByIdAsync(id);
 
             if (!response.Success)
             {
@@ -40,18 +40,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddProduct(AddProductDto addProductDto)
+        public async Task<IActionResult> AddProductAsync(AddProductDto addProductDto)
         {
-            var response = await service.AddProduct(addProductDto);
+            var response = await service.AddProductAsync(addProductDto);
                 
             return Ok(response.Message);
         }
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto)
+        public async Task<IActionResult> UpdateProductAsync(UpdateProductDto updateProductDto)
         {
-            var response = await service.UpdateProduct(updateProductDto);
+            var response = await service.UpdateProductAsync(updateProductDto);
 
             if (!response.Success)
             {
@@ -63,9 +63,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpDelete]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RemoveProductById(int id)
+        public async Task<IActionResult> RemoveProductByIdAsync(int id)
         {
-            var response = await service.RemoveProductById(id);
+            var response = await service.RemoveProductByIdAsync(id);
 
             if (!response.Success)
             {
@@ -76,9 +76,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet("byProductType{id}")]
-        public async Task<IActionResult> GetAllProductsByProductTypeId(int id)
+        public async Task<IActionResult> GetAllProductsByProductTypeIdAsync(int id)
         {
-            var response = await service.GetAllProductsByProductTypeId(id);
+            var response = await service.GetAllProductsByProductTypeIdAsync(id);
 
             if (!response.Success)
             {
@@ -90,9 +90,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("byOrder{id}")]
         [Authorize]
-        public async Task<IActionResult> GetAllProductsByOrderId(int id)
+        public async Task<IActionResult> GetAllProductsByOrderIdAsync(int id)
         {
-            var response = await service.GetAllProductsByOrderId(id);
+            var response = await service.GetAllProductsByOrderIdAsync(id);
 
             if (!response.Success)
             {

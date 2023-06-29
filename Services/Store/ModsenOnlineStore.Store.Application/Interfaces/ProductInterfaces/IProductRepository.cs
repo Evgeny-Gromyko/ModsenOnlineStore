@@ -4,14 +4,14 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllProducts();
+        Task<List<Product>> GetAllProductsAsync();
 
-        Task<Product?> GetProductById(int id);
+        Task<Product?> GetProductByIdAsync(int id);
 
-        Task AddProduct(Product product);
+        Task AddProductAsync(Product product);
 
-        Task UpdateProduct(Product product);
+        Task UpdateProductAsync(Product product);
 
-        Task RemoveProductById(int id);
+        Task RemoveProductByIdAsync(int id);
     }
 }

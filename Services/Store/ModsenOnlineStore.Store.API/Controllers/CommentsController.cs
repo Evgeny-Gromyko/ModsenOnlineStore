@@ -18,17 +18,17 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllComments()
+        public async Task<IActionResult> GetAllCommentsAsync()
         {
-            var response = await service.GetAllComments();
+            var response = await service.GetAllCommentsAsync();
             return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetCommentById(int id)
+        public async Task<IActionResult> GetCommentByIdAsync(int id)
         {
-            var response = await service.GetCommentById(id);
+            var response = await service.GetCommentByIdAsync(id);
             
             if (!response.Success)
             {
@@ -40,9 +40,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddComment(AddCommentDto addCommentDto)
+        public async Task<IActionResult> AddCommentAsync(AddCommentDto addCommentDto)
         {
-            var response = await service.AddComment(addCommentDto);
+            var response = await service.AddCommentAsync(addCommentDto);
 
             if (!response.Success)
             {
@@ -54,9 +54,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> UpdateComment(UpdateCommentDto updateProductDto)
+        public async Task<IActionResult> UpdateCommentAsync(UpdateCommentDto updateProductDto)
         {
-            var response = await service.UpdateComment(updateProductDto);
+            var response = await service.UpdateCommentAsync(updateProductDto);
 
             if (!response.Success)
             {
@@ -68,9 +68,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpDelete]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> RemoveCommentById(int id)
+        public async Task<IActionResult> RemoveCommentByIdAsync(int id)
         {
-            var response = await service.RemoveCommentById(id);
+            var response = await service.RemoveCommentByIdAsync(id);
 
             if (!response.Success)
             {
@@ -81,9 +81,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet("byProduct{id}")]
-        public async Task<IActionResult> GetAllCommentsByProductId(int id)
+        public async Task<IActionResult> GetAllCommentsByProductIdAsync(int id)
         {
-            var response = await service.GetAllCommentsByProductId(id);
+            var response = await service.GetAllCommentsByProductIdAsync(id);
 
             if (!response.Success)
             {

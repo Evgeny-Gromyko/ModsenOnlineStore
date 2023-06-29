@@ -13,29 +13,29 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task<List<Product>> GetAllProducts()
+        public async Task<List<Product>> GetAllProductsAsync()
         {
             return await context.Products.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Product?> GetProductById(int id)
+        public async Task<Product?> GetProductByIdAsync(int id)
         {
             return await context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task AddProduct(Product product)
+        public async Task AddProductAsync(Product product)
         {
             context.Products.Add(product);
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateProduct(Product product)
+        public async Task UpdateProductAsync(Product product)
         {
             context.Products.Update(product);
             await context.SaveChangesAsync();
         }
 
-        public async Task RemoveProductById(int id)
+        public async Task RemoveProductByIdAsync(int id)
         {
             var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
 

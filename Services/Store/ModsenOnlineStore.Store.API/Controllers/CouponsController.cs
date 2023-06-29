@@ -18,18 +18,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllCoupons()
+        public async Task<IActionResult> GetAllCouponsAsync()
         {
-            var response = await couponService.GetAllCoupons();
+            var response = await couponService.GetAllCouponsAsync();
             
             return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetCoupon(int id)
+        public async Task<IActionResult> GetCouponAsync(int id)
         {
-            var response = await couponService.GetCoupon(id);
+            var response = await couponService.GetCouponAsync(id);
 
             if (!response.Success)
             {
@@ -41,18 +41,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddCoupon(AddCouponDTO coupon)
+        public async Task<IActionResult> AddCouponAsync(AddCouponDTO coupon)
         {
-            var response = await couponService.AddCoupon(coupon);
+            var response = await couponService.AddCouponAsync(coupon);
             
             return Ok(response.Message);
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteCoupon(int id)
+        public async Task<IActionResult> DeleteCouponAsync(int id)
         {
-            var response = await couponService.DeleteCoupon(id);
+            var response = await couponService.DeleteCouponAsync(id);
 
             if (!response.Success)
             {
@@ -64,9 +64,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost("apply")]
         [Authorize]
-        public async Task<IActionResult> ApplyCoupon(ApplyCouponDTO data)
+        public async Task<IActionResult> ApplyCouponAsync(ApplyCouponDTO data)
         {
-            var response = await couponService.ApplyCoupon(data);
+            var response = await couponService.ApplyCouponAsync(data);
 
             if (!response.Success)
             {
@@ -78,18 +78,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
         
         [HttpGet("byUser{userId}")]
         [Authorize]
-        public async Task<IActionResult> GetCouponsByUserId(int userId)
+        public async Task<IActionResult> GetCouponsByUserIdAsync(int userId)
         {
-            var response = await couponService.GetCouponsByUserId(userId);
+            var response = await couponService.GetCouponsByUserIdAsync(userId);
             
             return Ok(response.Data);
         }
         
         [HttpDelete("byUser{userId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteCouponsByUserId(int userId)
+        public async Task<IActionResult> DeleteCouponsByUserIdAsync(int userId)
         {
-            var response = await couponService.DeleteCouponsByUserId(userId);
+            var response = await couponService.DeleteCouponsByUserIdAsync(userId);
             
             return Ok(response.Message);
         }

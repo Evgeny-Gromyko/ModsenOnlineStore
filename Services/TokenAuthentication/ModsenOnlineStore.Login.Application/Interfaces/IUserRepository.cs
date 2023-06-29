@@ -9,16 +9,16 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllUsers();
+        Task<List<User>> GetAllUsersAsync();
         
-        Task<User> GetUserById(int id);
+        Task<User> GetUserByIdAsync(int id);
         
-        Task<User> AuthenticateUser(string email, string password);
+        Task<User> AuthenticateUserAsync(string email, string password);
         
-        Task<User> RegisterUser(User user);
+        Task<User> RegisterUserAsync(User user);
         
-        Task<User> DeleteUser(int id);
+        Task<User> DeleteUserAsync(int id);
         
-        Task<User> EditUser(User user);
+        Task<User> EditUserAsync(User user);
     }
 }

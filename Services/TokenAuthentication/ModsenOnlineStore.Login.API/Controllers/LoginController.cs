@@ -21,10 +21,10 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPost]
         [Route("/Login")]
-        public async Task<IActionResult> Login(LoginData data)
+        public async Task<IActionResult> LoginAsync(LoginData data)
         {
             data.Password = encryption.HashPassword(data.Password);
-            var response = await service.GetToken(data);
+            var response = await service.GetTokenAsync(data);
 
             if (response.Data is null) return Unauthorized();
 
@@ -33,18 +33,18 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsersAsync()
         {
-            var response = await service.GetAllUsers();
+            var response = await service.GetAllUsersAsync();
             
             return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetSingleUser(int id)
+        public async Task<IActionResult> GetSingleUserAsync(int id)
         {
-            var response = await service.GetUserById(id);
+            var response = await service.GetUserByIdAsync(id);
             
             if (!response.Success)
             {
@@ -56,11 +56,11 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPost]
         [Route("/Register")]
-        public async Task<IActionResult> RegisterUser(AddUserDto user)
+        public async Task<IActionResult> RegisterUserAsync(AddUserDto user)
         {
             user.Password = encryption.HashPassword(user.Password);
 
-            var response = await service.RegisterUser(user);
+            var response = await service.RegisterUserAsync(user);
 
             if (!response.Success)
             {
@@ -72,11 +72,11 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateUser(UpdateUserDto user)
+        public async Task<IActionResult> UpdateUserAsync(UpdateUserDto user)
         {
             user.Password = encryption.HashPassword(user.Password);
 
-            var response = await service.UpdateUser(user);
+            var response = await service.UpdateUserAsync(user);
 
             if (!response.Success)
             {
@@ -88,9 +88,9 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUserAsync(int id)
         {
-            var response = await service.DeleteUser(id);
+            var response = await service.DeleteUserAsync(id);
 
             if (!response.Success)
             {

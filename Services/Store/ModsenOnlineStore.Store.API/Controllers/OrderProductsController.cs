@@ -18,18 +18,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
         
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllOrderProducts()
+        public async Task<IActionResult> GetAllOrderProductsAsync()
         {
-            var response = await orderProductService.GetAllOrderProducts();
+            var response = await orderProductService.GetAllOrderProductsAsync();
             
             return Ok(response.Data);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddProductToOrder(AddProductToOrderDTO data)
+        public async Task<IActionResult> AddProductToOrderAsync(AddProductToOrderDTO data)
         {
-            var response = await orderProductService.AddProductToOrder(data);
+            var response = await orderProductService.AddProductToOrderAsync(data);
 
             if (!response.Success)
             {

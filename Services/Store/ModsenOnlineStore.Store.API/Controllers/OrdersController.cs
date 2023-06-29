@@ -18,7 +18,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrdersAsync()
         {
             var response = await orderService.GetAllOrders();
             
@@ -27,7 +27,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetSingleOrder(int id)
+        public async Task<IActionResult> GetSingleOrderAsync(int id)
         {
             var response = await orderService.GetSingleOrder(id);
 
@@ -41,18 +41,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddOrder(AddOrderDTO order)
+        public async Task<IActionResult> AddOrderAsync(AddOrderDTO order)
         {
-            var response = await orderService.AddOrder(order);
+            var response = await orderService.AddOrderAsync(order);
                 
             return Ok(response.Message);
         }
 
         [HttpPut]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> UpdateOrder(UpdateOrderDTO order)
+        public async Task<IActionResult> UpdateOrderAsync(UpdateOrderDTO order)
         {
-            var response = await orderService.UpdateOrder(order);
+            var response = await orderService.UpdateOrderAsync(order);
 
             if (!response.Success)
             {
@@ -64,9 +64,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<IActionResult> DeleteOrderAsync(int id)
         {
-            var response = await orderService.DeleteOrder(id);
+            var response = await orderService.DeleteOrderAsync(id);
 
             if (!response.Success)
             {
@@ -78,9 +78,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("byUser{id}")]
         [Authorize]
-        public async Task<IActionResult> GetAllOrdersByUserId(int id)
+        public async Task<IActionResult> GetAllOrdersByUserIdAsync(int id)
         {
-            var response = await orderService.GetAllOrdersByUserId(id);
+            var response = await orderService.GetAllOrdersByUserIdAsync(id);
                 
             if (!response.Success)
             {

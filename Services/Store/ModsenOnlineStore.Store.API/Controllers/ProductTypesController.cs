@@ -17,17 +17,17 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAllProductTypes()
+        public async Task<IActionResult> GetAllProductTypesAsync()
         {
-            var response = await productTypeService.GetAllProductTypes();
+            var response = await productTypeService.GetAllProductTypesAsync();
                 
             return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSingleProductType(int id)
+        public async Task<IActionResult> GetSingleProductTypeAsync(int id)
         {
-            var response = await productTypeService.GetSingleProductType(id);
+            var response = await productTypeService.GetSingleProductTypeAsync(id);
 
             if (!response.Success)
             {
@@ -39,18 +39,18 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddProductType(AddUpdateProductTypeDTO product)
+        public async Task<IActionResult> AddProductTypeAsync(AddUpdateProductTypeDTO product)
         {
-            var response = await productTypeService.AddProductType(product);
+            var response = await productTypeService.AddProductTypeAsync(product);
                 
             return Ok(response.Message);
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProductType(int id, AddUpdateProductTypeDTO newProduct)
+        public async Task<IActionResult> UpdateProductTypeAsync(int id, AddUpdateProductTypeDTO newProduct)
         {
-            var response = await productTypeService.UpdateProductType(id, newProduct);
+            var response = await productTypeService.UpdateProductTypeAsync(id, newProduct);
 
             if (!response.Success)
             {
@@ -62,9 +62,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProductAsync(int id)
         {
-            var response = await productTypeService.DeleteProductType(id);
+            var response = await productTypeService.DeleteProductTypeAsync(id);
 
             if (!response.Success)
             {

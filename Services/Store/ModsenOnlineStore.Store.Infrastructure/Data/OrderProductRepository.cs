@@ -15,7 +15,7 @@ public class OrderProductRepository:IOrderProductRepository
         this.context = context;
     }
 
-    public async Task<Order?> AddProductToOrder(int productId, int orderId, int quantity = 1)
+    public async Task<Order?> AddProductToOrderAsync(int productId, int orderId, int quantity = 1)
     {
         var product = await context.Products.FirstOrDefaultAsync(p => p.Id == productId);
         
@@ -52,7 +52,7 @@ public class OrderProductRepository:IOrderProductRepository
         return order;
     }
 
-    public async Task<List<OrderProduct>> GetAllOrderProducts()
+    public async Task<List<OrderProduct>> GetAllOrderProductsAsync()
     {
         var orderProducts = await context.OrderProducts
             .Include(op => op.Order)
