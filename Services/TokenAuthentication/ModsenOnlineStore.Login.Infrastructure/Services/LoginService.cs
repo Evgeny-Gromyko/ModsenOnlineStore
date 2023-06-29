@@ -7,8 +7,6 @@ using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using RabbitMQ.Client;
-using System.Text;
 
 namespace ModsenOnlineStore.Login.Infrastructure.Services
 {
@@ -16,20 +14,26 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
     {
         private readonly IUserRepository repository;
         private readonly IEmailConfirmationRepository emailConfirmationRepository;
+        private readonly IRabbitMQMessagingService rabbitMQMessagingService;
         private readonly IOptions<AuthOptions> authOptions;
         private readonly IMapper mapper;
 
-        public LoginService(IUserRepository repository, IEmailConfirmationRepository emailConfirmationRepository, IOptions<AuthOptions> authOptions, IMapper mapper)
+        public LoginService(IUserRepository repository,
+                            IEmailConfirmationRepository emailConfirmationRepository,
+                            IRabbitMQMessagingService rabbitMQMessagingService,
+                            IOptions<AuthOptions> authOptions,
+                            IMapper mapper)
         {
             this.repository = repository;
             this.emailConfirmationRepository = emailConfirmationRepository;
+            this.rabbitMQMessagingService = rabbitMQMessagingService;
             this.authOptions = authOptions;
             this.mapper = mapper;
         }
 
         public async Task<DataResponseInfo<string>> GetToken(LoginData data)
         {
-            User user = await repository.AuthenticateUser(data.Email, data.Password);
+            var user = await repository.AuthenticateUser(data.Email, data.Password);
             if (user is null) return null;
 
             if (!user.IsEmailConfirmed)
@@ -71,11 +75,19 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
         public async Task<ResponseInfo> RegisterUser(AddUserDto userDto)
         {
             if (userDto is null) return new ResponseInfo(success: false, message: "wrong request data");
+
+            var user = await repository.GetUserByEmail(userDto.Email);
+
+            if (user is not null)
+            {
+                return new ResponseInfo(success: false, message: "this email is already in use");
+            }
+
             var newUser = mapper.Map<User>(userDto);
 
             await repository.RegisterUser(newUser);
 
-            var user = await repository.GetUserByEmail(newUser.Email);
+            user = await repository.GetUserByEmail(newUser.Email);
 
             var emailConfirmation = new EmailConfirmation
             {
@@ -85,25 +97,8 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
             await emailConfirmationRepository.AddEmailConfirmation(emailConfirmation);
 
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                channel.QueueDeclare(queue: "email-confirmation",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
-
-                var message = user.Email + " " + user.Id + " " + emailConfirmation.Code;
-
-                var body = Encoding.UTF8.GetBytes(message);
-
-                channel.BasicPublish(exchange: "",
-                                     routingKey: "email-confirmation",
-                                     basicProperties: null,
-                                     body: body);
-            }
+            var message = user.Email + " " + user.Id + " " + emailConfirmation.Code;
+            rabbitMQMessagingService.PublishMessage("email-confirmation", message);
 
             return new ResponseInfo(success: true, message: "user registered");
         }

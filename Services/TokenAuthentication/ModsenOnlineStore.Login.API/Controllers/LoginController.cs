@@ -59,9 +59,10 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateUser(UpdateUserDto newEvent)
+        public async Task<IActionResult> UpdateUser(UpdateUserDto updateUserDto)
         {
-            var response = await service.UpdateUser(newEvent);
+            updateUserDto.Password = encryption.HashPassword(updateUserDto.Password);
+            var response = await service.UpdateUser(updateUserDto);
 
             if (!response.Success)
             {

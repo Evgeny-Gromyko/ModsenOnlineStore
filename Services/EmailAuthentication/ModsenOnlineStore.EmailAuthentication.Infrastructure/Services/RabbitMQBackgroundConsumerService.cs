@@ -9,49 +9,49 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
     public class RabbitMQBackgroundConsumerService : BackgroundService
     {
         private readonly IEmailSendingService emailSendingService;
-        private IConnection connection;
-        private IModel channel;
+        private readonly IConnection connection;
+        private readonly IModel channel;
 
         public RabbitMQBackgroundConsumerService(IEmailSendingService emailSendingService)
         {
             this.emailSendingService = emailSendingService;
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            stoppingToken.ThrowIfCancellationRequested();
-
             var factory = new ConnectionFactory();
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
+        }
 
-            channel.QueueDeclare(queue: "email-confirmation",
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            stoppingToken.ThrowIfCancellationRequested();
+
+            await Task.Run(() =>
+            {
+                channel.QueueDeclare(queue: "email-confirmation",
                                  durable: false,
                                  exclusive: false,
                                  autoDelete: false,
                                  arguments: null);
 
-            var consumer = new EventingBasicConsumer(channel);
+                var consumer = new EventingBasicConsumer(channel);
 
-            consumer.Received += (sender, e) =>
-            {
-                var body = e.Body;
-                var message = Encoding.UTF8.GetString(body.ToArray());
+                consumer.Received += (sender, e) =>
+                {
+                    var body = e.Body;
+                    var message = Encoding.UTF8.GetString(body.ToArray());
 
-                var email = message.Split()[0];
-                var userId = message.Split()[1];
-                var code = message.Split()[2];
+                    var email = message.Split()[0];
+                    var userId = message.Split()[1];
+                    var code = message.Split()[2];
 
-                emailSendingService.SendEmail(email,
-                                              Domain.Constants.EmailConfirmationTheme,
-                                              string.Format(Domain.Constants.EmailConfirmationText, userId, code));
-            };
+                    emailSendingService.SendEmail(email,
+                                                  Domain.Constants.EmailConfirmationTheme,
+                                                  string.Format(Domain.Constants.EmailConfirmationText, userId, code));
+                };
 
-            channel.BasicConsume(queue: "email-confirmation",
-                                 autoAck: true,
-                                 consumer: consumer);
-
-            return Task.CompletedTask;
+                channel.BasicConsume(queue: "email-confirmation",
+                                     autoAck: true,
+                                     consumer: consumer);
+            });
         }
     }
 }
