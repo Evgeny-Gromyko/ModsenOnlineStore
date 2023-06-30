@@ -21,7 +21,7 @@ namespace ModsenOnlineStore.EmailAuthentication.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(string email)
+        public async Task<IActionResult> SendConfirmationCode(string email)
         {
             string code = codeGeneratior.GenerateCode();
 

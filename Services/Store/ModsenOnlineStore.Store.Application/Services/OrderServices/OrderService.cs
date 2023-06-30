@@ -60,6 +60,30 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             return new ResponseInfo(success: true, message: "order updated");
         }
 
+
+        public async Task<ResponseInfo> PayOrder(int id, string code)
+        {
+            var order = await orderRepository.GetSingleOrder(id);
+
+            if (order is null)
+            {
+                return new ResponseInfo(success: false, message: "no such order");
+            }
+
+            if (order.PaymentConfirmationCode != code)
+            {
+                return new ResponseInfo(success: false, message: "wrong confirmation code");
+            }
+
+            order.Paid = true;
+
+            //money --
+
+            await orderRepository.UpdateOrder(order);
+
+            return new ResponseInfo(success: true, message: "order updated");
+        }
+
         public async Task<ResponseInfo> DeleteOrder(int id)
         {
             var order = await orderRepository.GetSingleOrder(id);

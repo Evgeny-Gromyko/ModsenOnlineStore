@@ -9,6 +9,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
+        private List<(int, string)> emailAuthenticationCodes; // (orderId, authenticationCode)
 
         public OrdersController(IOrderService orderService)
         {
@@ -34,10 +35,37 @@ namespace ModsenOnlineStore.Store.API.Controllers
             return Ok(response);
         }
 
+        
         [HttpPost]
-        public async Task<IActionResult> AddOrder(AddOrderDTO order)
+        public async Task<IActionResult> AddOrder(AddOrderDTO order) // send mail, save code to database
         {
+            //Send requet to emailauth,
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7107/");
+                var response = await client.PostAsJsonAsync("EmailAuthentication", "egrom2002@gmail.com");
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    order.PaymentConfirmationCode = data;
+                }
+            }
+
             return Ok(await orderService.AddOrder(order));
+        }
+
+        [HttpPut("Pay")]
+        public async Task<IActionResult> PayOrder(int id, string code) // get code and id, pay if possible
+        {
+            var response = await orderService.PayOrder(id, code);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPut]

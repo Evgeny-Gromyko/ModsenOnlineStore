@@ -10,6 +10,8 @@
 
         public bool Paid { get; set; } = false;
 
+        public string? PaymentConfirmationCode { get; set; }
+
         public int UserId { get; set; }
 
         public List<OrderProduct> OrderProducts { get; set; } = new();

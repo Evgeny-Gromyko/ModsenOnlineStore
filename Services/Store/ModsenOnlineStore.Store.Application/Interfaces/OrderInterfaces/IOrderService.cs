@@ -13,6 +13,8 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
 
         Task<ResponseInfo> UpdateOrder(UpdateOrderDTO updateOrder);
 
+        Task<ResponseInfo> PayOrder(int id, string code);
+
         Task<ResponseInfo> DeleteOrder(int id);
 
         Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserId(int id);
