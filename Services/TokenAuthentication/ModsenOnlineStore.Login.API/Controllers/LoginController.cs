@@ -32,12 +32,12 @@ namespace ModsenOnlineStore.Login.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUsers() =>
             Ok(await service.GetAllUsers());
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetSingleUser(int id) =>
             Ok(await service.GetUserById(id));
 
@@ -49,9 +49,24 @@ namespace ModsenOnlineStore.Login.API.Controllers
             return Ok(await service.RegisterUser(user));
         }
 
+        [HttpPost]
+        //[Authorize]
+        [Route("/Pay/{userId}")]
+        public async Task<IActionResult> NewPayment(int userId, decimal money)
+        {
+            var response = await service.NewPayment(userId, money);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
 
         [HttpPut]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> UpdateUser(UpdateUserDto newEvent) =>
             Ok(await service.UpdateUser(newEvent));
 

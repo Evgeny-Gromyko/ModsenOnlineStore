@@ -1,4 +1,6 @@
-﻿namespace ModsenOnlineStore.Store.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ModsenOnlineStore.Store.Domain.Entities
 {
     public class Order
     {
@@ -6,6 +8,7 @@
 
         public string DeliveryAddress { get; set; } = string.Empty;
 
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalPrice { get; set; }
 
         public bool Paid { get; set; } = false;

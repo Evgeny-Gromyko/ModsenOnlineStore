@@ -48,12 +48,13 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
 
         public async Task<User> EditUser(User newUser)
         {
-            var prevUser = await GetUserById(newUser.Id);
+            var prevUser = await context.Users.FirstOrDefaultAsync(p => p.Id == newUser.Id);
             if (prevUser is null) return null;
 
             prevUser.Name = newUser.Name;
             prevUser.Email = newUser.Email;
             prevUser.Password = newUser.Password;
+            prevUser.Money = newUser.Money;
 
             await context.SaveChangesAsync();
 

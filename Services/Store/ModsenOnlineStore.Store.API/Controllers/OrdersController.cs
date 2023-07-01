@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
+using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
@@ -9,10 +13,11 @@ namespace ModsenOnlineStore.Store.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
-        private List<(int, string)> emailAuthenticationCodes; // (orderId, authenticationCode)
+        private readonly IConfiguration configuration;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService, IConfiguration configuration)
         {
+            this.configuration = configuration; 
             this.orderService = orderService;
         }
 
@@ -39,15 +44,15 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddOrder(AddOrderDTO order) // send mail, save code to database
         {
-            //Send requet to emailauth,
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:7107/");
-                var response = await client.PostAsJsonAsync("EmailAuthentication", "egrom2002@gmail.com");
+                var response = await client.PostAsJsonAsync("EmaiLoginlAuthentication", "egrom2002@gmail.com");
                 if (response.IsSuccessStatusCode)
                 {
                     var data = await response.Content.ReadAsStringAsync();
+
                     order.PaymentConfirmationCode = data;
                 }
             }
@@ -56,7 +61,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPut("Pay")]
-        public async Task<IActionResult> PayOrder(int id, string code) // get code and id, pay if possible
+        public async Task<IActionResult> PayOrder(int id, string code)
         {
             var response = await orderService.PayOrder(id, code);
 
@@ -64,7 +69,6 @@ namespace ModsenOnlineStore.Store.API.Controllers
             {
                 return NotFound(response);
             }
-
             return Ok(response);
         }
 

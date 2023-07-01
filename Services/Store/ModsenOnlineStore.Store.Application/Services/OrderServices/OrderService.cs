@@ -3,6 +3,7 @@ using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
+using System.Net.Http.Json;
 
 namespace ModsenOnlineStore.Store.Application.Services.OrderService
 {
@@ -75,13 +76,18 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
                 return new ResponseInfo(success: false, message: "wrong confirmation code");
             }
 
-            order.Paid = true;
+            using (var client = new HttpClient())  // request to reduce money
+            {
+                client.BaseAddress = new Uri("https://localhost:7123/");
+                var response = await client.PostAsJsonAsync($"Login/Pay/{order.UserId}", order.TotalPrice);
 
-            //money --
+                if (response.IsSuccessStatusCode) {
+                    order.Paid = true;
+                    await orderRepository.UpdateOrder(order);
+                }
 
-            await orderRepository.UpdateOrder(order);
-
-            return new ResponseInfo(success: true, message: "order updated");
+                return await response.Content.ReadFromJsonAsync<ResponseInfo>(); //Paid or not
+            }
         }
 
         public async Task<ResponseInfo> DeleteOrder(int id)

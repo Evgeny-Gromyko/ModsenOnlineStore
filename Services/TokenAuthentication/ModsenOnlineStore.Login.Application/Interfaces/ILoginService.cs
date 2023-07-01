@@ -16,6 +16,7 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
         Task<DataResponseInfo<User>> GetUserById(int id);
         Task<DataResponseInfo<List<User>>> RegisterUser(AddUserDto user);
         Task<DataResponseInfo<List<User>>> DeleteUser(int id);
+        Task<ResponseInfo> NewPayment(int id, decimal money);
         Task<DataResponseInfo<User>> UpdateUser(UpdateUserDto user);
     }
 }

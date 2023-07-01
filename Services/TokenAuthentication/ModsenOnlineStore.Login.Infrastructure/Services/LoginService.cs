@@ -38,7 +38,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
             var claims = new List<Claim> {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("role", user.Role.ToString())
+                new Claim("role", user.Role.ToString()),
             };
 
             var jwt = new JwtSecurityToken(
@@ -59,9 +59,28 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
         public async Task<DataResponseInfo<User>> GetUserById(int id)
         {
             var user = await repository.GetUserById(id);
-            if (user is null) return new DataResponseInfo<User>(null, true, "user not found");
+            if (user is null) return new DataResponseInfo<User>(null, false, "user not found");
 
             return new DataResponseInfo<User>(user, true, $"user with id {user.Id}");
+        }
+
+        public async Task<ResponseInfo> NewPayment(int id, decimal money)
+        {
+            var user = await repository.GetUserById(id);
+
+            if (user is null) {
+                return new ResponseInfo(false, "user not found");
+            }
+
+            if (user.Money < money) {
+                return new ResponseInfo(false, "not enough money");
+            }
+
+            user.Money -= money;
+
+            await repository.EditUser(user);
+
+            return new ResponseInfo(true, $"paid successfully");
         }
 
 
