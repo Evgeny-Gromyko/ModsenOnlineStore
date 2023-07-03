@@ -10,12 +10,15 @@ using ModsenOnlineStore.Login.Application.Services;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Validators.UserValidators;
 using ModsenOnlineStore.Login.Infrastructure.Data;
+using ModsenOnlineStore.Login.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IEncryptionService, EncryptionService>();
+builder.Services.AddTransient<IEmailConfirmationRepository, EmailConfirmationRepository>();
+builder.Services.AddTransient<IRabbitMQMessagingService, RabbitMQMessagingService>();
 
 builder.Services.AddTransient<IValidator<AddUserDTO>, AddUserValidator>();
 builder.Services.AddTransient<IValidator<UpdateUserDTO>, UpdateUserValidator>();
