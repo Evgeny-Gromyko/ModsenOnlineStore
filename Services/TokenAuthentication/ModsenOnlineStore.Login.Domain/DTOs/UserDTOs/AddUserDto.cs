@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.Login.Domain.DTOs.UserDTOs
 {
-    public class AddUserDto
+    public class AddUserDTO
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

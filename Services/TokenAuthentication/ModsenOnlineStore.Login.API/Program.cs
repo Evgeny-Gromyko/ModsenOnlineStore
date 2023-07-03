@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Infrastructure.Data;
-using ModsenOnlineStore.Login.Infrastructure.Services;
+using ModsenOnlineStore.Login.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

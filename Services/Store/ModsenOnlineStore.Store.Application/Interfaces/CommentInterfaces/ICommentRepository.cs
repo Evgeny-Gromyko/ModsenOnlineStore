@@ -4,14 +4,14 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces
 {
     public interface ICommentRepository
     {
-        Task<List<Comment>> GetAllComments();
+        Task<List<Comment>> GetAllCommentsAsync();
 
-        Task<Comment?> GetCommentById(int id);
+        Task<Comment?> GetCommentByIdAsync(int id);
 
-        Task AddComment(Comment product);
+        Task AddCommentAsync(Comment product);
 
-        Task UpdateComment(Comment product);
+        Task UpdateCommentAsync(Comment product);
 
-        Task RemoveCommentById(int id);
+        Task RemoveCommentByIdAsync(int id);
     }
 }

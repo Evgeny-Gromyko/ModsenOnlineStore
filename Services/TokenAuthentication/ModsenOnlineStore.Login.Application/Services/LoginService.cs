@@ -8,7 +8,7 @@ using ModsenOnlineStore.Login.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace ModsenOnlineStore.Login.Infrastructure.Services
+namespace ModsenOnlineStore.Login.Application.Services
 {
     public class LoginService : ILoginService
     {
@@ -33,7 +33,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
         public async Task<DataResponseInfo<string>> GetTokenAsync(LoginData data)
         {
-            var user = await repository.AuthenticateUser(data.Email, data.Password);
+            var user = await repository.AuthenticateUserAsync(data.Email, data.Password);
 
             if (user is null) return new DataResponseInfo<string>(data: null, success: false, message: "user is not found");
 
@@ -62,10 +62,10 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
             return new DataResponseInfo<string>(data: new JwtSecurityTokenHandler().WriteToken(jwt), success: true, message: "token");
         }
 
-        public async Task<DataResponseInfo<List<User>>> GetAllUsers() =>
-            new DataResponseInfo<List<User>>(data: await repository.GetAllUsers(), success: true, message: "all users");
+        public async Task<DataResponseInfo<List<User>>> GetAllUsersAsync() =>
+            new DataResponseInfo<List<User>>(data: await repository.GetAllUsersAsync(), success: true, message: "all users");
 
-        public async Task<DataResponseInfo<User>> GetUserById(int id)
+        public async Task<DataResponseInfo<User>> GetUserByIdAsync(int id)
         {
             var user = await repository.GetUserByIdAsync(id);
 
@@ -74,7 +74,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
             return new DataResponseInfo<User>(data: user, success: true, message: $"user with id {user.Id}");
         }
 
-        public async Task<ResponseInfo> RegisterUserAsync(AddUserDto userDto)
+        public async Task<ResponseInfo> RegisterUserAsync(AddUserDTO userDto)
         {
             if (userDto is null) return new ResponseInfo(success: false, message: "wrong request data");
 
@@ -89,7 +89,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
             await repository.RegisterUserAsync(newUser);
 
-            user = await repository.GetUserByEmail(newUser.Email);
+            user = await repository.GetUserByEmailAsync(newUser.Email);
 
             var emailConfirmation = new EmailConfirmation
             {
@@ -116,7 +116,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
             return new ResponseInfo(success: true, message: "user with id {id} deleted");
         }
 
-        public async Task<ResponseInfo> UpdateUserAsync(UpdateUserDto userDto)
+        public async Task<ResponseInfo> UpdateUserAsync(UpdateUserDTO userDto)
         {
             if (userDto == null) return new ResponseInfo(success: false, message: "wrong request data");
             var newUser = mapper.Map<User>(userDto);
@@ -131,7 +131,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
         public async Task<ResponseInfo> ConfirmEmailAsync(int userId, string code)
         {
-            var emailConfirmation = await emailConfirmationRepository.GetEmailConfirmation(userId, code);
+            var emailConfirmation = await emailConfirmationRepository.GetEmailConfirmationAsync(userId, code);
 
             if (emailConfirmation is null)
             {

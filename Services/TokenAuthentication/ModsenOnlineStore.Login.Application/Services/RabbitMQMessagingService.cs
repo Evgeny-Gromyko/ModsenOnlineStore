@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using System.Text;
 
-namespace ModsenOnlineStore.Login.Infrastructure.Services
+namespace ModsenOnlineStore.Login.Application.Services
 {
     public class RabbitMQMessagingService : IRabbitMQMessagingService
     {
