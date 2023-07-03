@@ -18,43 +18,43 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task<User> AuthenticateUser(string email, string password) =>
+        public async Task<User> AuthenticateUserAsync(string email, string password) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => (p.Email == email) && (p.Password == password));
 
-        public async Task<List<User>> GetAllUsers() =>
+        public async Task<List<User>> GetAllUsersAsync() =>
             await context.Users.AsNoTracking().ToListAsync();
 
 
-        public async Task<User> GetUserById(int id) =>
+        public async Task<User> GetUserByIdAsync(int id) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<List<User>> RegisterUser(User user)
+        public async Task<User> RegisterUserAsync(User user)
         {
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            return await GetAllUsers();
+            return user;
         }
 
-        public async Task<List<User>> DeleteUser(int id)
+        public async Task<User> DeleteUserAsync(int id)
         {
-            var user = await GetUserById(id);
+            var user = await GetUserByIdAsync(id);
+            
             if (user is null) return null;
 
             context.Users.Remove(user);
             await context.SaveChangesAsync();
-            return await GetAllUsers();
+            
+            return user;
         }
 
-        public async Task<User> EditUser(User newUser)
+        public async Task<User> EditUserAsync(User newUser)
         {
-            var prevUser = await GetUserById(newUser.Id);
+            var prevUser = await GetUserByIdAsync(newUser.Id);
+            
             if (prevUser is null) return null;
 
-            prevUser.Name = newUser.Name;
-            prevUser.Email = newUser.Email;
-            prevUser.Password = newUser.Password;
-
+            context.Users.Update(newUser);
             await context.SaveChangesAsync();
 
             return newUser;
