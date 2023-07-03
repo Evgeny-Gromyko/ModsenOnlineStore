@@ -1,7 +1,8 @@
 namespace ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
 
-public class AddCouponDTO
+public class GetCouponDTO
 {
+    public int Id { get; set; }
         
     public int Discount { get; set; }
     

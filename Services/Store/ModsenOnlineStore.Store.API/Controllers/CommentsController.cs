@@ -40,7 +40,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddCommentAsync(AddCommentDto addCommentDto)
+        public async Task<IActionResult> AddCommentAsync(AddCommentDTO addCommentDto)
         {
             var response = await service.AddCommentAsync(addCommentDto);
 
@@ -54,7 +54,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> UpdateCommentAsync(UpdateCommentDto updateProductDto)
+        public async Task<IActionResult> UpdateCommentAsync(UpdateCommentDTO updateProductDto)
         {
             var response = await service.UpdateCommentAsync(updateProductDto);
 

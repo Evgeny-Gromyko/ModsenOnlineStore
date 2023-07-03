@@ -8,9 +8,9 @@ namespace ModsenOnlineStore.Store.API
     {
         public CommentProfile()
         {
-            CreateMap<AddCommentDto, Comment>();
-            CreateMap<UpdateCommentDto, Comment>();
-            CreateMap<Comment, GetCommentDto>();
+            CreateMap<AddCommentDTO, Comment>();
+            CreateMap<UpdateCommentDTO, Comment>();
+            CreateMap<Comment, GetCommentDTO>();
         }
     }
 }

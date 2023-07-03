@@ -40,7 +40,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddProductAsync(AddProductDto addProductDto)
+        public async Task<IActionResult> AddProductAsync(AddProductDTO addProductDto)
         {
             var response = await service.AddProductAsync(addProductDto);
                 
@@ -49,7 +49,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProductAsync(UpdateProductDto updateProductDto)
+        public async Task<IActionResult> UpdateProductAsync(UpdateProductDTO updateProductDto)
         {
             var response = await service.UpdateProductAsync(updateProductDto);
 
