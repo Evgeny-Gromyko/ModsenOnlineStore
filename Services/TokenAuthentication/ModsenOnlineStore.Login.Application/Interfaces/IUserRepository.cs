@@ -6,7 +6,7 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
     {
         Task<List<User>> GetAllUsersAsync();
 
-        Task<User> GetUserByIdAsync(int id);
+        Task<User?> GetUserByIdAsync(int id);
 
         Task<User?> GetUserByEmailAsync(string email);
 

@@ -1,5 +1,5 @@
 using ModsenOnlineStore.Common;
-using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 
 namespace ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 

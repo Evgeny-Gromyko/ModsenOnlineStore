@@ -10,7 +10,6 @@ using ModsenOnlineStore.Login.Application.Services;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Validators.UserValidators;
 using ModsenOnlineStore.Login.Infrastructure.Data;
-using ModsenOnlineStore.Login.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -26,7 +26,7 @@ using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.OrderValidators;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.OrderProductValidators;
-using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.CouponValidators;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.CommentValidators;

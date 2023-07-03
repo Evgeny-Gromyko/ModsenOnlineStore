@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 
 namespace ModsenOnlineStore.Store.Domain.Validators.CouponValidators
 {

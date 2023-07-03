@@ -21,6 +21,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public async Task<IActionResult> GetAllCommentsAsync()
         {
             var response = await service.GetAllCommentsAsync();
+
             return Ok(response.Data);
         }
 
