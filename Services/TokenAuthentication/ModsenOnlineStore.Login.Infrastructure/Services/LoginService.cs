@@ -97,7 +97,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
             await emailConfirmationRepository.AddEmailConfirmation(emailConfirmation);
 
-            var message = user.Email + " " + user.Id + " " + emailConfirmation.Code;
+            var message = $"{user.Email} {user.Id} {emailConfirmation.Code}";
             rabbitMQMessagingService.PublishMessage("email-confirmation", message);
 
             return new ResponseInfo(success: true, message: "user registered");
