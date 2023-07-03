@@ -1,6 +1,6 @@
 ﻿namespace ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs
 {
-    public class GetCommentDto
+    public class GetCommentDTO
     {
         public int Id { get; set; }
 

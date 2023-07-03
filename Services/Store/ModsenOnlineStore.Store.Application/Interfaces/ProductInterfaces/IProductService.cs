@@ -5,18 +5,18 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces
 {
     public interface IProductService
     {
-        Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsAsync();
+        Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsAsync();
 
-        Task<DataResponseInfo<GetProductDto>> GetProductByIdAsync(int id);
+        Task<DataResponseInfo<GetProductDTO>> GetProductByIdAsync(int id);
 
-        Task<ResponseInfo> AddProductAsync(AddProductDto addProductDto);
+        Task<ResponseInfo> AddProductAsync(AddProductDTO addProductDto);
 
-        Task<ResponseInfo> UpdateProductAsync(UpdateProductDto updateProductDto);
+        Task<ResponseInfo> UpdateProductAsync(UpdateProductDTO updateProductDto);
 
         Task<ResponseInfo> RemoveProductByIdAsync(int id);
 
-        Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByProductTypeIdAsync(int id);
+        Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsByProductTypeIdAsync(int id);
 
-        Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByOrderIdAsync(int id);
+        Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsByOrderIdAsync(int id);
     }
 }

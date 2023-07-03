@@ -62,7 +62,7 @@ namespace ModsenOnlineStore.Login.Application.Services
         }
 
 
-        public async Task<ResponseInfo> RegisterUserAsync(AddUserDto userDto)
+        public async Task<ResponseInfo> RegisterUserAsync(AddUserDTO userDto)
         {
             if (userDto is null) return new ResponseInfo(false, "wrong request data");
             
@@ -81,7 +81,7 @@ namespace ModsenOnlineStore.Login.Application.Services
             return new ResponseInfo(true, $"user with id {id} deleted");
         }
 
-        public async Task<ResponseInfo> UpdateUserAsync(UpdateUserDto userDto)
+        public async Task<ResponseInfo> UpdateUserAsync(UpdateUserDTO userDto)
         {
             if (userDto == null) return new ResponseInfo(false, "wrong request data");
             

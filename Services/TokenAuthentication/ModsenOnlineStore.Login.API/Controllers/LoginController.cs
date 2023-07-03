@@ -56,7 +56,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPost]
         [Route("/Register")]
-        public async Task<IActionResult> RegisterUserAsync(AddUserDto user)
+        public async Task<IActionResult> RegisterUserAsync(AddUserDTO user)
         {
             user.Password = encryption.HashPassword(user.Password);
 
@@ -72,7 +72,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateUserAsync(UpdateUserDto user)
+        public async Task<IActionResult> UpdateUserAsync(UpdateUserDTO user)
         {
             user.Password = encryption.HashPassword(user.Password);
 
