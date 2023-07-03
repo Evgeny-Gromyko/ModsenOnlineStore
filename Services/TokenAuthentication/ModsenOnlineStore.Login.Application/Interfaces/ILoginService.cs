@@ -1,11 +1,6 @@
 ﻿using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Entities;
 using ModsenOnlineStore.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.Login.Application.Interfaces
 {
@@ -17,10 +12,10 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
         
         Task<DataResponseInfo<User>> GetUserByIdAsync(int id);
         
-        Task<ResponseInfo> RegisterUserAsync(AddUserDto user);
+        Task<ResponseInfo> RegisterUserAsync(AddUserDTO user);
         
         Task<ResponseInfo> DeleteUserAsync(int id);
         
-        Task<ResponseInfo> UpdateUserAsync(UpdateUserDto user);
+        Task<ResponseInfo> UpdateUserAsync(UpdateUserDTO user);
     }
 }
