@@ -13,29 +13,29 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task<User?> AuthenticateUser(string email, string password) =>
+        public async Task<User?> AuthenticateUserAsync(string email, string password) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => (p.Email == email) && (p.Password == password));
 
-        public async Task<List<User>> GetAllUsers() =>
+        public async Task<List<User>> GetAllUsersAsync() =>
             await context.Users.AsNoTracking().ToListAsync();
 
-        public async Task<User?> GetUserById(int id) =>
+        public async Task<User?> GetUserByIdAsync(int id) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<User?> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task RegisterUser(User user)
+        public async Task RegisterUserAsync(User user)
         {
             context.Users.Add(user);
             await context.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(int id)
+        public async Task DeleteUserAsync(int id)
         {
-            var user = await GetUserById(id);
+            var user = await GetUserByIdAsync(id);
 
             if (user is not null)
             {
@@ -44,9 +44,9 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
             }
         }
 
-        public async Task EditUser(User user)
+        public async Task EditUserAsync(User user)
         {
-            var prevUser = await GetUserById(user.Id);
+            var prevUser = await GetUserByIdAsync(user.Id);
 
             if (prevUser is not null)
             {

@@ -31,10 +31,11 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
             this.mapper = mapper;
         }
 
-        public async Task<DataResponseInfo<string>> GetToken(LoginData data)
+        public async Task<DataResponseInfo<string>> GetTokenAsync(LoginData data)
         {
             var user = await repository.AuthenticateUser(data.Email, data.Password);
-            if (user is null) return null;
+
+            if (user is null) return new DataResponseInfo<string>(data: null, success: false, message: "user is not found");
 
             if (!user.IsEmailConfirmed)
             {
@@ -66,17 +67,18 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
         public async Task<DataResponseInfo<User>> GetUserById(int id)
         {
-            var user = await repository.GetUserById(id);
-            if (user is null) return new DataResponseInfo<User>(data: null, success: false, message: "user not found");
+            var user = await repository.GetUserByIdAsync(id);
+
+            if (user is null) return new DataResponseInfo<User>(data: null, success: false, message: $"user with id {id} not found");
 
             return new DataResponseInfo<User>(data: user, success: true, message: $"user with id {user.Id}");
         }
 
-        public async Task<ResponseInfo> RegisterUser(AddUserDto userDto)
+        public async Task<ResponseInfo> RegisterUserAsync(AddUserDto userDto)
         {
             if (userDto is null) return new ResponseInfo(success: false, message: "wrong request data");
 
-            var user = await repository.GetUserByEmail(userDto.Email);
+            var user = await repository.GetUserByEmailAsync(userDto.Email);
 
             if (user is not null)
             {
@@ -85,7 +87,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
 
             var newUser = mapper.Map<User>(userDto);
 
-            await repository.RegisterUser(newUser);
+            await repository.RegisterUserAsync(newUser);
 
             user = await repository.GetUserByEmail(newUser.Email);
 
@@ -95,39 +97,39 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
                 Code = Guid.NewGuid().ToString()
             };
 
-            await emailConfirmationRepository.AddEmailConfirmation(emailConfirmation);
+            await emailConfirmationRepository.AddEmailConfirmationAsync(emailConfirmation);
 
             var message = $"{user.Email} {user.Id} {emailConfirmation.Code}";
             rabbitMQMessagingService.PublishMessage("email-confirmation", message);
 
-            return new ResponseInfo(success: true, message: "user registered");
+            return new ResponseInfo(success: true, message: $"user with id {user.Id} registered");
         }
 
-        public async Task<ResponseInfo> DeleteUser(int id)
+        public async Task<ResponseInfo> DeleteUserAsync(int id)
         {
-            var user = await repository.GetUserById(id);
+            var user = await repository.GetUserByIdAsync(id);
 
-            if (user is null) return new ResponseInfo(success: false, message: "user not found");
+            if (user is null) return new ResponseInfo(success: false, message: $"user with id {id} not found");
 
-            await repository.DeleteUser(id);
+            await repository.DeleteUserAsync(id);
 
-            return new ResponseInfo(success: true, message: "user removed");
+            return new ResponseInfo(success: true, message: "user with id {id} deleted");
         }
 
-        public async Task<ResponseInfo> UpdateUser(UpdateUserDto userDto)
+        public async Task<ResponseInfo> UpdateUserAsync(UpdateUserDto userDto)
         {
             if (userDto == null) return new ResponseInfo(success: false, message: "wrong request data");
             var newUser = mapper.Map<User>(userDto);
 
-            var user = await repository.GetUserById(userDto.Id);
-            if (user is null) return new ResponseInfo(success: false, message: "user not found");
+            var user = await repository.GetUserByIdAsync(userDto.Id);
+            if (user is null) return new ResponseInfo(success: false, message: "user with id {newUser.Id} not found");
 
-            await repository.EditUser(newUser);
+            await repository.EditUserAsync(newUser);
 
             return new ResponseInfo(success: true, message: $"user with id {newUser.Id} updated");
         }
 
-        public async Task<ResponseInfo> ConfirmEmail(int userId, string code)
+        public async Task<ResponseInfo> ConfirmEmailAsync(int userId, string code)
         {
             var emailConfirmation = await emailConfirmationRepository.GetEmailConfirmation(userId, code);
 
@@ -136,10 +138,10 @@ namespace ModsenOnlineStore.Login.Infrastructure.Services
                 return new ResponseInfo(success: false, message: "not found");
             }
 
-            await emailConfirmationRepository.RemoveEmailConfirmationById(emailConfirmation.Id);
-            var user = await repository.GetUserById(userId);
+            await emailConfirmationRepository.RemoveEmailConfirmationByIdAsync(emailConfirmation.Id);
+            var user = await repository.GetUserByIdAsync(userId);
             user.IsEmailConfirmed = true;
-            await repository.EditUser(user);
+            await repository.EditUserAsync(user);
 
             return new ResponseInfo(success: true, message: "email confirmed");
         }

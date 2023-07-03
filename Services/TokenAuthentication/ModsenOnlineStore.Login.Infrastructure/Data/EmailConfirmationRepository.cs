@@ -13,7 +13,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task<EmailConfirmation?> GetEmailConfirmation(int userId, string code)
+        public async Task<EmailConfirmation?> GetEmailConfirmationAsync(int userId, string code)
         {
             var emailConfirmations = context.EmailConfirmations.AsNoTracking();
             var emailConfirmation = await emailConfirmations.FirstOrDefaultAsync(ec => ec.UserId == userId && ec.Code == code);
@@ -21,13 +21,13 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
             return emailConfirmation;
         }
 
-        public async Task AddEmailConfirmation(EmailConfirmation emailConfirmation)
+        public async Task AddEmailConfirmationAsync(EmailConfirmation emailConfirmation)
         {
             context.EmailConfirmations.Add(emailConfirmation);
             await context.SaveChangesAsync();
         }
 
-        public async Task RemoveEmailConfirmationById(int id)
+        public async Task RemoveEmailConfirmationByIdAsync(int id)
         {
             var emailConfirmations = context.EmailConfirmations.AsNoTracking();
             var emailConfirmation = await emailConfirmations.FirstOrDefaultAsync(ec => ec.Id == id);
