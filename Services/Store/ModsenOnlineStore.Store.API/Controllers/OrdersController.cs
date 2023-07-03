@@ -47,7 +47,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         
         [HttpPost]
-<<<<<<< HEAD
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddOrder(AddOrderDTO order) // send mail, save code to database
         {
 
@@ -62,22 +62,15 @@ namespace ModsenOnlineStore.Store.API.Controllers
                     order.PaymentConfirmationCode = data;
                 }
             }
+            var newResponse = await orderService.AddOrderAsync(order);
 
-            return Ok(await orderService.AddOrder(order));
-=======
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddOrderAsync(AddOrderDTO order)
-        {
-            var response = await orderService.AddOrderAsync(order);
-                
-            return Ok(response.Message);
->>>>>>> cc881dac1653e4f5980c08d126497116ded6b3f4
+            return Ok(newResponse.Message);
         }
 
         [HttpPut("Pay")]
         public async Task<IActionResult> PayOrder(int id, string code)
         {
-            var response = await orderService.PayOrder(id, code);
+            var response = await orderService.PayOrderAsync(id, code);
 
             if (!response.Success)
             {

@@ -62,9 +62,9 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
         }
 
 
-        public async Task<ResponseInfo> PayOrder(int id, string code)
+        public async Task<ResponseInfo> PayOrderAsync(int id, string code)
         {
-            var order = await orderRepository.GetSingleOrder(id);
+            var order = await orderRepository.GetSingleOrderAsync(id);
 
             if (order is null)
             {
@@ -83,7 +83,7 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
 
                 if (response.IsSuccessStatusCode) {
                     order.Paid = true;
-                    await orderRepository.UpdateOrder(order);
+                    await orderRepository.UpdateOrderAsync(order);
                 }
 
                 return await response.Content.ReadFromJsonAsync<ResponseInfo>(); //Paid or not

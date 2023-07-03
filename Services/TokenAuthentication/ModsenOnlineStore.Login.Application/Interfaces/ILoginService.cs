@@ -18,7 +18,9 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
         Task<DataResponseInfo<User>> GetUserByIdAsync(int id);
         
         Task<ResponseInfo> RegisterUserAsync(AddUserDto user);
-        
+
+        Task<ResponseInfo> MakePaymentAsync(int id, decimal money);
+
         Task<ResponseInfo> DeleteUserAsync(int id);
         
         Task<ResponseInfo> UpdateUserAsync(UpdateUserDto user);
