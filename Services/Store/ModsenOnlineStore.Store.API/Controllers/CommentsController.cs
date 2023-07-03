@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
@@ -29,7 +29,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public async Task<IActionResult> GetCommentByIdAsync(int id)
         {
             var response = await service.GetCommentByIdAsync(id);
-
+            
             if (!response.Success)
             {
                 return NotFound(response.Message);

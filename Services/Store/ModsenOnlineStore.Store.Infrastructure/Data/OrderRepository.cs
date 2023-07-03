@@ -18,24 +18,24 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             return await context.Orders.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Order?> GetSingleOrder(int id)
+        public async Task<Order?> GetSingleOrderAsync(int id)
         {
             return await context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == id);
         }
 
-        public async Task AddOrder(Order order)
+        public async Task AddOrderAsync(Order order)
         {
             context.Orders.Add(order);
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateOrder(Order order)
+        public async Task UpdateOrderAsync(Order order)
         {
             context.Orders.Update(order);
             await context.SaveChangesAsync();
         }
 
-        public async Task DeleteOrder(int id)
+        public async Task DeleteOrderAsync(int id)
         {
             var order = await context.Orders.FirstOrDefaultAsync(o => o.Id == id);
 

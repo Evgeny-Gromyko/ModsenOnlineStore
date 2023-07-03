@@ -1,8 +1,14 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Login.Application.Interfaces;
+using ModsenOnlineStore.Login.Application.Services;
+using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
+using ModsenOnlineStore.Login.Domain.Validators.UserValidators;
 using ModsenOnlineStore.Login.Infrastructure.Data;
 using ModsenOnlineStore.Login.Application.Services;
 
@@ -13,6 +19,11 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IEncryptionService, EncryptionService>();
 builder.Services.AddTransient<IEmailConfirmationRepository, EmailConfirmationRepository>();
 builder.Services.AddTransient<IRabbitMQMessagingService, RabbitMQMessagingService>();
+
+builder.Services.AddTransient<IValidator<AddUserDTO>, AddUserValidator>();
+builder.Services.AddTransient<IValidator<UpdateUserDTO>, UpdateUserValidator>();
+
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 
@@ -44,7 +55,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 
 var app = builder.Build();
 

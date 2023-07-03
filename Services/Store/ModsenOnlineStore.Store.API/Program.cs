@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
@@ -13,6 +16,20 @@ using ModsenOnlineStore.Store.Application.Services.CouponServices;
 using ModsenOnlineStore.Store.Application.Services.ProductServices;
 using ModsenOnlineStore.Store.Application.Services.OrderService;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
+using FluentValidation;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
+using FluentValidation.AspNetCore;
+using ModsenOnlineStore.Store.Domain.Validators.ProductTypeValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.ProductValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.OrderValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.OrderProductValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Domain.Validators.CouponValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.CommentValidators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +46,19 @@ builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 
+builder.Services.AddTransient<IValidator<AddUpdateProductTypeDTO>, AddUpdateProductTypeValidator>();
+builder.Services.AddTransient<IValidator<AddProductDTO>, AddProductValidator>();
+builder.Services.AddTransient<IValidator<UpdateProductDTO>, UpdateProductValidator>();
+builder.Services.AddTransient<IValidator<AddOrderDTO>, AddOrderValidator>();
+builder.Services.AddTransient<IValidator<UpdateOrderDTO>, UpdateOrderValidator>();
+builder.Services.AddTransient<IValidator<AddProductToOrderDTO>, AddProductToOrderValidator>();
+builder.Services.AddTransient<IValidator<AddCouponDTO>, AddCouponValidator>();
+builder.Services.AddTransient<IValidator<AddCommentDTO>, AddCommentValidator>();
+builder.Services.AddTransient<IValidator<UpdateCommentDTO>, UpdateCommentValidator>();
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
@@ -42,9 +71,49 @@ builder.Services.AddDbContext<DataContext>(
 builder.Services.AddControllers();
 
 var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = authOptions.Issuer,
+            ValidateAudience = true,
+            ValidAudience = authOptions.Audience,
+            ValidateLifetime = true,
+            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true
+        };
+    });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 
 var app = builder.Build();
@@ -63,6 +132,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())

@@ -22,28 +22,28 @@ public class OrderProductService : IOrderProductService
         this.productRepository = productRepository;
     }
 
-    public async Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProducts()
+    public async Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProductsAsync()
     {
-        var orderProducts = await orderProductRepository.GetAllOrderProducts();
+        var orderProducts = await orderProductRepository.GetAllOrderProductsAsync();
         var orderProductDtos = orderProducts.Select(mapper.Map<GetOrderProductDTO>).ToList();
 
         return new DataResponseInfo<List<GetOrderProductDTO>>(data: orderProductDtos, success: true, message: "all orders");
     }
 
-    public async Task<ResponseInfo> AddProductToOrder(AddProductToOrderDTO addProductToOrderDto)
+    public async Task<ResponseInfo> AddProductToOrderAsync(AddProductToOrderDTO addProductToOrderDto)
     {
-        var productId = addProductToOrderDto.productId;
-        var orderId = addProductToOrderDto.orderId;
-        var quantity = addProductToOrderDto.quantity;
+        var productId = addProductToOrderDto.ProductId;
+        var orderId = addProductToOrderDto.OrderId;
+        var quantity = addProductToOrderDto.Quantity;
 
-        var order = await orderRepository.GetSingleOrder(addProductToOrderDto.orderId);
+        var order = await orderRepository.GetSingleOrderAsync(addProductToOrderDto.OrderId);
 
         if (order is null)
         {
             return new ResponseInfo(success: false, message: "no such order");
         }
 
-        var product = await productRepository.GetProductById(addProductToOrderDto.productId);
+        var product = await productRepository.GetProductByIdAsync(addProductToOrderDto.ProductId);
 
         if (product is null)
         {
@@ -56,8 +56,8 @@ public class OrderProductService : IOrderProductService
         }
 
         product.Quantity -= quantity;
-        await productRepository.UpdateProduct(product);
-        await orderProductRepository.AddProductToOrder(productId, orderId, quantity);
+        await productRepository.UpdateProductAsync(product);
+        await orderProductRepository.AddProductToOrderAsync(productId, orderId, quantity);
 
         return new ResponseInfo(success: true, message: $"order with id {orderId} added");
     }

@@ -1,4 +1,4 @@
-﻿using ModsenOnlineStore.Login.Domain.Entities;
+using ModsenOnlineStore.Login.Domain.Entities;
 
 namespace ModsenOnlineStore.Login.Application.Interfaces
 {

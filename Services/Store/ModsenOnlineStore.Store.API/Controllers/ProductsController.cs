@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
@@ -20,7 +20,6 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public async Task<IActionResult> GetAllProductsAsync()
         {
             var response = await service.GetAllProductsAsync();
-
             return Ok(response.Data);
         }
 
@@ -43,7 +42,6 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public async Task<IActionResult> AddProductAsync(AddProductDTO addProductDto)
         {
             var response = await service.AddProductAsync(addProductDto);
-
             return Ok(response.Message);
         }
 

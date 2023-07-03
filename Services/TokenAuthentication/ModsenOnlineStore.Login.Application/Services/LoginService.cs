@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+using AutoMapper;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Common;

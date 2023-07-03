@@ -2,9 +2,9 @@ namespace ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
 
 public class AddProductToOrderDTO
 {
-    public int productId { get; set; }
+    public int ProductId { get; set; }
     
-    public int orderId { get; set; }
+    public int OrderId { get; set; }
     
-    public int quantity { get; set; } = 1;
+    public int Quantity { get; set; } = 1;
 }
