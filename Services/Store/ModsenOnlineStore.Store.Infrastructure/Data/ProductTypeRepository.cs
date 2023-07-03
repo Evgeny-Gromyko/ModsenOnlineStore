@@ -13,13 +13,13 @@ public class ProductTypeRepository : IProductTypeRepository
         this.context = context;
     }
     
-    public async Task<List<ProductType>> GetAllProductTypes() =>
+    public async Task<List<ProductType>> GetAllProductTypesAsync() =>
         await context.ProductTypes.AsNoTracking().ToListAsync();
 
-    public async Task<ProductType> GetSingleProductType(int id) =>
+    public async Task<ProductType> GetSingleProductTypeAsync(int id) =>
         await context.ProductTypes.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
 
-    public async Task<ProductType> AddProductType(ProductType newProductType)
+    public async Task<ProductType> AddProductTypeAsync(ProductType newProductType)
     { 
         context.ProductTypes.Add(newProductType);
         await context.SaveChangesAsync();
@@ -27,7 +27,7 @@ public class ProductTypeRepository : IProductTypeRepository
         return newProductType;
     }
 
-    public async Task<ProductType> UpdateProductType(int id, ProductType newProductType)
+    public async Task<ProductType> UpdateProductTypeAsync(int id, ProductType newProductType)
     {
         var prevProductType = await context.ProductTypes.FirstOrDefaultAsync(e => e.Id == id);
         
@@ -40,9 +40,9 @@ public class ProductTypeRepository : IProductTypeRepository
         return newProductType;
     }
 
-    public async Task<ProductType> DeleteProductType(int id)
+    public async Task<ProductType> DeleteProductTypeAsync(int id)
     {
-        var productType = await GetSingleProductType(id);
+        var productType = await GetSingleProductTypeAsync(id);
         
         if (productType is null) return null;
 

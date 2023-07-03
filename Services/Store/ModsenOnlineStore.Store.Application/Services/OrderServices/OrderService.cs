@@ -28,7 +28,7 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
 
         public async Task<DataResponseInfo<GetOrderDTO>> GetSingleOrder(int id)
         {
-            var order = await orderRepository.GetSingleOrder(id);
+            var order = await orderRepository.GetSingleOrderAsync(id);
 
             if (order is null)
             {
@@ -38,17 +38,17 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             return new DataResponseInfo<GetOrderDTO>(data: mapper.Map<GetOrderDTO>(order), success: true, message: "order");
         }
 
-        public async Task<ResponseInfo> AddOrder(AddOrderDTO addOrder)
+        public async Task<ResponseInfo> AddOrderAsync(AddOrderDTO addOrder)
         {
             var newOrder = mapper.Map<Order>(addOrder);
-            await orderRepository.AddOrder(newOrder);
+            await orderRepository.AddOrderAsync(newOrder);
 
             return new ResponseInfo(success: true, message: "order added");
         }
 
-        public async Task<ResponseInfo> UpdateOrder(UpdateOrderDTO updateOrder)
+        public async Task<ResponseInfo> UpdateOrderAsync(UpdateOrderDTO updateOrder)
         {
-            var oldOrder = await orderRepository.GetSingleOrder(updateOrder.Id);
+            var oldOrder = await orderRepository.GetSingleOrderAsync(updateOrder.Id);
 
             if (oldOrder is null)
             {
@@ -56,7 +56,7 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             }
 
             var newOrder = mapper.Map<Order>(updateOrder);
-            await orderRepository.UpdateOrder(newOrder);
+            await orderRepository.UpdateOrderAsync(newOrder);
 
             return new ResponseInfo(success: true, message: "order updated");
         }
@@ -90,21 +90,21 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             }
         }
 
-        public async Task<ResponseInfo> DeleteOrder(int id)
+        public async Task<ResponseInfo> DeleteOrderAsync(int id)
         {
-            var order = await orderRepository.GetSingleOrder(id);
+            var order = await orderRepository.GetSingleOrderAsync(id);
 
             if (order is null)
             {
                 return new ResponseInfo(success: false, message: "no such order");
             }
 
-            await orderRepository.DeleteOrder(id);
+            await orderRepository.DeleteOrderAsync(id);
 
             return new ResponseInfo(success: true, message: "order deleted");
         }
 
-        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserId(int id)
+        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserIdAsync(int id)
         {
             var orders = await orderRepository.GetAllOrders();
             var userOrders = orders.FindAll(o => o.UserId == id);

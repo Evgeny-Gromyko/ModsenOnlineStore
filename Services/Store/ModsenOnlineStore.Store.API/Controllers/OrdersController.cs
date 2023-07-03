@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
@@ -22,26 +23,31 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrders()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllOrdersAsync()
         {
-            return Ok(await orderService.GetAllOrders());
+            var response = await orderService.GetAllOrders();
+            
+            return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSingleOrder(int id)
+        [Authorize]
+        public async Task<IActionResult> GetSingleOrderAsync(int id)
         {
             var response = await orderService.GetSingleOrder(id);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Data);
         }
 
         
         [HttpPost]
+<<<<<<< HEAD
         public async Task<IActionResult> AddOrder(AddOrderDTO order) // send mail, save code to database
         {
 
@@ -58,6 +64,14 @@ namespace ModsenOnlineStore.Store.API.Controllers
             }
 
             return Ok(await orderService.AddOrder(order));
+=======
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddOrderAsync(AddOrderDTO order)
+        {
+            var response = await orderService.AddOrderAsync(order);
+                
+            return Ok(response.Message);
+>>>>>>> cc881dac1653e4f5980c08d126497116ded6b3f4
         }
 
         [HttpPut("Pay")]
@@ -73,35 +87,45 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateOrder(UpdateOrderDTO order)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateOrderAsync(UpdateOrderDTO order)
         {
-            var response = await orderService.UpdateOrder(order);
+            var response = await orderService.UpdateOrderAsync(order);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteOrderAsync(int id)
         {
-            var response = await orderService.DeleteOrder(id);
+            var response = await orderService.DeleteOrderAsync(id);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
 
         [HttpGet("byUser{id}")]
-        public async Task<IActionResult> GetAllOrdersByUserId(int id)
+        [Authorize]
+        public async Task<IActionResult> GetAllOrdersByUserIdAsync(int id)
         {
-            return Ok(await orderService.GetAllOrdersByUserId(id));
+            var response = await orderService.GetAllOrdersByUserIdAsync(id);
+                
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+            
+            return Ok(response.Data);
         }
     }
 }

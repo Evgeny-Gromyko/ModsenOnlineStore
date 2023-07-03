@@ -1,11 +1,7 @@
-﻿using ModsenOnlineStore.Login.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using ModsenOnlineStore.Login.Application.Interfaces;
 
-namespace ModsenOnlineStore.Login.Infrastructure.Services
+namespace ModsenOnlineStore.Login.Application.Services
 {
     public class EncryptionService : IEncryptionService
     {

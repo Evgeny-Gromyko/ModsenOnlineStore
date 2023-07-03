@@ -11,8 +11,8 @@ using ModsenOnlineStore.Store.Infrastructure.Data;
 namespace ModsenOnlineStore.Store.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230622134440_Initial")]
-    partial class Initial
+    [Migration("20230626081105_response")]
+    partial class response
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

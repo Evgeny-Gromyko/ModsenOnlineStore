@@ -20,17 +20,17 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             this.mapper = mapper;
         }
 
-        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllComments()
+        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsAsync()
         {
-            var comments = await commentRepository.GetAllComments();
+            var comments = await commentRepository.GetAllCommentsAsync();
             var commentDtos = comments.Select(mapper.Map<GetCommentDto>).ToList();
 
             return new DataResponseInfo<List<GetCommentDto>>(data: commentDtos, success: true, message: "all comments");
         }
 
-        public async Task<DataResponseInfo<GetCommentDto>> GetCommentById(int id)
+        public async Task<DataResponseInfo<GetCommentDto>> GetCommentByIdAsync(int id)
         {
-            var comment = await commentRepository.GetCommentById(id);
+            var comment = await commentRepository.GetCommentByIdAsync(id);
 
             if (comment is null)
             {
@@ -42,9 +42,9 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             return new DataResponseInfo<GetCommentDto>(data: commentDto, success: true, message: "comment");
         }
 
-        public async Task<ResponseInfo> AddComment(AddCommentDto addCommentDto)
+        public async Task<ResponseInfo> AddCommentAsync(AddCommentDto addCommentDto)
         {
-            var product = await productRepository.GetProductById(addCommentDto.ProductId);
+            var product = await productRepository.GetProductByIdAsync(addCommentDto.ProductId);
 
             if (product is null)
             {
@@ -52,21 +52,21 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             }
 
             var comment = mapper.Map<Comment>(addCommentDto);
-            await commentRepository.AddComment(comment);
+            await commentRepository.AddCommentAsync(comment);
 
             return new ResponseInfo(success: true, message: "comment added");
         }
 
-        public async Task<ResponseInfo> UpdateComment(UpdateCommentDto updateCommentDto)
+        public async Task<ResponseInfo> UpdateCommentAsync(UpdateCommentDto updateCommentDto)
         {
-            var oldComment = await commentRepository.GetCommentById(updateCommentDto.Id);
+            var oldComment = await commentRepository.GetCommentByIdAsync(updateCommentDto.Id);
 
             if (oldComment is null)
             {
                 return new ResponseInfo(success: false, message: "no such comment");
             }
 
-            var product = await productRepository.GetProductById(updateCommentDto.ProductId);
+            var product = await productRepository.GetProductByIdAsync(updateCommentDto.ProductId);
 
             if (product is null)
             {
@@ -74,35 +74,35 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             }
 
             var comment = mapper.Map<Comment>(updateCommentDto);
-            await commentRepository.UpdateComment(comment);
+            await commentRepository.UpdateCommentAsync(comment);
 
             return new ResponseInfo(success: true, message: "updated");
         }
 
-        public async Task<ResponseInfo> RemoveCommentById(int id)
+        public async Task<ResponseInfo> RemoveCommentByIdAsync(int id)
         {
-            var oldComment = await commentRepository.GetCommentById(id);
+            var oldComment = await commentRepository.GetCommentByIdAsync(id);
 
             if (oldComment is null)
             {
                 return new ResponseInfo(success: false, message: "no such comment");
             }
 
-            await commentRepository.RemoveCommentById(id);
+            await commentRepository.RemoveCommentByIdAsync(id);
 
             return new ResponseInfo(success: true, message: "removed");
         }
 
-        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductId(int id)
+        public async Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductIdAsync(int id)
         {
-            var product = productRepository.GetProductById(id);
+            var product = await productRepository.GetProductByIdAsync(id);
 
             if (product is null)
             {
                 return new DataResponseInfo<List<GetCommentDto>>(data: null, success: false, message: "no such product");
             }
 
-            var comments = await commentRepository.GetAllComments();
+            var comments = await commentRepository.GetAllCommentsAsync();
             var productComments = comments.FindAll(c => c.ProductId == id);
             var commentDtos = productComments.Select(mapper.Map<GetCommentDto>).ToList();
 

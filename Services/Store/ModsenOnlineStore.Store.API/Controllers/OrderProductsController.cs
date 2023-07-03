@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
@@ -16,22 +17,26 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllOrderProductsAsync()
         {
-            return Ok(await orderProductService.GetAllOrderProducts());
+            var response = await orderProductService.GetAllOrderProductsAsync();
+            
+            return Ok(response.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProductToOrder(AddProductToOrderDTO data)
+        [Authorize]
+        public async Task<IActionResult> AddProductToOrderAsync(AddProductToOrderDTO data)
         {
-            var response = await orderProductService.AddProductToOrder(data);
+            var response = await orderProductService.AddProductToOrderAsync(data);
 
             if (!response.Success)
             {
-                return NotFound(response);
+                return NotFound(response.Message);
             }
 
-            return Ok(response);
+            return Ok(response.Message);
         }
     }
 }

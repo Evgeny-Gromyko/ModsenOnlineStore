@@ -5,16 +5,16 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces
 {
     public interface ICommentService
     {
-        Task<DataResponseInfo<List<GetCommentDto>>> GetAllComments();
+        Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsAsync();
 
-        Task<DataResponseInfo<GetCommentDto>> GetCommentById(int id);
+        Task<DataResponseInfo<GetCommentDto>> GetCommentByIdAsync(int id);
 
-        Task<ResponseInfo> AddComment(AddCommentDto addProductDto);
+        Task<ResponseInfo> AddCommentAsync(AddCommentDto addProductDto);
 
-        Task<ResponseInfo> UpdateComment(UpdateCommentDto updateProductDto);
+        Task<ResponseInfo> UpdateCommentAsync(UpdateCommentDto updateProductDto);
 
-        Task<ResponseInfo> RemoveCommentById(int id);
+        Task<ResponseInfo> RemoveCommentByIdAsync(int id);
 
-        Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductId(int id);
+        Task<DataResponseInfo<List<GetCommentDto>>> GetAllCommentsByProductIdAsync(int id);
     }
 }
