@@ -35,7 +35,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(AddCommentDto addCommentDto)
+        public async Task<IActionResult> AddComment(AddCommentDTO addCommentDto)
         {
             var response = await service.AddComment(addCommentDto);
 
@@ -48,7 +48,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateComment(UpdateCommentDto updateProductDto)
+        public async Task<IActionResult> UpdateComment(UpdateCommentDTO updateProductDto)
         {
             var response = await service.UpdateComment(updateProductDto);
 

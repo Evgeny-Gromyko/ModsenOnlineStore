@@ -35,13 +35,13 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(AddProductDto addProductDto)
+        public async Task<IActionResult> AddProduct(AddProductDTO addProductDto)
         {
             return Ok(await service.AddProduct(addProductDto));
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto)
+        public async Task<IActionResult> UpdateProduct(UpdateProductDTO updateProductDto)
         {
             var response = await service.UpdateProduct(updateProductDto);
 
