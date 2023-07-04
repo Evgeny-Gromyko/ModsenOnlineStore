@@ -9,7 +9,7 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
     {
         Task<DataResponseInfo<string>> GetTokenAsync(LoginData data);
 
-        Task<DataResponseInfo<List<User>>> GetAllUsersAsync();
+        Task<DataResponseInfo<List<User>>> GetAllUsersAsync(int pageNumber, int pageSize);
 
         Task<DataResponseInfo<User>> GetUserByIdAsync(int id);
         

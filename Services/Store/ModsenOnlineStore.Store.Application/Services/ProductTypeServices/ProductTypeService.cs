@@ -18,9 +18,9 @@ public class ProductTypeService: IProductTypeService
         this.repository = repository;
     }
 
-    public async Task<DataResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypesAsync()
+    public async Task<DataResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypesAsync(int pageNumber, int pageSize)
     {
-        var types = await repository.GetAllProductTypesAsync();
+        var types = await repository.GetAllProductTypesAsync(pageNumber, pageSize);
         var typeDTOs = types.Select(p => mapper.Map<GetProductTypeDTO>(p)).ToList();
 
         return new DataResponseInfo<List<GetProductTypeDTO>>(data: typeDTOs, success: true, message: "all types");

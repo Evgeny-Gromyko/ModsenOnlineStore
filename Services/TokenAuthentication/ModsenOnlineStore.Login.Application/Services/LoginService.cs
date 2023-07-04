@@ -64,8 +64,8 @@ namespace ModsenOnlineStore.Login.Application.Services
             return new DataResponseInfo<string>(data: new JwtSecurityTokenHandler().WriteToken(jwt), success: true, message: "token");
         }
 
-        public async Task<DataResponseInfo<List<User>>> GetAllUsersAsync() =>
-            new DataResponseInfo<List<User>>(data: await repository.GetAllUsersAsync(), success: true, message: "all users");
+        public async Task<DataResponseInfo<List<User>>> GetAllUsersAsync(int pageNumber, int pageSize) =>
+            new DataResponseInfo<List<User>>(data: await repository.GetAllUsersAsync(pageNumber, pageSize), success: true, message: "all users");
 
         public async Task<DataResponseInfo<User>> GetUserByIdAsync(int id)
         {

@@ -24,10 +24,10 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllOrdersAsync()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllOrdersAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await orderService.GetAllOrders();
+            var response = await orderService.GetAllOrders(pageNumber, pageSize);
             
             return Ok(response.Data);
         }
@@ -76,7 +76,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         //[Authorize(Roles = "User")]
         public async Task<IActionResult> PayOrder(int id)
         {
-            string userEmail = "egrom2002@gmail.com"; // получить из jwt
+            string userEmail = "egrom2002@gmail.com"; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ jwt
 
             var response = await orderService.PayOrderAsync(id, userEmail, HttpContext!.Request);
 
@@ -92,7 +92,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [Route("ConfirmOrderPayment")]
         public async Task<IActionResult> ConfirmOrderPaymentAsync(int id, string code)
         {
-            string userEmail = "egrom2002@gmail.com"; // получить из jwt
+            string userEmail = "egrom2002@gmail.com"; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ jwt
 
             var response = await orderService.ConfirmOrderPaymentAsync(id, userEmail, code);
 
@@ -134,9 +134,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("byUser{id}")]
         [Authorize]
-        public async Task<IActionResult> GetAllOrdersByUserIdAsync(int id)
+        public async Task<IActionResult> GetAllOrdersByUserIdAsync(int id, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await orderService.GetAllOrdersByUserIdAsync(id);
+            var response = await orderService.GetAllOrdersByUserIdAsync(id, pageNumber, pageSize);
                 
             if (!response.Success)
             {

@@ -22,9 +22,9 @@ public class OrderProductService : IOrderProductService
         this.productRepository = productRepository;
     }
 
-    public async Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProductsAsync()
+    public async Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProductsAsync(int pageNumber, int pageSize)
     {
-        var orderProducts = await orderProductRepository.GetAllOrderProductsAsync();
+        var orderProducts = await orderProductRepository.GetAllOrderProductsAsync(pageNumber, pageSize);
         var orderProductDtos = orderProducts.Select(mapper.Map<GetOrderProductDTO>).ToList();
 
         return new DataResponseInfo<List<GetOrderProductDTO>>(data: orderProductDtos, success: true, message: "all orders");

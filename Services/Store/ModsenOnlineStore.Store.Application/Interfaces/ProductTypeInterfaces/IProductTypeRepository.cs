@@ -4,7 +4,7 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 
 public interface IProductTypeRepository
 {
-    Task<List<ProductType>> GetAllProductTypesAsync();
+    Task<List<ProductType>> GetAllProductTypesAsync(int pageNumber, int pageSize);
     
     Task<ProductType> GetSingleProductTypeAsync(int id);
     

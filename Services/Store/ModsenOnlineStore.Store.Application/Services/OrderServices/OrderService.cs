@@ -29,9 +29,9 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             this.orderPaymentConfirmationRepository = orderPaymentConfirmationRepository;
         }
 
-        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrders()
+        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrders(int pageNumber, int pageSize)
         {
-            var orders = await orderRepository.GetAllOrders();
+            var orders = await orderRepository.GetAllOrders(pageNumber, pageSize);
             var orderDTOs = orders.Select(p => mapper.Map<GetOrderDTO>(p)).ToList();
 
             return new DataResponseInfo<List<GetOrderDTO>>(data: orderDTOs, success: true, message: "all orders");
@@ -131,10 +131,9 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             return new ResponseInfo(success: true, message: "order deleted");
         }
 
-        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserIdAsync(int id)
+        public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserIdAsync(int id, int pageNumber, int pageSize)
         {
-            var orders = await orderRepository.GetAllOrders();
-            var userOrders = orders.FindAll(o => o.UserId == id);
+            var userOrders = await orderRepository.GetAllOrdersByUserId(id, pageNumber, pageSize);
             var orderDTOs = userOrders.Select(mapper.Map<GetOrderDTO>).ToList();
 
             return new DataResponseInfo<List<GetOrderDTO>>(data: orderDTOs, success: true, message: "all orders");

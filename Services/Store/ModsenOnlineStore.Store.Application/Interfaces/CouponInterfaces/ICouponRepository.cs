@@ -6,9 +6,9 @@ public interface ICouponRepository
 {
     Task<Coupon> GetCouponAsync(int couponId);
 
-    Task<List<Coupon>> GetAllCouponsAsync();
+    Task<List<Coupon>> GetAllCouponsAsync(int pageNumber, int pageSize);
 
-    Task<List<Coupon>> GetCouponsByUserIdAsync(int userId);
+    Task<List<Coupon>> GetCouponsByUserIdAsync(int userId, int pageNumber, int pageSize);
 
     Task<Coupon> AddCouponAsync(Coupon newCoupon);
 
