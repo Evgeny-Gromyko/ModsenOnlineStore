@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
@@ -10,8 +9,8 @@ namespace ModsenOnlineStore.Login.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private ILoginService service;
-        private IEncryptionService encryption;
+        private readonly ILoginService service;
+        private readonly IEncryptionService encryption;
 
         public LoginController(ILoginService service, IEncryptionService encryption)
         {
@@ -26,7 +25,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
             data.Password = encryption.HashPassword(data.Password);
             var response = await service.GetTokenAsync(data);
 
-            if (response.Data is null) return Unauthorized();
+            if (response.Data is null) return Unauthorized(response.Message);
 
             return Ok(new { access_token = response.Data });
         }
@@ -36,7 +35,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
         public async Task<IActionResult> GetAllUsersAsync()
         {
             var response = await service.GetAllUsersAsync();
-            
+
             return Ok(response.Data);
         }
 
@@ -45,7 +44,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
         public async Task<IActionResult> GetSingleUserAsync(int id)
         {
             var response = await service.GetUserByIdAsync(id);
-            
+
             if (!response.Success)
             {
                 return NotFound(response.Message);
@@ -56,7 +55,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPost]
         [Route("/Register")]
-        public async Task<IActionResult> RegisterUserAsync(AddUserDto user)
+        public async Task<IActionResult> RegisterUserAsync(AddUserDTO user)
         {
             user.Password = encryption.HashPassword(user.Password);
 
@@ -66,7 +65,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
             {
                 return BadRequest();
             }
-            
+
             return Ok(response.Message);
         }
 
@@ -88,7 +87,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateUserAsync(UpdateUserDto user)
+        public async Task<IActionResult> UpdateUserAsync(UpdateUserDTO user)
         {
             user.Password = encryption.HashPassword(user.Password);
 
@@ -114,6 +113,20 @@ namespace ModsenOnlineStore.Login.API.Controllers
             }
 
             return Ok(response.Message);
+        }
+
+        [HttpPost]
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmailAsync(int userId, string code)
+        {
+            var response = await service.ConfirmEmailAsync(userId, code);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }

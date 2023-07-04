@@ -21,6 +21,26 @@ namespace ModsenOnlineStore.Login.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ModsenOnlineStore.Login.Domain.Entities.EmailConfirmation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailConfirmations");
+                });
+
             modelBuilder.Entity("ModsenOnlineStore.Login.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -35,6 +55,9 @@ namespace ModsenOnlineStore.Login.API.Migrations
 
                     b.Property<decimal>("Money")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsEmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

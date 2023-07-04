@@ -8,9 +8,9 @@ namespace ModsenOnlineStore.Store.API
     {
         public ProductProfile()
         {
-            CreateMap<AddProductDto, Product>();
-            CreateMap<UpdateProductDto, Product>();
-            CreateMap<Product, GetProductDto>();
+            CreateMap<AddProductDTO, Product>();
+            CreateMap<UpdateProductDTO, Product>();
+            CreateMap<Product, GetProductDTO>();
         }
     }
 }

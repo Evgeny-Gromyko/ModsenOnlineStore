@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
-using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
@@ -93,6 +93,5 @@ namespace ModsenOnlineStore.Store.API.Controllers
             
             return Ok(response.Message);
         }
-
     }
 }

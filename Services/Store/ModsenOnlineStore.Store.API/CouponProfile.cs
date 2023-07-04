@@ -1,5 +1,5 @@
 using AutoMapper;
-using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 

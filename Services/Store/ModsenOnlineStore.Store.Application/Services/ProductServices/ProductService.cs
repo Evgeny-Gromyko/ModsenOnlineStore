@@ -26,29 +26,29 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
             this.mapper = mapper;
         }
 
-        public async Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsAsync()
+        public async Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsAsync()
         {
             var products = await productRepository.GetAllProductsAsync();
-            var productDtos = products.Select(mapper.Map<GetProductDto>).ToList();
+            var productDtos = products.Select(mapper.Map<GetProductDTO>).ToList();
 
-            return new DataResponseInfo<List<GetProductDto>>(data: productDtos, success: true, message: "all products");
+            return new DataResponseInfo<List<GetProductDTO>>(data: productDtos, success: true, message: "all products");
         }
 
-        public async Task<DataResponseInfo<GetProductDto>> GetProductByIdAsync(int id)
+        public async Task<DataResponseInfo<GetProductDTO>> GetProductByIdAsync(int id)
         {
             var product = await productRepository.GetProductByIdAsync(id);
 
             if (product is null)
             {
-                return new DataResponseInfo<GetProductDto>(data: null, success: false, message: "no such product");
+                return new DataResponseInfo<GetProductDTO>(data: null, success: false, message: "no such product");
             }
 
-            var productDto = mapper.Map<GetProductDto>(product);
+            var productDto = mapper.Map<GetProductDTO>(product);
 
-            return new DataResponseInfo<GetProductDto>(data: productDto, success: true, message: "product");
+            return new DataResponseInfo<GetProductDTO>(data: productDto, success: true, message: "product");
         }
 
-        public async Task<ResponseInfo> AddProductAsync(AddProductDto addProductDto)
+        public async Task<ResponseInfo> AddProductAsync(AddProductDTO addProductDto)
         {
             var productType = await productTypeRepository.GetSingleProductTypeAsync(addProductDto.ProductTypeId);
 
@@ -63,7 +63,7 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
             return new ResponseInfo(success: true, message: "product added");
         }
 
-        public async Task<ResponseInfo> UpdateProductAsync(UpdateProductDto updateProductDto)
+        public async Task<ResponseInfo> UpdateProductAsync(UpdateProductDTO updateProductDto)
         {
             var oldProduct = await productRepository.GetProductByIdAsync(updateProductDto.Id);
 
@@ -99,44 +99,44 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
             return new ResponseInfo(success: true, message: "product removed");
         }
 
-        public async Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByProductTypeIdAsync(int id)
+        public async Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsByProductTypeIdAsync(int id)
         {
-            var productType = productTypeRepository.GetSingleProductTypeAsync(id);
+            var productType = await productTypeRepository.GetSingleProductTypeAsync(id);
 
             if (productType is null)
             {
-                return new DataResponseInfo<List<GetProductDto>>(data: null, success: false, message: "no such product type");
+                return new DataResponseInfo<List<GetProductDTO>>(data: null, success: false, message: "no such product type");
             }
 
             var products = await productRepository.GetAllProductsAsync();
             var productTypeProducts = products.FindAll(p => p.ProductTypeId == id);
-            var productDtos = productTypeProducts.Select(mapper.Map<GetProductDto>).ToList();
+            var productDtos = productTypeProducts.Select(mapper.Map<GetProductDTO>).ToList();
 
-            return new DataResponseInfo<List<GetProductDto>>(data: productDtos, success: true, message: "all products of product type");
+            return new DataResponseInfo<List<GetProductDTO>>(data: productDtos, success: true, message: "all products of product type");
         }
 
-        public async Task<DataResponseInfo<List<GetProductDto>>> GetAllProductsByOrderIdAsync(int id)
+        public async Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsByOrderIdAsync(int id)
         {
-            var order = orderRepository.GetSingleOrderAsync(id);
+            var order = await orderRepository.GetSingleOrderAsync(id);
 
             if (order is null)
             {
-                return new DataResponseInfo<List<GetProductDto>>(data: null, success: false, message: "no such order");
+                return new DataResponseInfo<List<GetProductDTO>>(data: null, success: false, message: "no such order");
             }
 
             var allOrderProducts = await orderProductRepository.GetAllOrderProductsAsync();
             var orderProducts = allOrderProducts.FindAll(o => o.OrderId == id);
 
-            var productDtos = new List<GetProductDto>();
+            var productDtos = new List<GetProductDTO>();
 
             foreach (var orderProduct in orderProducts)
             {
                 var product = await productRepository.GetProductByIdAsync(orderProduct.ProductId);
-                var productDto = mapper.Map<GetProductDto>(product);
+                var productDto = mapper.Map<GetProductDTO>(product);
                 productDtos.Add(productDto);
             }
 
-            return new DataResponseInfo<List<GetProductDto>>(data: productDtos, success: true, message: "all products of order");
+            return new DataResponseInfo<List<GetProductDTO>>(data: productDtos, success: true, message: "all products of order");
         }
     }
 }

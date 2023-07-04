@@ -1,6 +1,6 @@
 ﻿namespace ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs
 {
-    public class AddProductDto
+    public class AddProductDTO
     {
         public string Name { get; set; } = string.Empty;
 

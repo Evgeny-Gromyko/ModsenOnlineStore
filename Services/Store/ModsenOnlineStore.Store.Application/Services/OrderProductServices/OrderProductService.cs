@@ -32,18 +32,18 @@ public class OrderProductService : IOrderProductService
 
     public async Task<ResponseInfo> AddProductToOrderAsync(AddProductToOrderDTO addProductToOrderDto)
     {
-        var productId = addProductToOrderDto.productId;
-        var orderId = addProductToOrderDto.orderId;
-        var quantity = addProductToOrderDto.quantity;
+        var productId = addProductToOrderDto.ProductId;
+        var orderId = addProductToOrderDto.OrderId;
+        var quantity = addProductToOrderDto.Quantity;
 
-        var order = await orderRepository.GetSingleOrderAsync(addProductToOrderDto.orderId);
+        var order = await orderRepository.GetSingleOrderAsync(addProductToOrderDto.OrderId);
 
         if (order is null)
         {
             return new ResponseInfo(success: false, message: "no such order");
         }
 
-        var product = await productRepository.GetProductByIdAsync(addProductToOrderDto.productId);
+        var product = await productRepository.GetProductByIdAsync(addProductToOrderDto.ProductId);
 
         if (product is null)
         {

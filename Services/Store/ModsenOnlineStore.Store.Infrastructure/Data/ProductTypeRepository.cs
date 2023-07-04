@@ -6,7 +6,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data;
 
 public class ProductTypeRepository : IProductTypeRepository
 {
-    private DataContext context;
+    private readonly DataContext context;
     
     public ProductTypeRepository(DataContext context)
     {

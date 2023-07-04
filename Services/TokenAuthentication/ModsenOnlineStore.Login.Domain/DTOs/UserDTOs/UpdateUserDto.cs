@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ModsenOnlineStore.Login.Domain.DTOs.UserDTOs
+﻿namespace ModsenOnlineStore.Login.Domain.DTOs.UserDTOs
 {
-    public class UpdateUserDto
+    public class UpdateUserDTO
     {
         public int Id { get; set; }
         

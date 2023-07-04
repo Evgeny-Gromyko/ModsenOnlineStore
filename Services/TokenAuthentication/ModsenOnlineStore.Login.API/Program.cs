@@ -1,4 +1,5 @@
-
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -6,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Application.Services;
+using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
+using ModsenOnlineStore.Login.Domain.Validators.UserValidators;
 using ModsenOnlineStore.Login.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IEncryptionService, EncryptionService>();
+builder.Services.AddTransient<IEmailConfirmationRepository, EmailConfirmationRepository>();
+builder.Services.AddTransient<IRabbitMQMessagingService, RabbitMQMessagingService>();
+
+builder.Services.AddTransient<IValidator<AddUserDTO>, AddUserValidator>();
+builder.Services.AddTransient<IValidator<UpdateUserDTO>, UpdateUserValidator>();
+
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 

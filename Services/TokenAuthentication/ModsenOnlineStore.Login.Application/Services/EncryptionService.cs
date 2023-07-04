@@ -1,5 +1,5 @@
-﻿using System.Text;
 using ModsenOnlineStore.Login.Application.Interfaces;
+using System.Text;
 
 namespace ModsenOnlineStore.Login.Application.Services
 {

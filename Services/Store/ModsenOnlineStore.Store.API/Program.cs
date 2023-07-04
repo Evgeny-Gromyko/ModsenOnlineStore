@@ -16,6 +16,20 @@ using ModsenOnlineStore.Store.Application.Services.CouponServices;
 using ModsenOnlineStore.Store.Application.Services.ProductServices;
 using ModsenOnlineStore.Store.Application.Services.OrderService;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
+using FluentValidation;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductTypeDTOs;
+using FluentValidation.AspNetCore;
+using ModsenOnlineStore.Store.Domain.Validators.ProductTypeValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.ProductValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.OrderValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.OrderProductDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.OrderProductValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.CouponValidators;
+using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
+using ModsenOnlineStore.Store.Domain.Validators.CommentValidators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +46,19 @@ builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 
+builder.Services.AddTransient<IValidator<AddUpdateProductTypeDTO>, AddUpdateProductTypeValidator>();
+builder.Services.AddTransient<IValidator<AddProductDTO>, AddProductValidator>();
+builder.Services.AddTransient<IValidator<UpdateProductDTO>, UpdateProductValidator>();
+builder.Services.AddTransient<IValidator<AddOrderDTO>, AddOrderValidator>();
+builder.Services.AddTransient<IValidator<UpdateOrderDTO>, UpdateOrderValidator>();
+builder.Services.AddTransient<IValidator<AddProductToOrderDTO>, AddProductToOrderValidator>();
+builder.Services.AddTransient<IValidator<AddCouponDTO>, AddCouponValidator>();
+builder.Services.AddTransient<IValidator<AddCommentDTO>, AddCommentValidator>();
+builder.Services.AddTransient<IValidator<UpdateCommentDTO>, UpdateCommentValidator>();
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
 var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();

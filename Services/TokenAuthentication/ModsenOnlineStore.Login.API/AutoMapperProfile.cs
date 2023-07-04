@@ -8,8 +8,8 @@ namespace ModsenOnlineStore.Login.API
     {
         public AutoMapperProfile()
         {
-            CreateMap<AddUserDto, User>();
-            CreateMap<UpdateUserDto, User>();
+            CreateMap<AddUserDTO, User>();
+            CreateMap<UpdateUserDTO, User>();
         }
     }
 }

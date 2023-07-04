@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
-using ModsenOnlineStore.Store.Domain.DTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data;
 
 public class OrderProductRepository:IOrderProductRepository
 {
-    private DataContext context;
+    private readonly DataContext context;
     
     public OrderProductRepository(DataContext context)
     {

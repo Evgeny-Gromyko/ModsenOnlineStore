@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
@@ -21,6 +21,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         public async Task<IActionResult> GetAllCommentsAsync()
         {
             var response = await service.GetAllCommentsAsync();
+
             return Ok(response.Data);
         }
 
@@ -40,7 +41,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddCommentAsync(AddCommentDto addCommentDto)
+        public async Task<IActionResult> AddCommentAsync(AddCommentDTO addCommentDto)
         {
             var response = await service.AddCommentAsync(addCommentDto);
 
@@ -54,7 +55,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> UpdateCommentAsync(UpdateCommentDto updateProductDto)
+        public async Task<IActionResult> UpdateCommentAsync(UpdateCommentDTO updateProductDto)
         {
             var response = await service.UpdateCommentAsync(updateProductDto);
 

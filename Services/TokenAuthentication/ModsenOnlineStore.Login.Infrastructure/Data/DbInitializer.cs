@@ -1,9 +1,4 @@
 ﻿using ModsenOnlineStore.Login.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.Login.Infrastructure.Data
 {
@@ -41,7 +36,6 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
 
                 context.Users.AddRange(new User[] { adminUser, Ivan, Max });
                 await context.SaveChangesAsync();
-
             }
         }
     }

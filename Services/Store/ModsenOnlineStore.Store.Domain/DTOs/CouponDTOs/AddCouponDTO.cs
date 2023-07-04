@@ -1,4 +1,4 @@
-namespace ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+namespace ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 
 public class AddCouponDTO
 {
