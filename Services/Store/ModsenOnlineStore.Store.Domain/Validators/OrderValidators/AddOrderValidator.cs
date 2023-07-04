@@ -8,7 +8,7 @@ namespace ModsenOnlineStore.Store.Domain.Validators.OrderValidators
         public AddOrderValidator()
         {
             RuleFor(x => x.DeliveryAddress).NotEmpty();
-            RuleFor(x => x.TotalPrice).GreaterThan(0);
+            RuleFor(x => x.TotalPrice).GreaterThanOrEqualTo(0);
         }
     }
 }

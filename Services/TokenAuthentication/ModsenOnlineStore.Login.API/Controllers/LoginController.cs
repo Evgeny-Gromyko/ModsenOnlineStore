@@ -25,7 +25,7 @@ namespace ModsenOnlineStore.Login.API.Controllers
             data.Password = encryption.HashPassword(data.Password);
             var response = await service.GetTokenAsync(data);
 
-            if (response.Data is null) return Unauthorized();
+            if (response.Data is null) return Unauthorized(response.Message);
 
             return Ok(new { access_token = response.Data });
         }

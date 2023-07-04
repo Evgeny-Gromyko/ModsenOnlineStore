@@ -113,7 +113,7 @@ namespace ModsenOnlineStore.Login.Application.Services
 
             await repository.DeleteUserAsync(id);
 
-            return new ResponseInfo(success: true, message: "user with id {id} deleted");
+            return new ResponseInfo(success: true, message: $"user with id {id} deleted");
         }
 
         public async Task<ResponseInfo> UpdateUserAsync(UpdateUserDTO userDto)

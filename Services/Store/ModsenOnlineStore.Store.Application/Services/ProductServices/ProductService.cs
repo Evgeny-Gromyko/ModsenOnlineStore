@@ -101,7 +101,7 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
 
         public async Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsByProductTypeIdAsync(int id)
         {
-            var productType = productTypeRepository.GetSingleProductTypeAsync(id);
+            var productType = await productTypeRepository.GetSingleProductTypeAsync(id);
 
             if (productType is null)
             {
@@ -117,7 +117,7 @@ namespace ModsenOnlineStore.Store.Application.Services.ProductServices
 
         public async Task<DataResponseInfo<List<GetProductDTO>>> GetAllProductsByOrderIdAsync(int id)
         {
-            var order = orderRepository.GetSingleOrderAsync(id);
+            var order = await orderRepository.GetSingleOrderAsync(id);
 
             if (order is null)
             {
