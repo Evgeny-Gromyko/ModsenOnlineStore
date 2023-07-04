@@ -40,7 +40,24 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
 
         public async Task<ResponseInfo> AddOrderAsync(AddOrderDTO addOrder)
         {
+            string confirmationCode;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7107/");
+                var response = await client.PostAsJsonAsync("EmaiLoginlAuthentication", "egrom2002@gmail.com");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ResponseInfo(success: false, message: "can not get confirmation code");
+                }
+                
+                confirmationCode = await response.Content.ReadAsStringAsync();
+            }
+
             var newOrder = mapper.Map<Order>(addOrder);
+
+            newOrder.PaymentConfirmationCode = confirmationCode;
+
             await orderRepository.AddOrderAsync(newOrder);
 
             return new ResponseInfo(success: true, message: "order added");

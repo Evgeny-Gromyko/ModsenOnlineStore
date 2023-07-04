@@ -69,11 +69,9 @@ namespace ModsenOnlineStore.Login.API.Controllers
             
             return Ok(response.Message);
         }
-        //    return Ok(await service.RegisterUser(user));
-        //}
 
         [HttpPost]
-        //[Authorize]
+        //[Authorize(Roles = "User")]
         [Route("/Pay/{userId}")]
         public async Task<IActionResult> MakePaymentAsync(int userId, decimal money)
         {
