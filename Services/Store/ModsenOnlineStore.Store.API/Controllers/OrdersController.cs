@@ -18,9 +18,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllOrdersAsync()
+        public async Task<IActionResult> GetAllOrdersAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await orderService.GetAllOrders();
+            var response = await orderService.GetAllOrders(pageNumber, pageSize);
             
             return Ok(response.Data);
         }
@@ -78,9 +78,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("byUser{id}")]
         [Authorize]
-        public async Task<IActionResult> GetAllOrdersByUserIdAsync(int id)
+        public async Task<IActionResult> GetAllOrdersByUserIdAsync(int id, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await orderService.GetAllOrdersByUserIdAsync(id);
+            var response = await orderService.GetAllOrdersByUserIdAsync(id, pageNumber, pageSize);
                 
             if (!response.Success)
             {

@@ -9,7 +9,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
     [ApiController]
     public class OrderProductsController : ControllerBase
     {
-        private IOrderProductService orderProductService;
+        private readonly IOrderProductService orderProductService;
 
         public OrderProductsController(IOrderProductService orderProductService)
         {
@@ -18,9 +18,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllOrderProductsAsync()
+        public async Task<IActionResult> GetAllOrderProductsAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await orderProductService.GetAllOrderProductsAsync();
+            var response = await orderProductService.GetAllOrderProductsAsync(pageNumber, pageSize);
             
             return Ok(response.Data);
         }

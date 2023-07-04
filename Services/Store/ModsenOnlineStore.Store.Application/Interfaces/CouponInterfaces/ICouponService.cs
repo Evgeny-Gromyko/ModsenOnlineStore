@@ -7,9 +7,9 @@ public interface ICouponService
 {
     Task<DataResponseInfo<GetCouponDTO>> GetCouponAsync(int couponId);
     
-    Task<DataResponseInfo<List<GetCouponDTO>>> GetAllCouponsAsync();
+    Task<DataResponseInfo<List<GetCouponDTO>>> GetAllCouponsAsync(int pageNumber, int pageSize);
     
-    Task<DataResponseInfo<List<GetCouponDTO>>> GetCouponsByUserIdAsync(int userId);
+    Task<DataResponseInfo<List<GetCouponDTO>>> GetCouponsByUserIdAsync(int userId, int pageNumber, int pageSize);
     
     Task<ResponseInfo> AddCouponAsync(AddCouponDTO newCoupon);
     

@@ -13,9 +13,21 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task<List<Order>> GetAllOrders()
+        public async Task<List<Order>> GetAllOrders(int pageNumber, int pageSize)
         {
-            return await context.Orders.AsNoTracking().ToListAsync();
+            var orders = await context.Orders.AsNoTracking().ToListAsync();
+
+            if (pageNumber < 1)
+            {
+                return orders;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 10;
+            }
+
+            return orders.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public async Task<Order?> GetSingleOrderAsync(int id)
@@ -44,6 +56,23 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
                 context.Orders.Remove(order);
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<Order>> GetAllOrdersByUserId(int id, int pageNumber, int pageSize)
+        {
+            var orders = await context.Orders.AsNoTracking().Where(p => p.UserId == id).ToListAsync();
+
+            if (pageNumber < 1)
+            {
+                return orders;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 10;
+            }
+
+            return orders.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
     }
 }

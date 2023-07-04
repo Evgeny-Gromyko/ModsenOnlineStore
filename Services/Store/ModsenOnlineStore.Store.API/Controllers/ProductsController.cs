@@ -17,9 +17,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProductsAsync()
+        public async Task<IActionResult> GetAllProductsAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await service.GetAllProductsAsync();
+            var response = await service.GetAllProductsAsync(pageNumber, pageSize);
 
             return Ok(response.Data);
         }
@@ -76,9 +76,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet("byProductType{id}")]
-        public async Task<IActionResult> GetAllProductsByProductTypeIdAsync(int id)
+        public async Task<IActionResult> GetAllProductsByProductTypeIdAsync(int id, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await service.GetAllProductsByProductTypeIdAsync(id);
+            var response = await service.GetAllProductsByProductTypeIdAsync(id, pageNumber, pageSize);
 
             if (!response.Success)
             {
@@ -90,9 +90,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet("byOrder{id}")]
         [Authorize]
-        public async Task<IActionResult> GetAllProductsByOrderIdAsync(int id)
+        public async Task<IActionResult> GetAllProductsByOrderIdAsync(int id, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await service.GetAllProductsByOrderIdAsync(id);
+            var response = await service.GetAllProductsByOrderIdAsync(id, pageNumber, pageSize);
 
             if (!response.Success)
             {

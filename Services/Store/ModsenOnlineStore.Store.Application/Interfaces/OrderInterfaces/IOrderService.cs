@@ -5,7 +5,7 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
 {
     public interface IOrderService
     {
-        Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrders();
+        Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrders(int pageNumber, int pageSize);
 
         Task<DataResponseInfo<GetOrderDTO>> GetSingleOrder(int id);
 
@@ -15,6 +15,6 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
 
         Task<ResponseInfo> DeleteOrderAsync(int id);
 
-        Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserIdAsync(int id);
+        Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrdersByUserIdAsync(int id, int pageNumber, int pageSize);
     }
 }

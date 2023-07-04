@@ -20,9 +20,9 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             this.mapper = mapper;
         }
 
-        public async Task<DataResponseInfo<List<GetCommentDTO>>> GetAllCommentsAsync()
+        public async Task<DataResponseInfo<List<GetCommentDTO>>> GetAllCommentsAsync(int pageNumber, int pageSize)
         {
-            var comments = await commentRepository.GetAllCommentsAsync();
+            var comments = await commentRepository.GetAllCommentsAsync(pageNumber, pageSize);
             var commentDtos = comments.Select(mapper.Map<GetCommentDTO>).ToList();
 
             return new DataResponseInfo<List<GetCommentDTO>>(data: commentDtos, success: true, message: "all comments");
@@ -93,7 +93,7 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
             return new ResponseInfo(success: true, message: "removed");
         }
 
-        public async Task<DataResponseInfo<List<GetCommentDTO>>> GetAllCommentsByProductIdAsync(int id)
+        public async Task<DataResponseInfo<List<GetCommentDTO>>> GetAllCommentsByProductIdAsync(int id, int pageNumber, int pageSize)
         {
             var product = await productRepository.GetProductByIdAsync(id);
 
@@ -102,8 +102,7 @@ namespace ModsenOnlineStore.Store.Application.Services.CommentServices
                 return new DataResponseInfo<List<GetCommentDTO>>(data: null, success: false, message: "no such product");
             }
 
-            var comments = await commentRepository.GetAllCommentsAsync();
-            var productComments = comments.FindAll(c => c.ProductId == id);
+            var productComments = await commentRepository.GetAllCommentsByProductIdAsync(id, pageNumber, pageSize);
             var commentDtos = productComments.Select(mapper.Map<GetCommentDTO>).ToList();
 
             return new DataResponseInfo<List<GetCommentDTO>>(data: commentDtos, success: true, message: "all comments of product");
