@@ -16,6 +16,7 @@ builder.Services.AddLogging();
 builder.Logging.ClearProviders();
 
 builder.Services.AddTransient<ILogRepository, LogRepository>();
+builder.Services.AddTransient<ILogService, LogService>();
 
 builder.Services.AddControllers();
 
