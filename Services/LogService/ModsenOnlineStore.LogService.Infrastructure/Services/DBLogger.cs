@@ -20,23 +20,22 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
             this.repository = repository;
         }
 
-        public void Log<TState>( // is it possible to make it async?  
+        public void Log<TState>(
             LogLevel logLevel, EventId eventId,
             TState context, Exception? exception,
             Func<TState, Exception?, string> formatter)
         {
-            repository.AddLog(new Log() //TState - log creating context 
+            repository.AddLogAsync(new Log() 
             {
-                logLevel = logLevel.ToString(),
-                eventId = Convert.ToInt32(eventId.Id),
-                dateTime = DateTime.Now,
-                message = formatter(context, exception),
+                LogLevel = logLevel.ToString(),
+                EventId = Convert.ToInt32(eventId.Id),
+                DateTime = DateTime.Now,
+                Message = formatter(context, exception),
             });
         }
 
         public bool IsEnabled(LogLevel logLevel) => true;
 
         public IDisposable BeginScope<TState>(TState state) => null;
-
     }
 }

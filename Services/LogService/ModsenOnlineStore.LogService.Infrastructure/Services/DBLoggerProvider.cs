@@ -22,7 +22,5 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
 
         public void Dispose() { }
     }
-
-    
 }
 

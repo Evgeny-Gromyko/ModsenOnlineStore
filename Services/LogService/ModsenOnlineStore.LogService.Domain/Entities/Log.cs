@@ -11,17 +11,17 @@ namespace ModsenOnlineStore.LogService.Domain.Entities
     public class Log
     {
         public int Id { get; set; }
-        public string logLevel { get; set; } = String.Empty;  // Trace/Debug/Information/Warning/Error/Critical/None
-        public int eventId { get; set; }                      // = Convert.ToInt32(MyLogEvents.GetItems);
-        // public Exception exception { get; set; } // not in use now
-        public DateTime dateTime { get; set; }
-        public string message { get; set; } = String.Empty;
-        public int userId { get; set; }
+        public string LogLevel { get; set; } = String.Empty;  
+        public int EventId { get; set; }                      
+        public Exception? Exception { get; set; }
+        public DateTime DateTime { get; set; }
+        public string Message { get; set; } = String.Empty;
+        public int UserId { get; set; }
 
 
     }
 
-    public enum MyLogEvents
+    public enum MyLogEvents // for EventId
     {
         GetItems = 1,  // for http get request
         GetSingleItem, // for http get request

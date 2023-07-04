@@ -14,16 +14,19 @@ namespace ModsenOnlineStore.LogService.API.Controllers
     public class LogController : ControllerBase
     {
         private readonly ILogger logger;
-        public LogController(ILoggerFactory loggerFactory, ILogRepository repository)
+        private readonly ILogService logService;
+        public LogController(ILoggerFactory loggerFactory, ILogRepository repository, ILogService logService)
         {
             loggerFactory.AddProvider(new DBLoggerProvider(repository));
-
             logger = loggerFactory.CreateLogger("");
+
+            this.logService = logService;
         }
 
         [HttpPost]
-        public IActionResult Index( int eventId, string context) { // exception not in use now
-            Func<string, Exception?, string> formatter = delegate (string state, Exception? exception)
+        public IActionResult AddLogAsync(int eventId, string context)
+        {
+            Func<string, Exception?, string> formatter = delegate (string state, Exception? exception) // exception not in use now
             {
                 var message = $"context: {context},";
                 if (exception == null) message += "no errors";
@@ -37,6 +40,32 @@ namespace ModsenOnlineStore.LogService.API.Controllers
             logger.Log(logLevel, eventId, context, null, formatter);
 
             return Ok("log added");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllLogsAsync()
+        {
+            var response = await logService.GetAllLogsAsync();
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetLogByIdAsync(int id)
+        {
+            var response = await logService.GetLogByIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
         }
     }
 }

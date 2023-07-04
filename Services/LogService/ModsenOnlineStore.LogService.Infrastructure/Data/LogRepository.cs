@@ -16,17 +16,16 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task AddLog(Log log)
+        public async Task AddLogAsync(Log log)
         {
             context.Logs.Add(log);
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<Log>> GetAllLogs() =>
+        public async Task<List<Log>> GetAllLogsAsync() =>
             await context.Logs.AsNoTracking().ToListAsync();
 
-
-        public async Task<Log> GetLogById(int id) =>
+        public async Task<Log> GetLogByIdAsync(int id) =>
             await context.Logs.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
     }
 }
