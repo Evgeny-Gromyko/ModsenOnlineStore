@@ -17,8 +17,6 @@ namespace ModsenOnlineStore.LogService.Domain.Entities
         public DateTime DateTime { get; set; }
         public string Message { get; set; } = String.Empty;
         public int UserId { get; set; }
-
-
     }
 
     public enum MyLogEvents // for EventId
