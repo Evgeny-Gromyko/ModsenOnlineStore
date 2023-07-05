@@ -47,7 +47,7 @@ namespace ModsenOnlineStore.Login.Application.Services
             var claims = new List<Claim> {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("role", user.Role.ToString())
+                new Claim("role", user.Role.ToString()),
             };
 
             var jwt = new JwtSecurityToken(

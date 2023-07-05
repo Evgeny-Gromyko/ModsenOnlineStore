@@ -10,5 +10,10 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
         public DbSet<User> Users { get; set; }
 
         public DbSet<EmailConfirmation> EmailConfirmations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().Property(p => p.Money).HasPrecision(18, 4);
+        }
     }
 }

@@ -3,6 +3,7 @@ using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
+using System.Net.Http.Json;
 
 namespace ModsenOnlineStore.Store.Application.Services.OrderService
 {
@@ -39,7 +40,24 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
 
         public async Task<ResponseInfo> AddOrderAsync(AddOrderDTO addOrder)
         {
+            string confirmationCode;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7107/");
+                var response = await client.PostAsJsonAsync("EmaiLoginlAuthentication", "egrom2002@gmail.com");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ResponseInfo(success: false, message: "can not get confirmation code");
+                }
+                
+                confirmationCode = await response.Content.ReadAsStringAsync();
+            }
+
             var newOrder = mapper.Map<Order>(addOrder);
+
+            newOrder.PaymentConfirmationCode = confirmationCode;
+
             await orderRepository.AddOrderAsync(newOrder);
 
             return new ResponseInfo(success: true, message: "order added");
@@ -58,6 +76,35 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             await orderRepository.UpdateOrderAsync(newOrder);
 
             return new ResponseInfo(success: true, message: "order updated");
+        }
+
+
+        public async Task<ResponseInfo> PayOrderAsync(int id, string code)
+        {
+            var order = await orderRepository.GetSingleOrderAsync(id);
+
+            if (order is null)
+            {
+                return new ResponseInfo(success: false, message: "no such order");
+            }
+
+            if (order.PaymentConfirmationCode != code)
+            {
+                return new ResponseInfo(success: false, message: "wrong confirmation code");
+            }
+
+            using (var client = new HttpClient())  // request to reduce money
+            {
+                client.BaseAddress = new Uri("https://localhost:7123/");
+                var response = await client.PostAsJsonAsync($"Login/Pay/{order.UserId}", order.TotalPrice);
+
+                if (response.IsSuccessStatusCode) {
+                    order.Paid = true;
+                    await orderRepository.UpdateOrderAsync(order);
+                }
+
+                return await response.Content.ReadFromJsonAsync<ResponseInfo>(); //Paid or not
+            }
         }
 
         public async Task<ResponseInfo> DeleteOrderAsync(int id)

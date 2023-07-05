@@ -8,6 +8,6 @@ namespace ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs
 
         public decimal TotalPrice { get; set; }
 
-        public bool Paid { get; set; } = false;
+        public string? PaymentConfirmationCode { get; set; }
     }
 }

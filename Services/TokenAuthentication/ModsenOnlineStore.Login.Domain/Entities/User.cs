@@ -1,4 +1,4 @@
-namespace ModsenOnlineStore.Login.Domain.Entities
+﻿namespace ModsenOnlineStore.Login.Domain.Entities
 {
     public class User
     {
@@ -10,6 +10,8 @@ namespace ModsenOnlineStore.Login.Domain.Entities
 
         public string Password { get; set; } = string.Empty;
 
+        public decimal Money { get; set; }
+      
         public bool IsEmailConfirmed { get; set; } = false;
 
         public Role Role { get; set; } = Role.User;

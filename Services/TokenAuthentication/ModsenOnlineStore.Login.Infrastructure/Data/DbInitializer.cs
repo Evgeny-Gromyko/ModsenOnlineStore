@@ -21,6 +21,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
                     Email = "ivan@gmail.com",
                     Password = "SMRJR4jgSEAQxcJ0Ojkwq5TxNXx4UoPTUo28Hb4+jF8=",
                     Name = "Ivan",
+                    Money = 100,
                     Role = Role.User,
                 };
 
@@ -29,6 +30,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
                     Email = "max@gmail.com",
                     Password = "MEmjge84+knLBnRR2GrnPD12pZ8niQSijLStq4PJrTY=",
                     Name = "Max",
+                    Money = 100,
                     Role = Role.User,
                 };
 
