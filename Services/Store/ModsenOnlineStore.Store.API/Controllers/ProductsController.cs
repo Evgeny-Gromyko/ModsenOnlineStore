@@ -25,9 +25,10 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetProductByIdAsync(int id)
         {
+            throw new Exception("my ex");
             var response = await service.GetProductByIdAsync(id);
 
             if (!response.Success)
