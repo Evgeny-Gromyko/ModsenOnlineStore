@@ -71,9 +71,8 @@ namespace ModsenOnlineStore.Login.API.Controllers
             return Ok(response.Message);
         }
 
-        [HttpPost]
+        [HttpPost("/NewPayment/{userId}")]
         [Authorize(Roles = "User")]
-        [Route("/NewPayment/{userId}")]
         public async Task<IActionResult> MakePaymentAsync(int userId, decimal money)
         {
             var response = await userMoneyService.MakePaymentAsync(userId, money);
@@ -86,9 +85,8 @@ namespace ModsenOnlineStore.Login.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPost("/AddMoney/{userId}")]
         [Authorize(Roles = "Admin")]
-        [Route("/AddMoney/{userId}")]
         public async Task<IActionResult> AddMoneyAsync(int userId, decimal money)
         {
             var response = await userMoneyService.AddMoneyAsync(userId, money);
