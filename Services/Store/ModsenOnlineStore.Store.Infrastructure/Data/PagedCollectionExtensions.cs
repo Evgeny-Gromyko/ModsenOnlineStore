@@ -1,8 +1,8 @@
 ﻿namespace ModsenOnlineStore.Store.Infrastructure.Data
 {
-    public abstract class PagedRepository<T>
+    public static class PagedCollectionExtensions
     {
-        protected List<T> ToPagedList(List<T> entities, int pageNumber, int pageSize)
+        public static IEnumerable<T> ToPagedCollection<T>(this IEnumerable<T> entities, int pageNumber, int pageSize)
         {
             if (pageNumber < 1)
             {
@@ -14,7 +14,7 @@
                 pageSize = 10;
             }
 
-            return entities.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return entities.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
     }
 }
