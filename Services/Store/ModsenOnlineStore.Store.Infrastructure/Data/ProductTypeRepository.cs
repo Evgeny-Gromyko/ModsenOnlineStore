@@ -4,7 +4,7 @@ using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data;
 
-public class ProductTypeRepository : IProductTypeRepository
+public class ProductTypeRepository : PagedRepository<ProductType>, IProductTypeRepository
 {
     private readonly DataContext context;
     
@@ -15,19 +15,9 @@ public class ProductTypeRepository : IProductTypeRepository
     
     public async Task<List<ProductType>> GetAllProductTypesAsync(int pageNumber, int pageSize)
     {
-        var allProductTypes = await context.ProductTypes.AsNoTracking().ToListAsync();
+        var productTypes = await context.ProductTypes.AsNoTracking().ToListAsync();
 
-        if (pageNumber < 1)
-        {
-            return allProductTypes;
-        }
-
-        if (pageSize < 1)
-        {
-            pageSize = 10;
-        }
-
-        return allProductTypes.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        return ToPagedList(productTypes, pageNumber, pageSize);
     }
 
     public async Task<ProductType> GetSingleProductTypeAsync(int id) =>
