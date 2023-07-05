@@ -30,8 +30,6 @@ namespace ModsenOnlineStore.Store.Application.Middleware
                 var exceptionMessage = ex.InnerException;
 
                 Console.WriteLine(ex);
-
-                //send request lo LogService
             }
         }
     }

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using ModsenOnlineStore.LogService.Application.Interfaces;
 using ModsenOnlineStore.LogService.Infrastructure.Data;
+using ModsenOnlineStore.LogService.Infrastructure.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);

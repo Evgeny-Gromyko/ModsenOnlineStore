@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.LogService.Application.Interfaces;
-using ModsenOnlineStore.LogService.Domain.Entities;
 using ModsenOnlineStore.LogService.Infrastructure.Services;
-using System;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace ModsenOnlineStore.LogService.API.Controllers
 {
@@ -26,7 +22,7 @@ namespace ModsenOnlineStore.LogService.API.Controllers
         [HttpPost]
         public IActionResult AddLogAsync(int eventId, string context)
         {
-            Func<string, Exception?, string> formatter = delegate (string state, Exception? exception) // exception not in use now
+            Func<string, Exception?, string> formatter = delegate (string state, Exception? exception)
             {
                 var message = $"context: {context},";
                 if (exception == null) message += "no errors";
