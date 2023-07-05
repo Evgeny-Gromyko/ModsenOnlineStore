@@ -12,12 +12,14 @@ namespace ModsenOnlineStore.Login.API.Controllers
         private readonly ILoginService loginService;
         private readonly IEncryptionService encryption;
         private readonly IUserMoneyService userMoneyService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public LoginController(ILoginService loginService, IUserMoneyService userMoneyService, IEncryptionService encryption)
+        public LoginController(ILoginService loginService, IUserMoneyService userMoneyService, IEncryptionService encryption, IHttpContextAccessor httpContextAccessor)
         {
             this.loginService = loginService;
             this.encryption = encryption;
             this.userMoneyService = userMoneyService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -61,11 +63,11 @@ namespace ModsenOnlineStore.Login.API.Controllers
         {
             user.Password = encryption.HashPassword(user.Password);
 
-            var response = await loginService.RegisterUserAsync(user);
+            var response = await loginService.RegisterUserAsync(user, httpContextAccessor.HttpContext!.Request);
 
             if (!response.Success)
             {
-                return BadRequest();
+                return BadRequest(response.Message);
             }
 
             return Ok(response.Message);

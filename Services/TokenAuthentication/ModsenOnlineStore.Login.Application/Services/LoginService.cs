@@ -7,6 +7,7 @@ using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace ModsenOnlineStore.Login.Application.Services
 {
@@ -74,7 +75,7 @@ namespace ModsenOnlineStore.Login.Application.Services
             return new DataResponseInfo<User>(data: user, success: true, message: $"user with id {user.Id}");
         }
 
-        public async Task<ResponseInfo> RegisterUserAsync(AddUserDTO userDto)
+        public async Task<ResponseInfo> RegisterUserAsync(AddUserDTO userDto, HttpRequest httpRequest)
         {
             if (userDto is null) return new ResponseInfo(success: false, message: "wrong request data");
 
@@ -99,7 +100,8 @@ namespace ModsenOnlineStore.Login.Application.Services
 
             await emailConfirmationRepository.AddEmailConfirmationAsync(emailConfirmation);
 
-            var message = $"{user.Email} {user.Id} {emailConfirmation.Code}";
+            var url = $"{httpRequest.Scheme}://{httpRequest.Host}/Login/ConfirmEmail?userId={user.Id}&code={emailConfirmation.Code}";
+            var message = $"{user.Email} {url}";
             rabbitMQMessagingService.PublishMessage("email-confirmation", message);
 
             return new ResponseInfo(success: true, message: $"user with id {user.Id} registered");

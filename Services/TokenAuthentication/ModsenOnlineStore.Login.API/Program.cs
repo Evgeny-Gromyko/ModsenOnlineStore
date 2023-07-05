@@ -25,6 +25,8 @@ builder.Services.AddTransient<IValidator<UpdateUserDTO>, UpdateUserValidator>();
 
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 
 var a = builder.Configuration.GetConnectionString("DefaultConnection");
