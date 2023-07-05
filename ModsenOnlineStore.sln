@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A8675517-EAF0-42B8-9D4F-FE2A9F632389}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Login", "Login", "{C0E1D29E-EB48-400E-9523-DB7BF713A841}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenAuthentication", "TokenAuthentication", "{C0E1D29E-EB48-400E-9523-DB7BF713A841}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Store", "Store", "{0615DAF4-7F26-4F62-8152-86F0EB2F9932}"
 EndProject
@@ -36,6 +36,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Infrastructure", "Services\EmailAuthentication\ModsenOnlineStore.EmailAuthentication.Infrastructure\ModsenOnlineStore.EmailAuthentication.Infrastructure.csproj", "{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.EmailAuthentication.Domain", "Services\EmailAuthentication\ModsenOnlineStore.EmailAuthentication.Domain\ModsenOnlineStore.EmailAuthentication.Domain.csproj", "{3F469206-6240-42CC-859A-6E3BB94F59AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LogService", "LogService", "{DB95BAE1-7CAA-4B98-BB45-76469F86116C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.LogService.Domain", "Services\LogService\ModsenOnlineStore.LogService.Domain\ModsenOnlineStore.LogService.Domain.csproj", "{BA4D82D5-921D-4744-B4C9-02E83FADE0E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenOnlineStore.LogService.API", "Services\LogService\ModsenOnlineStore.LogService.API\ModsenOnlineStore.LogService.API.csproj", "{734AF9ED-632A-42E0-9336-C7CDA0AD96C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.LogService.Application", "Services\LogService\ModsenOnlineStore.LogService.Application\ModsenOnlineStore.LogService.Application.csproj", "{CD32E018-F30F-4234-A7DD-07E147CCF76A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenOnlineStore.LogService.Infrastructure", "Services\LogService\ModsenOnlineStore.LogService.Infrastructure\ModsenOnlineStore.LogService.Infrastructure.csproj", "{C67936D0-6AAF-493A-A9C4-2973FA22BED8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +105,22 @@ Global
 		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F469206-6240-42CC-859A-6E3BB94F59AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA4D82D5-921D-4744-B4C9-02E83FADE0E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4D82D5-921D-4744-B4C9-02E83FADE0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4D82D5-921D-4744-B4C9-02E83FADE0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4D82D5-921D-4744-B4C9-02E83FADE0E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734AF9ED-632A-42E0-9336-C7CDA0AD96C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734AF9ED-632A-42E0-9336-C7CDA0AD96C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734AF9ED-632A-42E0-9336-C7CDA0AD96C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734AF9ED-632A-42E0-9336-C7CDA0AD96C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD32E018-F30F-4234-A7DD-07E147CCF76A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD32E018-F30F-4234-A7DD-07E147CCF76A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD32E018-F30F-4234-A7DD-07E147CCF76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD32E018-F30F-4234-A7DD-07E147CCF76A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67936D0-6AAF-493A-A9C4-2973FA22BED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67936D0-6AAF-493A-A9C4-2973FA22BED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67936D0-6AAF-493A-A9C4-2973FA22BED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67936D0-6AAF-493A-A9C4-2973FA22BED8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +141,11 @@ Global
 		{9A7E06AB-61E5-47C6-BBA0-C5D1A3805E34} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
 		{83F4DA50-7CE5-4395-B5B2-01FD4640F5D3} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
 		{3F469206-6240-42CC-859A-6E3BB94F59AB} = {96C29EC6-AAC0-4A28-9850-B5C82F79B1BF}
+		{DB95BAE1-7CAA-4B98-BB45-76469F86116C} = {A8675517-EAF0-42B8-9D4F-FE2A9F632389}
+		{BA4D82D5-921D-4744-B4C9-02E83FADE0E6} = {DB95BAE1-7CAA-4B98-BB45-76469F86116C}
+		{734AF9ED-632A-42E0-9336-C7CDA0AD96C8} = {DB95BAE1-7CAA-4B98-BB45-76469F86116C}
+		{CD32E018-F30F-4234-A7DD-07E147CCF76A} = {DB95BAE1-7CAA-4B98-BB45-76469F86116C}
+		{C67936D0-6AAF-493A-A9C4-2973FA22BED8} = {DB95BAE1-7CAA-4B98-BB45-76469F86116C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2ED6A0A6-2BFC-4BC1-9E6F-DA2383D0A34D}
