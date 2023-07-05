@@ -1,18 +1,13 @@
 ﻿using ModsenOnlineStore.Common;
 using ModsenOnlineStore.LogService.Application.Interfaces;
 using ModsenOnlineStore.LogService.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.LogService.Infrastructure.Services
 {
-    public class LogServise : ILogService
+    public class LogService : ILogService
     {
         private readonly ILogRepository repository;
-        public LogServise(ILogRepository repository) 
+        public LogService(ILogRepository repository) 
         {
             this.repository = repository;
         }

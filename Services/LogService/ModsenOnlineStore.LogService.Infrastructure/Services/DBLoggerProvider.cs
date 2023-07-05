@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using ModsenOnlineStore.LogService.Application.Interfaces;
-using System;
 
 namespace ModsenOnlineStore.LogService.Infrastructure.Services
 {
@@ -14,7 +12,6 @@ namespace ModsenOnlineStore.LogService.Infrastructure.Services
             this.repository = repository;
         }
 
-        //categoryName is unnecessary but required by ILoggerProvider parameter
         public ILogger CreateLogger(string categoryName) 
         {
             return new DBLogger(repository);
