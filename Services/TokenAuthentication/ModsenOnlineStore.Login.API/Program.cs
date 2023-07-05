@@ -14,6 +14,7 @@ using ModsenOnlineStore.Login.Infrastructure.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<ILoginService, LoginService>();
+builder.Services.AddTransient<IUserMoneyService, UserMoneyService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IEncryptionService, EncryptionService>();
 builder.Services.AddTransient<IEmailConfirmationRepository, EmailConfirmationRepository>();

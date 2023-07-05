@@ -74,25 +74,6 @@ namespace ModsenOnlineStore.Login.Application.Services
             return new DataResponseInfo<User>(data: user, success: true, message: $"user with id {user.Id}");
         }
 
-        public async Task<ResponseInfo> MakePaymentAsync(int id, decimal money)
-        {
-            var user = await repository.GetUserByIdAsync(id);
-
-            if (user is null) {
-                return new ResponseInfo(false, "user not found");
-            }
-
-            if (user.Money < money) {
-                return new ResponseInfo(false, "not enough money");
-            }
-
-            user.Money -= money;
-
-            await repository.EditUserAsync(user);
-
-            return new ResponseInfo(true, $"paid successfully");
-        }
-
         public async Task<ResponseInfo> RegisterUserAsync(AddUserDTO userDto)
         {
             if (userDto is null) return new ResponseInfo(success: false, message: "wrong request data");
