@@ -4,7 +4,7 @@ using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : PagedRepository<Order>, IOrderRepository
     {
         private readonly DataContext context;
 
@@ -17,17 +17,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         {
             var orders = await context.Orders.AsNoTracking().ToListAsync();
 
-            if (pageNumber < 1)
-            {
-                return orders;
-            }
-
-            if (pageSize < 1)
-            {
-                pageSize = 10;
-            }
-
-            return orders.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return ToPagedList(orders, pageNumber, pageSize);
         }
 
         public async Task<Order?> GetSingleOrderAsync(int id)
@@ -62,17 +52,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         {
             var orders = await context.Orders.AsNoTracking().Where(p => p.UserId == id).ToListAsync();
 
-            if (pageNumber < 1)
-            {
-                return orders;
-            }
-
-            if (pageSize < 1)
-            {
-                pageSize = 10;
-            }
-
-            return orders.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return ToPagedList(orders, pageNumber, pageSize);
         }
     }
 }

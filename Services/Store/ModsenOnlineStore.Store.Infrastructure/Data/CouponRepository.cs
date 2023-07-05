@@ -4,7 +4,7 @@ using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data;
 
-public class CouponRepository : ICouponRepository
+public class CouponRepository : PagedRepository<Coupon>, ICouponRepository
 {
     private readonly DataContext context;
     
@@ -23,34 +23,14 @@ public class CouponRepository : ICouponRepository
     {
         var coupons = await context.Coupons.AsNoTracking().ToListAsync();
 
-        if (pageNumber < 1)
-        {
-            return coupons;
-        }
-
-        if (pageSize < 1)
-        {
-            pageSize = 10;
-        }
-
-        return coupons.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        return ToPagedList(coupons, pageNumber, pageSize);
     }
 
     public async Task<List<Coupon>> GetCouponsByUserIdAsync(int userId, int pageNumber, int pageSize)
     {
         var coupons = await context.Coupons.AsNoTracking().Where(e => e.UserId == userId).ToListAsync();
 
-        if (pageNumber < 1)
-        {
-            return coupons;
-        }
-
-        if (pageSize < 1)
-        {
-            pageSize = 10;
-        }
-
-        return coupons.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        return ToPagedList(coupons, pageNumber, pageSize);
     }
 
     public async Task<Coupon> AddCouponAsync(Coupon newCoupon)

@@ -4,7 +4,7 @@ using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data
 {
-    public class CommentRepository : ICommentRepository
+    public class CommentRepository : PagedRepository<Comment>, ICommentRepository
     {
         private readonly DataContext context;
 
@@ -17,17 +17,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         {
             var comments = await context.Comments.AsNoTracking().ToListAsync();
 
-            if (pageNumber < 1)
-            {
-                return comments;
-            }
-
-            if (pageSize < 1)
-            {
-                pageSize = 10;
-            }
-
-            return comments.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return ToPagedList(comments, pageNumber, pageSize);
         }
 
         public async Task<Comment?> GetCommentByIdAsync(int id)
@@ -62,17 +52,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         {
             var comments = await context.Comments.AsNoTracking().Where(c => c.ProductId == id).ToListAsync();
 
-            if (pageNumber < 1)
-            {
-                return comments;
-            }
-
-            if (pageSize < 1)
-            {
-                pageSize = 10;
-            }
-
-            return comments.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return ToPagedList(comments, pageNumber, pageSize);
         }
     }
 }
