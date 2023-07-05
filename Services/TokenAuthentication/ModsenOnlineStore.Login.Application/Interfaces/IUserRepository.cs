@@ -1,19 +1,21 @@
-﻿using ModsenOnlineStore.Login.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ModsenOnlineStore.Login.Domain.Entities;
 
 namespace ModsenOnlineStore.Login.Application.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllUsers();
-        Task<User> GetUserById(int id);
-        Task<User> AuthenticateUser(string email, string password);
-        Task<List<User>> RegisterUser(User user);
-        Task<List<User>> DeleteUser(int id);
-        Task<User> EditUser(User user);
+        Task<List<User>> GetAllUsersAsync();
+
+        Task<User?> GetUserByIdAsync(int id);
+
+        Task<User?> GetUserByEmailAsync(string email);
+
+        Task<User?> AuthenticateUserAsync(string email, string password);
+
+        Task RegisterUserAsync(User user);
+
+        Task DeleteUserAsync(int id);
+
+        Task EditUserAsync(User user);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
@@ -10,8 +9,8 @@ namespace ModsenOnlineStore.Login.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private ILoginService service;
-        private IEncryptionService encryption;
+        private readonly ILoginService service;
+        private readonly IEncryptionService encryption;
 
         public LoginController(ILoginService service, IEncryptionService encryption)
         {
@@ -21,43 +20,97 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpPost]
         [Route("/Login")]
-        public async Task<IActionResult> Login(LoginData data)
+        public async Task<IActionResult> LoginAsync(LoginData data)
         {
             data.Password = encryption.HashPassword(data.Password);
-            var token = await service.GetToken(data);
+            var response = await service.GetTokenAsync(data);
 
-            if (token is null) return Unauthorized();
+            if (response.Data is null) return Unauthorized(response.Message);
 
-            return Ok(new { access_token = token });
+            return Ok(new { access_token = response.Data });
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetAllUsers() =>
-            Ok(await service.GetAllUsers());
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUsersAsync()
+        {
+            var response = await service.GetAllUsersAsync();
+
+            return Ok(response.Data);
+        }
 
         [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetSingleUser(int id) =>
-            Ok(await service.GetUserById(id));
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetSingleUserAsync(int id)
+        {
+            var response = await service.GetUserByIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
+        }
 
         [HttpPost]
         [Route("/Register")]
-        public async Task<IActionResult> RegisterUser(AddUserDto user)
+        public async Task<IActionResult> RegisterUserAsync(AddUserDTO user)
         {
             user.Password = encryption.HashPassword(user.Password);
-            return Ok(await service.RegisterUser(user));
+
+            var response = await service.RegisterUserAsync(user);
+
+            if (!response.Success)
+            {
+                return BadRequest();
+            }
+
+            return Ok(response.Message);
         }
 
-
         [HttpPut]
-        [Authorize]
-        public async Task<IActionResult> UpdateUser(UpdateUserDto newEvent) =>
-            Ok(await service.UpdateUser(newEvent));
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateUserAsync(UpdateUserDTO user)
+        {
+            user.Password = encryption.HashPassword(user.Password);
+
+            var response = await service.UpdateUserAsync(user);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Message);
+            }
+
+            return Ok(response.Message);
+        }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteEvent(int id) =>
-            Ok(await service.DeleteUser(id));
+        public async Task<IActionResult> DeleteUserAsync(int id)
+        {
+            var response = await service.DeleteUserAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
+        }
+
+        [HttpPost]
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmailAsync(int userId, string code)
+        {
+            var response = await service.ConfirmEmailAsync(userId, code);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
     }
 }

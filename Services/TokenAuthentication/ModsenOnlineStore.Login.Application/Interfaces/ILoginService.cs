@@ -1,21 +1,23 @@
-﻿using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
+using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Entities;
 using ModsenOnlineStore.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.Login.Application.Interfaces
 {
     public interface ILoginService
     {
-        Task<DataResponseInfo<string>> GetToken(LoginData data);
-        Task<DataResponseInfo<List<User>>> GetAllUsers();
-        Task<DataResponseInfo<User>> GetUserById(int id);
-        Task<DataResponseInfo<List<User>>> RegisterUser(AddUserDto user);
-        Task<DataResponseInfo<List<User>>> DeleteUser(int id);
-        Task<DataResponseInfo<User>> UpdateUser(UpdateUserDto user);
+        Task<DataResponseInfo<string>> GetTokenAsync(LoginData data);
+
+        Task<DataResponseInfo<List<User>>> GetAllUsersAsync();
+
+        Task<DataResponseInfo<User>> GetUserByIdAsync(int id);
+
+        Task<ResponseInfo> RegisterUserAsync(AddUserDTO user);
+
+        Task<ResponseInfo> DeleteUserAsync(int id);
+
+        Task<ResponseInfo> UpdateUserAsync(UpdateUserDTO user);
+
+        Task<ResponseInfo> ConfirmEmailAsync(int userId, string code);
     }
 }

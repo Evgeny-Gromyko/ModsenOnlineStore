@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.CommentInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 
@@ -16,33 +17,81 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllComments()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllCommentsAsync()
         {
-            return Ok(await service.GetAllComments());
+            var response = await service.GetAllCommentsAsync();
+
+            return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCommentById(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetCommentByIdAsync(int id)
         {
-            return Ok(await service.GetCommentById(id));
+            var response = await service.GetCommentByIdAsync(id);
+            
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(AddCommentDto addCommentDto)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddCommentAsync(AddCommentDTO addCommentDto)
         {
-            return Ok(await service.AddComment(addCommentDto));
+            var response = await service.AddCommentAsync(addCommentDto);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateComment(UpdateCommentDto updateProductDto)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateCommentAsync(UpdateCommentDTO updateProductDto)
         {
-            return Ok(await service.UpdateComment(updateProductDto));
+            var response = await service.UpdateCommentAsync(updateProductDto);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveCommentById(int id)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> RemoveCommentByIdAsync(int id)
         {
-            return Ok(await service.RemoveCommentById(id));
+            var response = await service.RemoveCommentByIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
+        }
+
+        [HttpGet("byProduct{id}")]
+        public async Task<IActionResult> GetAllCommentsByProductIdAsync(int id)
+        {
+            var response = await service.GetAllCommentsByProductIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
 
 public interface IOrderProductService
 {
-    public Task<OperationResult> AddProductToOrder(AddProductToOrderDTO dto);
+    public Task<ResponseInfo> AddProductToOrderAsync(AddProductToOrderDTO dto);
     
-    public Task<ResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProducts();
+    public Task<DataResponseInfo<List<GetOrderProductDTO>>> GetAllOrderProductsAsync();
 }

@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ModsenOnlineStore.Store.Application.Interfaces;
-using ModsenOnlineStore.Store.Domain.DTOs.CouponDTO;
+using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
+using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
@@ -8,7 +9,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
     [ApiController]
     public class CouponsController : ControllerBase
     {
-        private ICouponService couponService;
+        private readonly ICouponService couponService;
 
         public CouponsController(ICouponService couponService)
         {
@@ -16,77 +17,81 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCoupons() =>
-            Ok(await couponService.GetAllCoupons());
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllCouponsAsync()
+        {
+            var response = await couponService.GetAllCouponsAsync();
+            
+            return Ok(response.Data);
+        }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCoupon(int id)
+        [Authorize]
+        public async Task<IActionResult> GetCouponAsync(int id)
         {
-            var couponInfo = await couponService.GetCoupon(id);
+            var response = await couponService.GetCouponAsync(id);
 
-            if (!couponInfo.Success)
+            if (!response.Success)
             {
-                return NotFound();
+                return NotFound(response.Message);
             }
 
-            return Ok(couponInfo);
+            return Ok(response.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCoupon(AddCouponDTO coupon) =>
-            Ok(await couponService.AddCoupon(coupon));
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddCouponAsync(AddCouponDTO coupon)
+        {
+            var response = await couponService.AddCouponAsync(coupon);
+            
+            return Ok(response.Message);
+        }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCoupon(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteCouponAsync(int id)
         {
-            var couponInfo = await couponService.DeleteCoupon(id);
+            var response = await couponService.DeleteCouponAsync(id);
 
-            if (!couponInfo.Success)
+            if (!response.Success)
             {
-                return NotFound();
+                return NotFound(response.Message);
             }
 
-            return Ok(couponInfo);
+            return Ok(response.Message);
         }
 
         [HttpPost("apply")]
-        public async Task<IActionResult> ApplyCoupon(ApplyCouponDTO data)
+        [Authorize]
+        public async Task<IActionResult> ApplyCouponAsync(ApplyCouponDTO data)
         {
-            var operationResult = await couponService.ApplyCoupon(data);
+            var response = await couponService.ApplyCouponAsync(data);
 
-            if (!operationResult.Success)
+            if (!response.Success)
             {
-                return NotFound();
+                return BadRequest(response.Message);
             }
 
-            return Ok(operationResult);
+            return Ok(response.Message);
         }
         
         [HttpGet("byUser{userId}")]
-        public async Task<IActionResult> GetCouponsByUserId(int userId)
+        [Authorize]
+        public async Task<IActionResult> GetCouponsByUserIdAsync(int userId)
         {
-            var couponInfo = await couponService.GetCouponsByUserId(userId);
+            var response = await couponService.GetCouponsByUserIdAsync(userId);
             
-            if (!couponInfo.Success)
-            {
-                return NotFound();
-            }
-            
-            return Ok(couponInfo);
+            return Ok(response.Data);
         }
         
         [HttpDelete("byUser{userId}")]
-        public async Task<IActionResult> DeleteCouponsByUserId(int userId)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteCouponsByUserIdAsync(int userId)
         {
-            var couponInfo = await couponService.DeleteCouponsByUserId(userId);
+            var response = await couponService.DeleteCouponsByUserIdAsync(userId);
             
-            if (!couponInfo.Success)
-            {
-                return NotFound();
-            }
-            
-            return Ok(couponInfo);
+            return Ok(response.Message);
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ModsenOnlineStore.Store.Application.Interfaces.ProductInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs;
 
@@ -16,33 +17,90 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProductsAsync()
         {
-            return Ok(await service.GetAllProducts());
+            var response = await service.GetAllProductsAsync();
+
+            return Ok(response.Data);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        //[Authorize]
+        public async Task<IActionResult> GetProductByIdAsync(int id)
         {
-            return Ok(await service.GetProductById(id));
+            throw new Exception("my ex");
+            var response = await service.GetProductByIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(AddProductDto addProductDto)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddProductAsync(AddProductDTO addProductDto)
         {
-            return Ok(await service.AddProduct(addProductDto));
+            var response = await service.AddProductAsync(addProductDto);
+
+            return Ok(response.Message);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct(UpdateProductDto updateProductDto)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateProductAsync(UpdateProductDTO updateProductDto)
         {
-            return Ok(await service.UpdateProduct(updateProductDto));
+            var response = await service.UpdateProductAsync(updateProductDto);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveProductById(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RemoveProductByIdAsync(int id)
         {
-            return Ok(await service.RemoveProductById(id));
+            var response = await service.RemoveProductByIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
+        }
+
+        [HttpGet("byProductType{id}")]
+        public async Task<IActionResult> GetAllProductsByProductTypeIdAsync(int id)
+        {
+            var response = await service.GetAllProductsByProductTypeIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
+        }
+
+        [HttpGet("byOrder{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetAllProductsByOrderIdAsync(int id)
+        {
+            var response = await service.GetAllProductsByOrderIdAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
         }
     }
 }

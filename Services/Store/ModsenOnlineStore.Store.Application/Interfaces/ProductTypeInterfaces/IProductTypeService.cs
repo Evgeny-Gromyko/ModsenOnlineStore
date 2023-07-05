@@ -5,13 +5,13 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.ProductTypeInterfaces;
 
 public interface IProductTypeService
 {
-    Task<ResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypes();
+    Task<DataResponseInfo<List<GetProductTypeDTO>>> GetAllProductTypesAsync();
     
-    Task<ResponseInfo<GetProductTypeDTO>> GetSingleProductType(int id);
+    Task<DataResponseInfo<GetProductTypeDTO>> GetSingleProductTypeAsync(int id);
     
-    Task<OperationResult> AddProductType(AddUpdateProductTypeDTO productTypeDto);
+    Task<ResponseInfo> AddProductTypeAsync(AddUpdateProductTypeDTO productTypeDto);
     
-    Task<OperationResult> UpdateProductType(int id, AddUpdateProductTypeDTO productTypeDto);
+    Task<ResponseInfo> UpdateProductTypeAsync(int id, AddUpdateProductTypeDTO productTypeDto);
     
-    Task<OperationResult> DeleteProductType(int id);
+    Task<ResponseInfo> DeleteProductTypeAsync(int id);
 }

@@ -1,21 +1,19 @@
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderProductInterfaces;
-using ModsenOnlineStore.Store.Domain.DTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data;
 
 public class OrderProductRepository:IOrderProductRepository
 {
-    private DataContext context;
+    private readonly DataContext context;
     
     public OrderProductRepository(DataContext context)
     {
         this.context = context;
     }
 
-    public async Task<Order?> AddProductToOrder(int productId, int orderId, int quantity = 1)
+    public async Task<Order?> AddProductToOrderAsync(int productId, int orderId, int quantity = 1)
     {
         var product = await context.Products.FirstOrDefaultAsync(p => p.Id == productId);
         
@@ -23,7 +21,6 @@ public class OrderProductRepository:IOrderProductRepository
             return null;
         
         var order = await context.Orders.
-            Include(o => o.User).
             FirstOrDefaultAsync(p => p.Id == orderId);
         
         if (order is null)
@@ -53,7 +50,7 @@ public class OrderProductRepository:IOrderProductRepository
         return order;
     }
 
-    public async Task<List<OrderProduct>> GetAllOrderProducts()
+    public async Task<List<OrderProduct>> GetAllOrderProductsAsync()
     {
         var orderProducts = await context.OrderProducts
             .Include(op => op.Order)

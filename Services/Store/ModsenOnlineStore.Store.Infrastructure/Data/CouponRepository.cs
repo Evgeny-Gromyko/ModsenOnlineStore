@@ -1,41 +1,38 @@
 using Microsoft.EntityFrameworkCore;
-using ModsenOnlineStore.Store.Application.Interfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.CouponInterfaces;
 using ModsenOnlineStore.Store.Domain.Entities;
 
 namespace ModsenOnlineStore.Store.Infrastructure.Data;
 
 public class CouponRepository : ICouponRepository
 {
-    private DataContext context;
+    private readonly DataContext context;
     
     public CouponRepository(DataContext context)
     {
         this.context = context;
     }
 
-    public async Task<Coupon> GetCoupon(int couponId) =>
+    public async Task<Coupon> GetCouponAsync(int couponId) =>
         await context.Coupons
             .AsNoTracking()
-            .Include(c => c.User)            
             .FirstOrDefaultAsync(e => e.Id == couponId);
 
 
-    public async Task<List<Coupon>> GetAllCoupons() =>
+    public async Task<List<Coupon>> GetAllCouponsAsync() =>
         await context.Coupons
             .AsNoTracking()
-            .Include(c => c.User)
             .ToListAsync();
 
 
-    public async Task<List<Coupon>> GetCouponsByUserId(int userId) =>
+    public async Task<List<Coupon>> GetCouponsByUserIdAsync(int userId) =>
         await context.Coupons
             .AsNoTracking()
             .Where(e => e.UserId == userId)
-            .Include(c => c.User)
             .ToListAsync();
 
 
-    public async Task<Coupon> AddCoupon(Coupon newCoupon)
+    public async Task<Coupon> AddCouponAsync(Coupon newCoupon)
     {
         context.Coupons.Add(newCoupon);
         await context.SaveChangesAsync();
@@ -43,9 +40,9 @@ public class CouponRepository : ICouponRepository
         return newCoupon;
     }
 
-    public async Task<Coupon> DeleteCoupon(int id)
+    public async Task<Coupon> DeleteCouponAsync(int id)
     {
-        var coupon = await GetCoupon(id);
+        var coupon = await GetCouponAsync(id);
         
         if (coupon is null) return null;
 
@@ -55,7 +52,7 @@ public class CouponRepository : ICouponRepository
         return coupon;
     }
 
-    public async Task<List<Coupon>> DeleteCouponsByUserId(int userId)
+    public async Task<List<Coupon>> DeleteCouponsByUserIdAsync(int userId)
     {
         var _couponsToDelete = await context.Coupons
             .Where(c => c.UserId == userId)

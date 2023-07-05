@@ -1,6 +1,6 @@
 ﻿namespace ModsenOnlineStore.Store.Domain.DTOs.ProductDTOs
 {
-    public class GetProductDto
+    public class GetProductDTO
     {
         public int Id { get; set; }
 

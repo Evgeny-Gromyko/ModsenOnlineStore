@@ -1,20 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ModsenOnlineStore.EmailAuthentication.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
 {
     public class EmailSendingService : IEmailSendingService
     {
-
-        private MailAddress senderAddress;
-        private NetworkCredential networkCredential;
+        private readonly MailAddress senderAddress;
+        private readonly NetworkCredential networkCredential;
 
         public EmailSendingService(IConfiguration configuration) {
             senderAddress = new MailAddress(configuration["Credentials:Email"], "Store Mail Authentication");
@@ -30,7 +24,7 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
             message.Body = text;
             message.IsBodyHtml = true;
 
-            SmtpClient smtp = new SmtpClient() // gmail smtp settings
+            var smtp = new SmtpClient() // gmail smtp settings
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
@@ -41,6 +35,5 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
             };
             smtp.Send(message);
         }
-
     }
 }
