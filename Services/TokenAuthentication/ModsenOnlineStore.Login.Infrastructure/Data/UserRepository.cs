@@ -18,19 +18,7 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
 
         public async Task<List<User>> GetAllUsersAsync(int pageNumber, int pageSize)
         {
-            var users = await context.Users.AsNoTracking().ToListAsync();
-
-            if (pageNumber < 1)
-            {
-                return users;
-            }
-
-            if (pageSize < 1)
-            {
-                pageSize = 10;
-            }
-
-            return users.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return context.Users.AsNoTracking().ToPagedCollection(pageNumber, pageSize).ToList();
         }
 
         public async Task<User?> GetUserByIdAsync(int id) =>
