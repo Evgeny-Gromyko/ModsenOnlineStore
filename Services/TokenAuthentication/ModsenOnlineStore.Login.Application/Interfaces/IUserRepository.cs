@@ -4,7 +4,7 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetAllUsersAsync();
+        Task<List<User>> GetAllUsersAsync(int pageNumber, int pageSize);
 
         Task<User?> GetUserByIdAsync(int id);
 

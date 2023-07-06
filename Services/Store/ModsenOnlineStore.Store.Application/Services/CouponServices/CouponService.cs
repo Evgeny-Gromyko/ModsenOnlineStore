@@ -34,17 +34,17 @@ public class CouponService : ICouponService
         return new DataResponseInfo<GetCouponDTO>(data: couponDTO, success: true, message: $"coupon with id {couponId}");
     }
 
-    public async Task<DataResponseInfo<List<GetCouponDTO>>> GetAllCouponsAsync()
+    public async Task<DataResponseInfo<List<GetCouponDTO>>> GetAllCouponsAsync(int pageNumber, int pageSize)
     {
-        var coupons = await couponRepository.GetAllCouponsAsync();
+        var coupons = await couponRepository.GetAllCouponsAsync(pageNumber, pageSize);
         var couponDtos = coupons.Select(mapper.Map<GetCouponDTO>).ToList(); 
         
         return new DataResponseInfo<List<GetCouponDTO>>(data: couponDtos, success: true, message: "all coupons");
     }
 
-    public async Task<DataResponseInfo<List<GetCouponDTO>>> GetCouponsByUserIdAsync(int userId)
+    public async Task<DataResponseInfo<List<GetCouponDTO>>> GetCouponsByUserIdAsync(int userId, int pageNumber, int pageSize)
     {
-        var coupons = await couponRepository.GetCouponsByUserIdAsync(userId);
+        var coupons = await couponRepository.GetCouponsByUserIdAsync(userId, pageNumber, pageSize);
         
         if (coupons is null)
         {

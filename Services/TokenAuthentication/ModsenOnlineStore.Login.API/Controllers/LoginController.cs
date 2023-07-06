@@ -36,9 +36,11 @@ namespace ModsenOnlineStore.Login.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await loginService.GetAllUsersAsync();
+
+
+            var response = await loginService.GetAllUsersAsync(pageNumber, pageSize);
 
             return Ok(response.Data);
         }

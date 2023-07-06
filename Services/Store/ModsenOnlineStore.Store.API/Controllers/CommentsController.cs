@@ -18,9 +18,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllCommentsAsync()
+        public async Task<IActionResult> GetAllCommentsAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await service.GetAllCommentsAsync();
+            var response = await service.GetAllCommentsAsync(pageNumber, pageSize);
 
             return Ok(response.Data);
         }
@@ -82,9 +82,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet("byProduct{id}")]
-        public async Task<IActionResult> GetAllCommentsByProductIdAsync(int id)
+        public async Task<IActionResult> GetAllCommentsByProductIdAsync(int id, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await service.GetAllCommentsByProductIdAsync(id);
+            var response = await service.GetAllCommentsByProductIdAsync(id, pageNumber, pageSize);
 
             if (!response.Success)
             {

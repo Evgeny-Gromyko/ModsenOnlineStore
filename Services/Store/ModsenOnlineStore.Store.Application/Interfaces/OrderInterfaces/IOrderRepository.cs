@@ -4,7 +4,7 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
 {
     public interface IOrderRepository
     {
-        Task<List<Order>> GetAllOrders();
+        Task<List<Order>> GetAllOrders(int pageNumber, int pageSize);
 
         Task<Order?> GetSingleOrderAsync(int id);
 
@@ -13,5 +13,7 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
         Task UpdateOrderAsync(Order order);
 
         Task DeleteOrderAsync(int id);
+
+        Task<List<Order>> GetAllOrdersByUserId(int id, int pageNumber, int pageSize);
     }
 }

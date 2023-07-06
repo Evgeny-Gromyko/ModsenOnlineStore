@@ -19,18 +19,19 @@ public class CouponRepository : ICouponRepository
             .FirstOrDefaultAsync(e => e.Id == couponId);
 
 
-    public async Task<List<Coupon>> GetAllCouponsAsync() =>
-        await context.Coupons
-            .AsNoTracking()
-            .ToListAsync();
+    public async Task<List<Coupon>> GetAllCouponsAsync(int pageNumber, int pageSize)
+    {
+        return context.Coupons.AsNoTracking().ToPagedCollection(pageNumber, pageSize).ToList();
+    }
 
-
-    public async Task<List<Coupon>> GetCouponsByUserIdAsync(int userId) =>
-        await context.Coupons
+    public async Task<List<Coupon>> GetCouponsByUserIdAsync(int userId, int pageNumber, int pageSize)
+    {
+        return context.Coupons
             .AsNoTracking()
             .Where(e => e.UserId == userId)
-            .ToListAsync();
-
+            .ToPagedCollection(pageNumber, pageSize)
+            .ToList();
+    }
 
     public async Task<Coupon> AddCouponAsync(Coupon newCoupon)
     {

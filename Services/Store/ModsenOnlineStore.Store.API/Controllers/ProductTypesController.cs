@@ -17,10 +17,10 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAllProductTypesAsync()
+        public async Task<IActionResult> GetAllProductTypesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await productTypeService.GetAllProductTypesAsync();
-                
+            var response = await productTypeService.GetAllProductTypesAsync(pageNumber, pageSize);
+
             return Ok(response.Data);
         }
 

@@ -18,9 +18,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllCouponsAsync()
+        public async Task<IActionResult> GetAllCouponsAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await couponService.GetAllCouponsAsync();
+            var response = await couponService.GetAllCouponsAsync(pageNumber, pageSize);
             
             return Ok(response.Data);
         }
@@ -78,9 +78,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         
         [HttpGet("byUser{userId}")]
         [Authorize]
-        public async Task<IActionResult> GetCouponsByUserIdAsync(int userId)
+        public async Task<IActionResult> GetCouponsByUserIdAsync(int userId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await couponService.GetCouponsByUserIdAsync(userId);
+            var response = await couponService.GetCouponsByUserIdAsync(userId, pageNumber, pageSize);
             
             return Ok(response.Data);
         }

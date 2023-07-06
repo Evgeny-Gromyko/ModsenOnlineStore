@@ -13,8 +13,10 @@ public class ProductTypeRepository : IProductTypeRepository
         this.context = context;
     }
     
-    public async Task<List<ProductType>> GetAllProductTypesAsync() =>
-        await context.ProductTypes.AsNoTracking().ToListAsync();
+    public async Task<List<ProductType>> GetAllProductTypesAsync(int pageNumber, int pageSize)
+    {
+        return context.ProductTypes.AsNoTracking().ToPagedCollection(pageNumber, pageSize).ToList();
+    }
 
     public async Task<ProductType> GetSingleProductTypeAsync(int id) =>
         await context.ProductTypes.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);

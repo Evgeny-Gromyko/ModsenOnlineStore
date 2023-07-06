@@ -16,8 +16,10 @@ namespace ModsenOnlineStore.Login.Infrastructure.Data
         public async Task<User?> AuthenticateUserAsync(string email, string password) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => (p.Email == email) && (p.Password == password));
 
-        public async Task<List<User>> GetAllUsersAsync() =>
-            await context.Users.AsNoTracking().ToListAsync();
+        public async Task<List<User>> GetAllUsersAsync(int pageNumber, int pageSize)
+        {
+            return context.Users.AsNoTracking().ToPagedCollection(pageNumber, pageSize).ToList();
+        }
 
         public async Task<User?> GetUserByIdAsync(int id) =>
             await context.Users.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);

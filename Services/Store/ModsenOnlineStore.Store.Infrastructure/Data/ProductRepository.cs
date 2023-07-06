@@ -13,9 +13,9 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
             this.context = context;
         }
 
-        public async Task<List<Product>> GetAllProductsAsync()
+        public async Task<List<Product>> GetAllProductsAsync(int pageNumber, int pageSize)
         {
-            return await context.Products.AsNoTracking().ToListAsync();
+            return context.Products.AsNoTracking().ToPagedCollection(pageNumber, pageSize).ToList();
         }
 
         public async Task<Product?> GetProductByIdAsync(int id)
@@ -44,6 +44,15 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
                 context.Products.Remove(product);
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<Product>> GetAllProductsByProductTypeIdAsync(int id, int pageNumber, int pageSize)
+        {
+            return context.Products
+                .AsNoTracking()
+                .Where(p => p.ProductTypeId == id)
+                .ToPagedCollection(pageNumber, pageSize)
+                .ToList();
         }
     }
 }
