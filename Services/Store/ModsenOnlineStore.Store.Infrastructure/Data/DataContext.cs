@@ -18,9 +18,7 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         public DbSet<OrderProduct> OrderProducts { get; set; }
         
         public DbSet<ProductType> ProductTypes { get; set; }
-        
-        public DbSet<Log> Logs { get; set; }
-        
+                
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().Property(p => p.Price).HasPrecision(18, 4);

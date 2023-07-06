@@ -1,6 +1,7 @@
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Entities;
 using ModsenOnlineStore.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace ModsenOnlineStore.Login.Application.Interfaces
 {
@@ -11,8 +12,8 @@ namespace ModsenOnlineStore.Login.Application.Interfaces
         Task<DataResponseInfo<List<User>>> GetAllUsersAsync(int pageNumber, int pageSize);
 
         Task<DataResponseInfo<User>> GetUserByIdAsync(int id);
-
-        Task<ResponseInfo> RegisterUserAsync(AddUserDTO user);
+        
+        Task<ResponseInfo> RegisterUserAsync(AddUserDTO user, HttpRequest httpRequest);
 
         Task<ResponseInfo> DeleteUserAsync(int id);
 

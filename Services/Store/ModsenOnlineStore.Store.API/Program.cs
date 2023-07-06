@@ -30,6 +30,7 @@ using ModsenOnlineStore.Store.Domain.DTOs.CouponDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.CouponValidators;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.CommentValidators;
+using ModsenOnlineStore.Store.Application.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -142,6 +143,8 @@ if (app.Environment.IsDevelopment())
 
     // await DbInitializer.SeedData(context)
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 

@@ -12,7 +12,7 @@
         public const string EmailConfirmationTheme = "Online store email confirmation";
 
         public const string EmailConfirmationText = """
-            <form action="https://localhost:7123/Login/ConfirmEmail?userId={0}&code={1}" method="post">
+            <form action="{0}" method="post">
                 <button type="submit">Approve your email</button>
             </form>
             """;

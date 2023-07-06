@@ -27,10 +27,10 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
             await Task.Run(() =>
             {
                 channel.QueueDeclare(queue: "email-confirmation",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+                                     durable: false,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
 
                 var consumer = new EventingBasicConsumer(channel);
 
@@ -40,12 +40,11 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
                     var message = Encoding.UTF8.GetString(body.ToArray());
 
                     var email = message.Split()[0];
-                    var userId = message.Split()[1];
-                    var code = message.Split()[2];
+                    var url = message.Split()[1];
 
                     emailSendingService.SendEmail(email,
                                                   Domain.Constants.EmailConfirmationTheme,
-                                                  string.Format(Domain.Constants.EmailConfirmationText, userId, code));
+                                                  string.Format(Domain.Constants.EmailConfirmationText, url));
                 };
 
                 channel.BasicConsume(queue: "email-confirmation",
