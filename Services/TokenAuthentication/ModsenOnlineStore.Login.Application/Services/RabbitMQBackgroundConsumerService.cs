@@ -19,7 +19,7 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
         {
             this.userMoneyService = userMoneyService;
             this.rabbitMQMessagingService = rabbitMQMessagingService;
-            var factory = new ConnectionFactory();
+            var factory = new ConnectionFactory(){HostName = "rabbitmq"};
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
         }

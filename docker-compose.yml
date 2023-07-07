@@ -1,4 +1,4 @@
-version: '3.0'
+version: '4.1'
 services:
   rabbitmq:
     container_name: rabbitmq
@@ -14,6 +14,8 @@ services:
       - rabbitmq:/var/lib/rabbitmq/mnesia
     networks:
       - login-network
+      - store-network
+      - logs-network
     restart: unless-stopped
     
   sqlserver:
@@ -26,13 +28,15 @@ services:
       - SA_PASSWORD=paSSword0110
     networks:
       - login-network
+      - store-network
+      - logs-network
     volumes:
       - sqldata:/var/opt/mssql
     restart: unless-stopped
     
   ModsenOnlineStore.Login.API:
     container_name: TokenAuthentication
-    image: ${DOCKER_REGISTRY-}login:v2.7
+    image: ${DOCKER_REGISTRY-}login:v4.1
     build:
       context: ./Services
       dockerfile: Dockerfile
@@ -48,6 +52,7 @@ services:
       - MessageQueueSettings__UserName=rabbitmquser
       - MessageQueueSettings__Password=rabbitmqPassword12!
     networks:
+      - logs-network
       - login-network
     ports:
       - "5217:80"
@@ -55,7 +60,7 @@ services:
     
   ModsenOnlineStore.EmailAuthentication.API:
     container_name: EmailAuthentication
-    image: ${DOCKER_REGISTRY-}emailauthentication:v2.1
+    image: ${DOCKER_REGISTRY-}emailauthentication:v4
     build:
       context: ./Services/EmailAuthentication
       dockerfile: Dockerfile
@@ -69,58 +74,63 @@ services:
       - MessageQueueSettings__Password=rabbitmqPassword12!
     networks:
       - login-network
+      - store-network
+      - logs-network
     ports:
       - "5285:80"
     restart: unless-stopped
 
   ModsenOnlineStore.LogService.API:
     container_name: logs
-    image: ${DOCKER_REGISTRY-}logs:v1.3
+    image: ${DOCKER_REGISTRY-}logs:v4
     build:
       context: ./Services
       dockerfile: DockerfileLogs
     depends_on:
-#      - rabbitmq
+      - rabbitmq
       - sqlserver
     env_file: ./Services/ModsenOnlineStore.Common/Common.env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MigrationsAssembly=ModsenOnlineStore.LogService.API
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=sqlserver;  Trusted_Connection=false;TrustServerCertificate=True; MultiSubnetFailover=True; Database=logsDb; User ID='sa'; Password='paSSword0110';Integrated security=False;
-#      - MessageQueueSettings__Host=rabbitmq
-#      - MessageQueueSettings__UserName=rabbitmquser
-#      - MessageQueueSettings__Password=rabbitmqPassword12!
-#    networks:
-#      - login-network
+      - MessageQueueSettings__Host=rabbitmq
+      - MessageQueueSettings__UserName=rabbitmquser
+      - MessageQueueSettings__Password=rabbitmqPassword12!
+    networks:
+      - logs-network
     ports:
       - "5229:80"
     restart: unless-stopped
 
   ModsenOnlineStore.Store.API:
     container_name: store
-    image: ${DOCKER_REGISTRY-}store:v1
+    image: ${DOCKER_REGISTRY-}store:v4
     build:
       context: ./Services
       dockerfile: DockerfileStore
     depends_on:
-#      - rabbitmq
+      - rabbitmq
       - sqlserver
     env_file: ./Services/ModsenOnlineStore.Common/Common.env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MigrationsAssembly=ModsenOnlineStore.Store.API
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=sqlserver;  Trusted_Connection=false;TrustServerCertificate=True; MultiSubnetFailover=True; Database=storeDb; User ID='sa'; Password='paSSword0110';Integrated security=False;
-#      - MessageQueueSettings__Host=rabbitmq
-#      - MessageQueueSettings__UserName=rabbitmquser
-#      - MessageQueueSettings__Password=rabbitmqPassword12!
-#    networks:
-#      - login-network
+      - MessageQueueSettings__Host=rabbitmq
+      - MessageQueueSettings__UserName=rabbitmquser
+      - MessageQueueSettings__Password=rabbitmqPassword12!
+    networks:
+      - store-network
+      - logs-network
     ports:
       - "5299:80"
     restart: unless-stopped
     
 networks:
   login-network:
+  store-network:
+  logs-network:
     
 volumes:
   rabbitmq:
