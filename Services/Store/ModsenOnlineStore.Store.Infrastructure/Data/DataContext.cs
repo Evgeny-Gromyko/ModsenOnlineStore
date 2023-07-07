@@ -18,6 +18,8 @@ namespace ModsenOnlineStore.Store.Infrastructure.Data
         public DbSet<OrderProduct> OrderProducts { get; set; }
         
         public DbSet<ProductType> ProductTypes { get; set; }
+
+        public DbSet<OrderPaymentConfirmation> OrderPaymentConfirmations { get; set; }
                 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

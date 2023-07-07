@@ -8,6 +8,7 @@ using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
 using ModsenOnlineStore.Login.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using ModsenOnlineStore.Common.Interfaces;
 
 namespace ModsenOnlineStore.Login.Application.Services
 {
@@ -100,7 +101,7 @@ namespace ModsenOnlineStore.Login.Application.Services
 
             await emailConfirmationRepository.AddEmailConfirmationAsync(emailConfirmation);
 
-            var url = $"{httpRequest.Scheme}://{httpRequest.Host}/Login/ConfirmEmail?userId={user.Id}&code={emailConfirmation.Code}";
+            var url = $"{httpRequest.Scheme}://{httpRequest.Host}/Login/ConfirmEmail?userId={user.Id}&code={emailConfirmation.Code} ";
             var message = $"{user.Email} {url}";
             rabbitMQMessagingService.PublishMessage("email-confirmation", message);
 

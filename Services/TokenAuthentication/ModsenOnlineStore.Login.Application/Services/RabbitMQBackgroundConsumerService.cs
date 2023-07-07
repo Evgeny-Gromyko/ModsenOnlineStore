@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
-using ModsenOnlineStore.EmailAuthentication.Application.Interfaces;
+using ModsenOnlineStore.Common.Interfaces;
+using ModsenOnlineStore.Login.Application.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -8,13 +9,16 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
 {
     public class RabbitMQBackgroundConsumerService : BackgroundService
     {
-        private readonly IEmailSendingService emailSendingService;
+        private readonly IUserMoneyService userMoneyService;
         private readonly IConnection connection;
         private readonly IModel channel;
+        private readonly IRabbitMQMessagingService rabbitMQMessagingService;
 
-        public RabbitMQBackgroundConsumerService(IEmailSendingService emailSendingService)
+
+        public RabbitMQBackgroundConsumerService(IUserMoneyService userMoneyService, IRabbitMQMessagingService rabbitMQMessagingService)
         {
-            this.emailSendingService = emailSendingService;
+            this.userMoneyService = userMoneyService;
+            this.rabbitMQMessagingService = rabbitMQMessagingService;
             var factory = new ConnectionFactory();
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
@@ -26,7 +30,7 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
 
             await Task.Run(() =>
             {
-                channel.QueueDeclare(queue: "email-confirmation",
+                channel.QueueDeclare(queue: "user-payment",
                                      durable: false,
                                      exclusive: false,
                                      autoDelete: false,
@@ -34,28 +38,27 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
 
                 var consumer = new EventingBasicConsumer(channel);
 
-                consumer.Received += (sender, e) =>
+                consumer.Received += async (sender, e) =>
                 {
                     var body = e.Body;
                     var message = Encoding.UTF8.GetString(body.ToArray());
-                    string email;
 
-                    if (message.Substring(0, "Payment".Length) == "Payment") {
 
-                        email = message.Split()[2];
-                        emailSendingService.SendEmail(email, message.Split()[0] + message.Split()[1]);
-                        return;
-                    }
+                    var userId = int.Parse(message.Split()[0]);
+                    var totalPrice = Decimal.Parse(message.Split()[1]);
+                    var email = message.Split()[2];
 
-                    email = message.Split()[0];
-                    var url = message.Split()[1];
+                    var result = await userMoneyService.MakePaymentAsync(userId, totalPrice);
 
-                    emailSendingService.SendEmail(email,
-                                                  Domain.Constants.EmailConfirmationTheme,
-                                                  string.Format(Domain.Constants.EmailConfirmationText, url));
+                    var newMessage = "Payment ";
+
+                    if (result.Success) newMessage += "succeed " + email;
+                    else newMessage += "rejected " + email;
+                     
+                    rabbitMQMessagingService.PublishMessage("email-confirmation", newMessage);
                 };
 
-                channel.BasicConsume(queue: "email-confirmation",
+                channel.BasicConsume(queue: "user-payment",
                                      autoAck: true,
                                      consumer: consumer);
             });

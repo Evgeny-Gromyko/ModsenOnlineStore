@@ -1,4 +1,4 @@
-﻿namespace ModsenOnlineStore.Login.Application.Interfaces
+﻿namespace ModsenOnlineStore.Common.Interfaces
 {
     public interface IRabbitMQMessagingService
     {

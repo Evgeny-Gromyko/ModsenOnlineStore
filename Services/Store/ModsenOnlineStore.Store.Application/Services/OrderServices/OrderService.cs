@@ -1,6 +1,9 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using ModsenOnlineStore.Common;
+using ModsenOnlineStore.Common.Interfaces;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderPaymentConfirmationInterfaces;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 using ModsenOnlineStore.Store.Domain.Entities;
 using System.Net.Http.Json;
@@ -11,11 +14,19 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
     {
         private readonly IMapper mapper;
         private readonly IOrderRepository orderRepository;
+        private readonly IRabbitMQMessagingService rabbitMQMessagingService;
+        private readonly IOrderPaymentConfirmationRepository orderPaymentConfirmationRepository;
 
-        public OrderService(IMapper mapper, IOrderRepository repository)
+        public OrderService(
+            IMapper mapper, IOrderRepository repository,
+            IRabbitMQMessagingService rabbitMQMessagingService,
+            IOrderPaymentConfirmationRepository orderPaymentConfirmationRepository
+        )
         {
             this.mapper = mapper;
             this.orderRepository = repository;
+            this.rabbitMQMessagingService = rabbitMQMessagingService;
+            this.orderPaymentConfirmationRepository = orderPaymentConfirmationRepository;
         }
 
         public async Task<DataResponseInfo<List<GetOrderDTO>>> GetAllOrders()
@@ -38,31 +49,6 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             return new DataResponseInfo<GetOrderDTO>(data: mapper.Map<GetOrderDTO>(order), success: true, message: "order");
         }
 
-        public async Task<ResponseInfo> AddOrderAsync(AddOrderDTO addOrder)
-        {
-            string confirmationCode;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:7107/");
-                var response = await client.PostAsJsonAsync("EmaiLoginlAuthentication", "egrom2002@gmail.com");
-                if (!response.IsSuccessStatusCode)
-                {
-                    return new ResponseInfo(success: false, message: "can not get confirmation code");
-                }
-                
-                confirmationCode = await response.Content.ReadAsStringAsync();
-            }
-
-            var newOrder = mapper.Map<Order>(addOrder);
-
-            newOrder.PaymentConfirmationCode = confirmationCode;
-
-            await orderRepository.AddOrderAsync(newOrder);
-
-            return new ResponseInfo(success: true, message: "order added");
-        }
-
         public async Task<ResponseInfo> UpdateOrderAsync(UpdateOrderDTO updateOrder)
         {
             var oldOrder = await orderRepository.GetSingleOrderAsync(updateOrder.Id);
@@ -78,8 +64,15 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
             return new ResponseInfo(success: true, message: "order updated");
         }
 
+        public async Task<ResponseInfo> AddOrderAsync(AddOrderDTO addOrder)
+        {
+            var newOrder = mapper.Map<Order>(addOrder);
+            await orderRepository.AddOrderAsync(newOrder);
 
-        public async Task<ResponseInfo> PayOrderAsync(int id, string code)
+            return new ResponseInfo(success: true, message: "order added");
+        }
+
+        public async Task<ResponseInfo> PayOrderAsync(int id, string confirmationEmail, HttpRequest httpRequest)
         {
             var order = await orderRepository.GetSingleOrderAsync(id);
 
@@ -88,23 +81,40 @@ namespace ModsenOnlineStore.Store.Application.Services.OrderService
                 return new ResponseInfo(success: false, message: "no such order");
             }
 
-            if (order.PaymentConfirmationCode != code)
+            var code = Guid.NewGuid().ToString();
+
+            var orderPaymentConfirmation = new OrderPaymentConfirmation()
+            {
+                OrderId = order.Id,
+                Code = code
+            };
+
+            await orderPaymentConfirmationRepository.AddOrderPaymentConfirmationAsync(orderPaymentConfirmation);
+
+            var url = $"{httpRequest.Scheme}://{httpRequest.Host}/Orders/ConfirmOrderPayment?id={order.Id}&code={code}";
+            var message = $"{confirmationEmail} {url}";
+
+            rabbitMQMessagingService.PublishMessage("email-confirmation", message);
+
+            return new ResponseInfo(success: true, message: "confirm payment");
+        }
+
+        public async Task<ResponseInfo> ConfirmOrderPaymentAsync(int id, string confirmationEmail, string code)
+        {
+            var order = await orderRepository.GetSingleOrderAsync(id);
+
+            var orderPaymentConfirmation = await orderPaymentConfirmationRepository.GetOrderPaymentConfirmationAsync(order.Id, code);
+
+            if (orderPaymentConfirmation.Code != code)
             {
                 return new ResponseInfo(success: false, message: "wrong confirmation code");
             }
 
-            using (var client = new HttpClient())  // request to reduce money
-            {
-                client.BaseAddress = new Uri("https://localhost:7123/");
-                var response = await client.PostAsJsonAsync($"Login/Pay/{order.UserId}", order.TotalPrice);
+            var message = order.UserId + " " + order.TotalPrice.ToString() + " " + confirmationEmail;
 
-                if (response.IsSuccessStatusCode) {
-                    order.Paid = true;
-                    await orderRepository.UpdateOrderAsync(order);
-                }
+            rabbitMQMessagingService.PublishMessage("user-payment", message);
 
-                return await response.Content.ReadFromJsonAsync<ResponseInfo>(); //Paid or not
-            }
+            return new ResponseInfo(success: true, message: "await for bank response");
         }
 
         public async Task<ResponseInfo> DeleteOrderAsync(int id)

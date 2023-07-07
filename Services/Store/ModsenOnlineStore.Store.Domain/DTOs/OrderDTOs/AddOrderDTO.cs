@@ -7,7 +7,5 @@ namespace ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs
         public int UserId { get; set; }
 
         public decimal TotalPrice { get; set; }
-
-        public string? PaymentConfirmationCode { get; set; }
     }
 }

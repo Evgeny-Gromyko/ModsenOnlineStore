@@ -1,8 +1,8 @@
-﻿using ModsenOnlineStore.Login.Application.Interfaces;
+﻿using ModsenOnlineStore.Common.Interfaces;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace ModsenOnlineStore.Login.Application.Services
+namespace ModsenOnlineStore.Common.Services
 {
     public class RabbitMQMessagingService : IRabbitMQMessagingService
     {

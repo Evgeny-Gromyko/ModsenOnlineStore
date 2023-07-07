@@ -5,7 +5,7 @@
 namespace ModsenOnlineStore.Store.API.Migrations
 {
     /// <inheritdoc />
-    public partial class response : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace ModsenOnlineStore.Store.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Discount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -25,15 +25,17 @@ namespace ModsenOnlineStore.Store.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Logs",
+                name: "OrderPaymentConfirmations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logs", x => x.Id);
+                    table.PrimaryKey("PK_OrderPaymentConfirmations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,7 +170,7 @@ namespace ModsenOnlineStore.Store.API.Migrations
                 name: "Coupons");
 
             migrationBuilder.DropTable(
-                name: "Logs");
+                name: "OrderPaymentConfirmations");
 
             migrationBuilder.DropTable(
                 name: "OrderProducts");

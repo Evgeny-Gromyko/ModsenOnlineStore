@@ -11,8 +11,8 @@ using ModsenOnlineStore.Store.Infrastructure.Data;
 namespace ModsenOnlineStore.Store.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230701122127_PriceTypeEdited")]
-    partial class PriceTypeEdited
+    [Migration("20230707073553_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,9 +83,6 @@ namespace ModsenOnlineStore.Store.API.Migrations
                     b.Property<bool>("Paid")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PaymentConfirmationCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
@@ -96,6 +93,26 @@ namespace ModsenOnlineStore.Store.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ModsenOnlineStore.Store.Domain.Entities.OrderPaymentConfirmation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderPaymentConfirmations");
                 });
 
             modelBuilder.Entity("ModsenOnlineStore.Store.Domain.Entities.OrderProduct", b =>

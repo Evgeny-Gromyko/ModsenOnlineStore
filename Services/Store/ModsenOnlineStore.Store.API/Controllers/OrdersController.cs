@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace ModsenOnlineStore.Store.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -23,7 +24,7 @@ namespace ModsenOnlineStore.Store.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrdersAsync()
         {
             var response = await orderService.GetAllOrders();
@@ -47,36 +48,58 @@ namespace ModsenOnlineStore.Store.API.Controllers
 
         
         [HttpPost]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> AddOrder(AddOrderDTO order) // send mail, save code to database
         {
 
-            using (var client = new HttpClient())
+            //using (var client = new HttpClient())
+            //{
+            //    client.BaseAddress = new Uri("https://localhost:7107/");
+            //    var response = await client.PostAsJsonAsync("EmaiLoginlAuthentication", "egrom2002@gmail.com");
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var data = await response.Content.ReadAsStringAsync();
+
+            //        order.PaymentConfirmationCode = data;
+            //    }
+            //}
+            var response = await orderService.AddOrderAsync(order);
+
+            if (!response.Success)
             {
-                client.BaseAddress = new Uri("https://localhost:7107/");
-                var response = await client.PostAsJsonAsync("EmaiLoginlAuthentication", "egrom2002@gmail.com");
-                if (response.IsSuccessStatusCode)
-                {
-                    var data = await response.Content.ReadAsStringAsync();
-
-                    order.PaymentConfirmationCode = data;
-                }
+                return NotFound(response.Message);
             }
-            var newResponse = await orderService.AddOrderAsync(order);
-
-            return Ok(newResponse.Message);
+            return Ok(response.Message);
         }
 
-        [HttpPut("Pay")]
-        public async Task<IActionResult> PayOrder(int id, string code)
+        [HttpPut("PayOrder/{id}")]
+        //[Authorize(Roles = "User")]
+        public async Task<IActionResult> PayOrder(int id)
         {
-            var response = await orderService.PayOrderAsync(id, code);
+            string userEmail = "egrom2002@gmail.com"; // получить из jwt
+
+            var response = await orderService.PayOrderAsync(id, userEmail, HttpContext!.Request);
 
             if (!response.Success)
             {
                 return NotFound(response);
             }
             return Ok(response);
+        }
+
+
+        [HttpPost]
+        [Route("ConfirmOrderPayment")]
+        public async Task<IActionResult> ConfirmOrderPaymentAsync(int id, string code)
+        {
+            var response = await orderService.ConfirmOrderPaymentAsync(id, code);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Message);
         }
 
         [HttpPut]

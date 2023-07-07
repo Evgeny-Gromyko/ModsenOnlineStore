@@ -31,6 +31,9 @@ using ModsenOnlineStore.Store.Domain.Validators.CouponValidators;
 using ModsenOnlineStore.Store.Domain.DTOs.CommentDTOs;
 using ModsenOnlineStore.Store.Domain.Validators.CommentValidators;
 using ModsenOnlineStore.Store.Application.Middleware;
+using ModsenOnlineStore.Common.Interfaces;
+using ModsenOnlineStore.Common.Services;
+using ModsenOnlineStore.Store.Application.Interfaces.OrderPaymentConfirmationInterfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +49,10 @@ builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<IRabbitMQMessagingService, RabbitMQMessagingService>();
+builder.Services.AddTransient<IOrderPaymentConfirmationRepository, OrderPaymentConfirmationRepository>();
+
+
 
 builder.Services.AddTransient<IValidator<AddUpdateProductTypeDTO>, AddUpdateProductTypeValidator>();
 builder.Services.AddTransient<IValidator<AddProductDTO>, AddProductValidator>();

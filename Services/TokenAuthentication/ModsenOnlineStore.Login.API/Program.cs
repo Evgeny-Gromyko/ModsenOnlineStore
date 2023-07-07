@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ModsenOnlineStore.Common;
+using ModsenOnlineStore.Common.Interfaces;
+using ModsenOnlineStore.Common.Services;
+using ModsenOnlineStore.EmailAuthentication.Infrastructure.Services;
 using ModsenOnlineStore.Login.Application.Interfaces;
 using ModsenOnlineStore.Login.Application.Services;
 using ModsenOnlineStore.Login.Domain.DTOs.UserDTOs;
@@ -23,6 +26,9 @@ builder.Services.AddTransient<IRabbitMQMessagingService, RabbitMQMessagingServic
 builder.Services.AddTransient<IValidator<AddUserDTO>, AddUserValidator>();
 builder.Services.AddTransient<IValidator<UpdateUserDTO>, UpdateUserValidator>();
 
+builder.Services.AddHostedService<RabbitMQBackgroundConsumerService>();
+
+
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 builder.Services.AddHttpContextAccessor();
@@ -34,7 +40,8 @@ var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
 
 builder.Services.AddDbContext<DataContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-    b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())));
+    b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())),
+    ServiceLifetime.Singleton);
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
@@ -54,6 +61,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

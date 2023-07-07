@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using ModsenOnlineStore.Common;
 using ModsenOnlineStore.Store.Domain.DTOs.OrderDTOs;
 
@@ -13,7 +14,9 @@ namespace ModsenOnlineStore.Store.Application.Interfaces.OrderInterfaces
 
         Task<ResponseInfo> UpdateOrderAsync(UpdateOrderDTO updateOrder);
 
-        Task<ResponseInfo> PayOrderAsync(int id, string code);
+        Task<ResponseInfo> PayOrderAsync(int id, string confirmationEmail, HttpRequest httpRequest);
+
+        Task<ResponseInfo> ConfirmOrderPaymentAsync(int id, string confirmationEmail, string code);
 
         Task<ResponseInfo> DeleteOrderAsync(int id);
 
