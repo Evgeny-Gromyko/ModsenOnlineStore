@@ -43,7 +43,7 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
                     if (message.Substring(0, "Payment".Length) == "Payment") {
 
                         email = message.Split()[2];
-                        emailSendingService.SendEmail(email, message.Split()[0] + message.Split()[1]);
+                        emailSendingService.SendEmail(email, "Bank response", message.Split()[0] + " " + message.Split()[1]);
                         return;
                     }
 
