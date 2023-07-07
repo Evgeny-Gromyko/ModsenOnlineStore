@@ -1,0 +1,24 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["./Store/ModsenOnlineStore.Store.API/ModsenOnlineStore.Store.API.csproj", "Store/ModsenOnlineStore.Store.API/"]
+COPY ["./ModsenOnlineStore.Common/ModsenOnlineStore.Common.csproj", "ModsenOnlineStore.Common/"]
+COPY ["./Store/ModsenOnlineStore.Store.Infrastructure/ModsenOnlineStore.Store.Infrastructure.csproj", "Store/ModsenOnlineStore.Store.Infrastructure/"]
+COPY ["./Store/ModsenOnlineStore.Store.Application/ModsenOnlineStore.Store.Application.csproj", "Store/ModsenOnlineStore.Store.Application/"]
+COPY ["./Store/ModsenOnlineStore.Store.Domain/ModsenOnlineStore.Store.Domain.csproj", "Store/ModsenOnlineStore.Store.Domain/"]
+RUN dotnet restore "Store/ModsenOnlineStore.Store.API/ModsenOnlineStore.Store.API.csproj"
+COPY . .
+WORKDIR "/src"
+RUN dotnet build "Store/ModsenOnlineStore.Store.API/ModsenOnlineStore.Store.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Store/ModsenOnlineStore.Store.API/ModsenOnlineStore.Store.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ModsenOnlineStore.Store.API.dll"]

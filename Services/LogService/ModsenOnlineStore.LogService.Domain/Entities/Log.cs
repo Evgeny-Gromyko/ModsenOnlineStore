@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string LogLevel { get; set; } = String.Empty;  
         public int EventId { get; set; }                      
-        public Exception? Exception { get; set; }
+        // public Exception? Exception { get; set; }
         public DateTime DateTime { get; set; }
         public string Message { get; set; } = String.Empty;
         public int UserId { get; set; }

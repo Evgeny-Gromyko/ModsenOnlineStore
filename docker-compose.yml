@@ -1,4 +1,4 @@
-version: '2.0'
+version: '3.0'
 services:
   rabbitmq:
     container_name: rabbitmq
@@ -32,7 +32,7 @@ services:
     
   ModsenOnlineStore.Login.API:
     container_name: TokenAuthentication
-    image: ${DOCKER_REGISTRY-}login:v2.6
+    image: ${DOCKER_REGISTRY-}login:v2.7
     build:
       context: ./Services
       dockerfile: Dockerfile
@@ -55,7 +55,7 @@ services:
     
   ModsenOnlineStore.EmailAuthentication.API:
     container_name: EmailAuthentication
-    image: ${DOCKER_REGISTRY-}emailauthentication:v2.0
+    image: ${DOCKER_REGISTRY-}emailauthentication:v2.1
     build:
       context: ./Services/EmailAuthentication
       dockerfile: Dockerfile
@@ -73,9 +73,52 @@ services:
       - "5285:80"
     restart: unless-stopped
 
+  ModsenOnlineStore.LogService.API:
+    container_name: logs
+    image: ${DOCKER_REGISTRY-}logs:v1.3
+    build:
+      context: ./Services
+      dockerfile: DockerfileLogs
+    depends_on:
+#      - rabbitmq
+      - sqlserver
+    env_file: ./Services/ModsenOnlineStore.Common/Common.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MigrationsAssembly=ModsenOnlineStore.LogService.API
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=sqlserver;  Trusted_Connection=false;TrustServerCertificate=True; MultiSubnetFailover=True; Database=logsDb; User ID='sa'; Password='paSSword0110';Integrated security=False;
+#      - MessageQueueSettings__Host=rabbitmq
+#      - MessageQueueSettings__UserName=rabbitmquser
+#      - MessageQueueSettings__Password=rabbitmqPassword12!
+#    networks:
+#      - login-network
+    ports:
+      - "5229:80"
+    restart: unless-stopped
 
-
-
+  ModsenOnlineStore.Store.API:
+    container_name: store
+    image: ${DOCKER_REGISTRY-}store:v1
+    build:
+      context: ./Services
+      dockerfile: DockerfileStore
+    depends_on:
+#      - rabbitmq
+      - sqlserver
+    env_file: ./Services/ModsenOnlineStore.Common/Common.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MigrationsAssembly=ModsenOnlineStore.Store.API
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=sqlserver;  Trusted_Connection=false;TrustServerCertificate=True; MultiSubnetFailover=True; Database=storeDb; User ID='sa'; Password='paSSword0110';Integrated security=False;
+#      - MessageQueueSettings__Host=rabbitmq
+#      - MessageQueueSettings__UserName=rabbitmquser
+#      - MessageQueueSettings__Password=rabbitmqPassword12!
+#    networks:
+#      - login-network
+    ports:
+      - "5299:80"
+    restart: unless-stopped
+    
 networks:
   login-network:
     

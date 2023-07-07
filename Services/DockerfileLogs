@@ -1,0 +1,24 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["./LogService/ModsenOnlineStore.LogService.API/ModsenOnlineStore.LogService.API.csproj", "LogService/ModsenOnlineStore.LogService.API/"]
+COPY ["./LogService/ModsenOnlineStore.LogService.Application/ModsenOnlineStore.LogService.Application.csproj", "LogService/ModsenOnlineStore.LogService.Application/"]
+COPY ["./ModsenOnlineStore.Common/ModsenOnlineStore.Common.csproj", "ModsenOnlineStore.Common/"]
+COPY ["./LogService/ModsenOnlineStore.LogService.Domain/ModsenOnlineStore.LogService.Domain.csproj", "LogService/ModsenOnlineStore.LogService.Domain/"]
+COPY ["./LogService/ModsenOnlineStore.LogService.Infrastructure/ModsenOnlineStore.LogService.Infrastructure.csproj", "LogService/ModsenOnlineStore.LogService.Infrastructure/"]
+RUN dotnet restore "LogService/ModsenOnlineStore.LogService.API/ModsenOnlineStore.LogService.API.csproj"
+COPY . .
+WORKDIR "/src"
+RUN dotnet build "LogService/ModsenOnlineStore.LogService.API/ModsenOnlineStore.LogService.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "LogService/ModsenOnlineStore.LogService.API/ModsenOnlineStore.LogService.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ModsenOnlineStore.LogService.API.dll"]
