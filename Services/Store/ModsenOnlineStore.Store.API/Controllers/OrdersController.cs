@@ -92,7 +92,9 @@ namespace ModsenOnlineStore.Store.API.Controllers
         [Route("ConfirmOrderPayment")]
         public async Task<IActionResult> ConfirmOrderPaymentAsync(int id, string code)
         {
-            var response = await orderService.ConfirmOrderPaymentAsync(id, code);
+            string userEmail = "egrom2002@gmail.com"; // получить из jwt
+
+            var response = await orderService.ConfirmOrderPaymentAsync(id, userEmail, code);
 
             if (!response.Success)
             {
