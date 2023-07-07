@@ -15,7 +15,7 @@ namespace ModsenOnlineStore.EmailAuthentication.Infrastructure.Services
         public RabbitMQBackgroundConsumerService(IEmailSendingService emailSendingService)
         {
             this.emailSendingService = emailSendingService;
-            var factory = new ConnectionFactory();
+            var factory = new ConnectionFactory(){ HostName = "rabbitmq" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
         }

@@ -11,8 +11,8 @@ using ModsenOnlineStore.Login.Infrastructure.Data;
 namespace ModsenOnlineStore.Login.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230627150529_UserUpdated")]
-    partial class UserUpdated
+    [Migration("20230707011042_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,26 @@ namespace ModsenOnlineStore.Login.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ModsenOnlineStore.Login.Domain.Entities.EmailConfirmation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailConfirmations");
+                });
 
             modelBuilder.Entity("ModsenOnlineStore.Login.Domain.Entities.User", b =>
                 {
@@ -38,6 +58,10 @@ namespace ModsenOnlineStore.Login.API.Migrations
 
                     b.Property<bool>("IsEmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("Money")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Name")
                         .IsRequired()

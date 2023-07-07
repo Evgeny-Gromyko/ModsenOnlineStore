@@ -1,0 +1,84 @@
+version: '2.0'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    hostname: "rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmquser
+      - RABBITMQ_DEFAULT_PASS=rabbitmqPassword12!
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq/mnesia
+    networks:
+      - login-network
+    restart: unless-stopped
+    
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=paSSword0110
+    networks:
+      - login-network
+    volumes:
+      - sqldata:/var/opt/mssql
+    restart: unless-stopped
+    
+  ModsenOnlineStore.Login.API:
+    container_name: TokenAuthentication
+    image: ${DOCKER_REGISTRY-}login:v2.6
+    build:
+      context: ./Services
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+      - sqlserver
+    env_file: ./Services/ModsenOnlineStore.Common/Common.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MigrationsAssembly=ModsenOnlineStore.Login.API
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Server=sqlserver;  Trusted_Connection=false;TrustServerCertificate=True; MultiSubnetFailover=True; Database=loginDb; User ID='sa'; Password='paSSword0110';Integrated security=False;
+      - MessageQueueSettings__Host=rabbitmq
+      - MessageQueueSettings__UserName=rabbitmquser
+      - MessageQueueSettings__Password=rabbitmqPassword12!
+    networks:
+      - login-network
+    ports:
+      - "5217:80"
+    restart: unless-stopped
+    
+  ModsenOnlineStore.EmailAuthentication.API:
+    container_name: EmailAuthentication
+    image: ${DOCKER_REGISTRY-}emailauthentication:v2.0
+    build:
+      context: ./Services/EmailAuthentication
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+    env_file: ./Services/ModsenOnlineStore.Common/Common.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MessageQueueSettings__Host=rabbitmq
+      - MessageQueueSettings__UserName=rabbitmquser
+      - MessageQueueSettings__Password=rabbitmqPassword12!
+    networks:
+      - login-network
+    ports:
+      - "5285:80"
+    restart: unless-stopped
+
+
+
+
+networks:
+  login-network:
+    
+volumes:
+  rabbitmq:
+  sqldata:
