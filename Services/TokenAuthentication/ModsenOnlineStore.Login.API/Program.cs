@@ -40,8 +40,7 @@ var b = builder.Configuration.GetSection("MigrationsAssembly").Get<string>();
 
 builder.Services.AddDbContext<DataContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-    b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())),
-    ServiceLifetime.Singleton);
+    b => b.MigrationsAssembly(builder.Configuration.GetSection("MigrationsAssembly").Get<string>())));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
